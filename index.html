@@ -9,9 +9,10 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="./media/icon/favicon/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="./media/icon/favicon/favicon-16x16.png">
 	<link rel="manifest" href="./media/icon/favicon/site.webmanifest">
+	<link rel="stylesheet" href="./static/css/pages/base.css">
 </head>
 <body>
-<canvas></canvas>
+<canvas id="canvas"></canvas>
 <div id="container" class="invisible">
 	<div id="3d" class="contentBlock">
 		<div class="topicBlock">
@@ -332,7 +333,6 @@
 </script>
 <script type="module">
 import { Cache, WebGLRenderer, ACESFilmicToneMapping, Color, SRGBColorSpace, Vector2, Vector3, Scene, PerspectiveCamera, DirectionalLight, Group, Raycaster, LoadingManager, TextureLoader, VideoTexture, Mesh, MeshStandardMaterial, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, PlaneGeometry, ShapeGeometry, EdgesGeometry, LineSegments, FrontSide} from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';	
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { Font } from 'three/addons/loaders/FontLoader.js';
@@ -344,30 +344,7 @@ const requestAnimationFrame = window.requestAnimationFrame || window.mozRequestA
 const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 function init(){
 	setScene(scn);
-	scn.fonts =  {
-		rubick: {
-			loaded: false, topics: [
-				{ media: [{
-					data:[
-					{ src : 'static/fonts/rubik/Rubik-Regular.ttf', tag: 'ttf' },
-					{ src : 'static/fonts/rubik/Rubik-Bold.ttf', tag: 'ttf' } ]}
-				]}
-			]
-		}
-	};
-	scn.meshes = {
-		homepage: {
-			 loaded: false, topics: [
-				{ media: [{
-					data: [
-					{ src : 'static/js/webgl/models/homepage/homepage.fbx', tag: 'fbx' } ]}
-				]}
-			]
-		}
-	};
-	scn.loaderClasses = { fbx: [FBXLoader] , ttf: [TTFLoader], webp: [TextureLoader, generateImg], svg: [SVGLoader, generateSvg], mp4: [VideoTexture, generateVid] };
-	scn.menuObjs = getMenuItems( "container" );
-	loadFiles( [ scn.fonts.rubick, scn.meshes.homepage ] , buildScenario);
+	loadFiles( [ scn.fonts.rubick, scn.meshes.homepage ] , getMenuItems);
 }
 function loadFile(loaderClass, filePath) {
 	return new Promise((resolve) => {
@@ -424,9 +401,9 @@ async function loadFiles( filesArray, endAction=null ){
 		filesArray[i].loaded = true;
 	}
 }
-function getMenuItems( containerId ){
+function getMenuItems(){
 	const obj = {};
-	const content = document.getElementById(containerId);
+	const content = document.getElementById("container");
 	for(let i = 0; i < content.children.length; i++){
 		let menuItem = content.children[i];
 		let itemID = menuItem.getAttribute("id");
@@ -465,11 +442,13 @@ function getMenuItems( containerId ){
 			obj[itemID].topics.push(topicObj);
 		}
 	}
-	return obj;
+	scn.menuObjs = obj;
+	buildScenario();
+	return;
 }
 function buildScenario(){
 	scn.carousel = setCarousel();
-	scn.infoContainer = setInfoContainer();
+	scn.infoC = setinfoC();
 	for(let item of Object.values(scn.meshes.homepage.topics[0].media[0].data[0].src.children) ){
 		let geo = item.geometry;
 		let strokeMat = new MeshStandardMaterial( { color: new Color('#0E3F36'), fog: false, toneMapped: false, transparent: true } );
@@ -526,10 +505,10 @@ function buildScenario(){
 		}
 	}
 	scn.close.visible = false;
-	onWindowResize();
-	window.addEventListener( 'resize', onWindowResize );
-	window.addEventListener( 'pointermove', onPointerMove );
-	window.addEventListener( 'pointerdown', onPointerDown );
+	resize();
+	window.addEventListener( 'resize', resize, false );
+	window.addEventListener( 'pointerdown', pointerDown );
+	window.addEventListener('wheel', wheel, { passive: false } );
 	scn.intersectedObjs = scn.carouselRays;
 	delete scn.meshes;
 	let htmlElmn = document.getElementsByClassName('invisible')[0];
@@ -538,21 +517,18 @@ function buildScenario(){
 	animate();
 }
 function openInfo(){
-	scn.moving = false;	
-	scn.controls.maxDistance = scn.camLock.z;
-	scn.controls.enableRotate = false;
-	scn.controls.enableZoom = false;
-	scn.camViewSize = calcViewSize(scn.cam, scn.camLock.z, 0, 0);
+	scn.moving = false;
 	updateObjsPos();
+	scn.camViewSize = calcViewSize(scn.cam, scn.cam.lock.z, 0, 0);
 	scn.close.position.y = scn.close.lock.y;
-	scn.infoContainer.infoTable.infoTableW = Math.trunc((scn.camViewSize.x * 0.8) *100)/100;
-	scn.infoContainer.infoTable.position.x = -scn.infoContainer.infoTable.infoTableW/2;
-	scn.infoContainer.infoTable.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2);
-	
-	scn.infoContainer.infoTable.visible = true;
+	scn.infoC.infoT.infoTW = Math.trunc((scn.camViewSize.x * 0.8) *100)/100;
+	scn.infoC.infoT.position.x = -scn.infoC.infoT.infoTW/2;
+	scn.infoC.infoT.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2);
+	scn.infoC.infoT.visible = true;
 		
-	let itemRotationPos = Math.PI*2 - scn.carousel[scn.currentIntersected.name]; 
+	let itemRotationPos = Math.PI*2 - scn.carousel[scn.currIntersect.name]; 
 	let itemRotationDelta = itemRotationPos;
+	console.log(scn.carousel[scn.currIntersect.name], itemRotationPos)
 	if(Math.abs(scn.carousel.rotation.y - itemRotationPos) >= Math.PI){
 		if(scn.carousel.rotation.y >= itemRotationPos){
 			itemRotationDelta += Math.PI*2;
@@ -560,40 +536,38 @@ function openInfo(){
 			scn.carousel.rotation.y += Math.PI*2;
 		}
 	}
-	let carouselRotationDuration = Math.ceil(Math.abs(scn.carousel.rotation.y - itemRotationDelta));
+	let carouselRotationDuration = Math.ceil(Math.abs(scn.carousel.rotation.y - itemRotationDelta))/Math.PI;
 	for(let i = 0; i < scn.carousel.children.length; i++){
-		if(scn.carousel.children[i].name != scn.currentIntersected.name){
+		if(scn.carousel.children[i].name != scn.currIntersect.name){
 			scn.carousel.children[i].traverse(function(child){
 				animeItem(child, 'material', ['opacity'], [0], 0.7);
 			});
 		}
 	}
-	changeColor(scn.currentIntersected.children[0], "active");
-	animeItem(scn.cam, 'position', ['x', 'y', 'z'], [scn.camLock.x, scn.camLock.y, scn.camLock.z], 0.7);
-	animeItem(scn.controls, 'target', ['y'], [scn.tgtLock.y], 0.7);
-	animeItem(scn.carousel, 'position', ['y'], [scn.carousel.lock.y], 0.7);
-	animeItem(scn.carousel, 'rotation', ['y'], [itemRotationDelta], carouselRotationDuration);
-	animeItem(scn.currentIntersected, 'scale', ['x', 'y'], [scn.carousel.cScale*2.6, scn.carousel.cScale*2.6], 0.7);
+	changeColor(scn.currIntersect.children[0], "active");
+	animeItem(scn.cam, 'position', ['x', 'y', 'z'], [scn.cam.lock.x, scn.cam.lock.y, scn.cam.lock.z], 0.7);
+	animeItem(scn.cam, 'target', ['y'], [scn.cam.lock.target], 0.7);	
+	animeItem(scn.currIntersect, 'scale', ['x', 'y'], [scn.carousel.cScale*2.6, scn.carousel.cScale*2.6], 0.7);
 	animeItem(scn.brand, 'scale', ['x', 'y'], [scn.brand.scalarV, scn.brand.scalarV], 0.7);
-	animeItem(scn.brand, 'position', ['x', 'y'], [scn.brand.lock.x, scn.brand.lock.y], 0.7, 0, function() {
-		animeItem(scn.infoContainer.infoTable, 'position', ['x'], [0], 0.7);
-		animeItem(scn.infoContainer.infoTable, 'scale', ['x'], [scn.infoContainer.infoTable.infoTableW], 0.7, 0, function(){
-			plotElements();
+	animeItem(scn.brand, 'position', ['x', 'y'], [scn.brand.lock.x, scn.brand.lock.y], 0.7);
+	animeItem(scn.carousel, 'position', ['y'], [scn.carousel.lock.y], 0.7);
+	animeItem(scn.carousel, 'rotation', ['y'], [itemRotationDelta], carouselRotationDuration, 0, function() {
+		animeItem(scn.infoC.infoT, 'position', ['x'], [0], 0.7);
+		animeItem(scn.infoC.infoT, 'scale', ['x'], [scn.infoC.infoT.infoTW], 0.7, 0, function(){
+			plotElements( scn.menuObjs[ scn.currIntersect.name ] );
 		});
-		
-	});
+	} );
 }
-function plotElements(){
-	let content = scn.menuObjs[ scn.currentIntersected.name ];
-	let infoContainer = scn.infoContainer;
-	let infoTable = infoContainer.infoTable;	
-	let contentWidth = Math.trunc((infoTable.infoTableW * 0.9) *100)/100;
-	let itemPadding = Math.trunc((contentWidth * 0.01) *100)/100;
-	infoContainer.h2.fontSize = Math.trunc((contentWidth/20) * 100)/100;
-	infoContainer.p.fontSize = Math.trunc((contentWidth/24) * 100)/100;
-	infoContainer.contentHeight = 0;
-	let topicHeight = 0;
+function plotElements( content ){
+	scn.infoC.cntntW = Math.trunc((scn.infoC.infoT.infoTW * 0.9) *100)/100;
+	scn.infoC.itemPadW = Math.trunc((scn.infoC.cntntW * 0.01) *100)/100;
+	scn.infoC.itemPadH = Math.trunc((scn.infoC.cntntW * 0.01) *100)/100;
+	scn.infoC.h2.fontSize = Math.trunc((scn.infoC.cntntW/20) * 100)/100;
+	scn.infoC.p.fontSize = Math.trunc((scn.infoC.cntntW/24) * 100)/100;
+	scn.infoC.contentHeight = 0;
+	scn.infoC.topicH = 0;
 	for( let i = 0; i < content.topics.length; i++){
+	
 		let topic = content.topics[i];
 		let topicBlock = new Group();
 		let blockHigher = 0;
@@ -602,7 +576,7 @@ function plotElements(){
 		if( topic.text ){
 			for( let j = 0; j < topic.text.length; j++){
 				let block = topic.text[j];
-				let colW = Math.ceil(((contentWidth*block.width)/100) * 100 )/100;
+				let colW = Math.ceil(((scn.infoC.cntntW*block.width)/100) * 100 )/100;
 				let order = parseInt(block.order);
 				let itemGroup = new Group();
 				let scale;
@@ -610,16 +584,16 @@ function plotElements(){
 				for( let k = 0; k < block.data.length; k++){
 					let elmnt = block.data[k];
 					let wordsArr = elmnt.info;
-					let fontSize = infoContainer[elmnt.tag].fontSize;
-					let fontFamily = infoContainer[elmnt.tag].fontFamily;
+					let fontSize = scn.infoC[elmnt.tag].fontSize;
+					let fontFamily = scn.infoC[elmnt.tag].fontFamily;
 					let textBlock = alignTextBlock(wordsArr, colW, fontSize);
 					let textMesh = generateText(textBlock, fontFamily, fontSize);
 					textMesh.position.y = -blockHeight;
 					scale = colW/textMesh.bb.w;
-					blockHeight += (textMesh.bb.h * scale) + itemPadding;
+					blockHeight += (textMesh.bb.h * scale) + scn.infoC.itemPadW;
 					itemGroup.add(textMesh);
 				}
-				blockHeight += itemPadding;
+				blockHeight += scn.infoC.itemPadW;
 				if(blockHeight > blockHigher){
 					blockHigher = blockHeight;
 				}
@@ -630,7 +604,7 @@ function plotElements(){
 		if( topic.media ){
 			for( let j = 0; j < topic.media.length; j++){
 				let block = topic.media[j];
-				let colW = Math.ceil(((contentWidth*block.width)/100) * 100 )/100;
+				let colW = Math.ceil(((scn.infoC.cntntW*block.width)/100) * 100 )/100;
 				let order = parseInt(block.order);
 				let itemGroup = new Group();
 				let scale;
@@ -663,22 +637,22 @@ function plotElements(){
 				// if topic has no text block, calc blockHigher
 				if(blockHigher == 0){
 					blockHeight = (colW/mediaAspectAll);
-					blockHigher = ((colW/mediaAspectAll)/block.data.length) + itemPadding;
+					blockHigher = ((colW/mediaAspectAll)/block.data.length) + scn.infoC.itemPadW;
 				}else{
 					blockHeight = blockHigher;
 				}
 				let mediaCanvasAspect = colW/blockHeight;
 				for( let k = 0; k < itemGroup.children.length; k++){
 					let elmnt = itemGroup.children[k];
-					scale = ((blockHeight-itemPadding)/elmnt.bb.h)/itemGroup.children.length;
+					scale = ((blockHeight-scn.infoC.itemPadW)/elmnt.bb.h)/itemGroup.children.length;
 					//scale = (colW/elmnt.bb.w)/itemGroup.children.length;
 					elmnt.scale.setScalar(scale);
 					if(mediaCanvasAspect >= 1){
 						elmnt.position.x = elmnPosX;
-						elmnPosX += (elmnt.bb.w * scale) + itemPadding;
+						elmnPosX += (elmnt.bb.w * scale) + scn.infoC.itemPadW;
 					}else{
 						elmnt.position.y = -elmnPosY;
-						elmnPosY += (elmnt.bb.h * scale) + itemPadding;
+						elmnPosY += (elmnt.bb.h * scale) + scn.infoC.itemPadW;
 					}
 				}
 				topicBlock.add( itemGroup );
@@ -688,162 +662,94 @@ function plotElements(){
 		//position x itemGroups by order and col position
 		colPosXOrder.sort().unshift([0,0]);
 		for( let j = 1; j < colPosXOrder.length; j++){
-			colPosXOrder[j][2].position.x = colPosXOrder[j-1][1] + itemPadding;
+			colPosXOrder[j][2].position.x = colPosXOrder[j-1][1] + scn.infoC.itemPadW;
 		}
-		topicBlock.position.x = -(contentWidth/2);
-		topicBlock.position.y = - (topicHeight + itemPadding) ;
-		topicHeight += blockHigher + itemPadding;
-		infoContainer.infoBlock.add( topicBlock );
+		topicBlock.position.x = -(scn.infoC.cntntW/2);
+		topicBlock.position.y = - (scn.infoC.topicH + scn.infoC.itemPadW) ;
+		scn.infoC.topicH += blockHigher + scn.infoC.itemPadW;
+		scn.infoC.infoBlock.add( topicBlock );
 	}
-	infoContainer.contentHeight = topicHeight;
-	infoContainer.infoBlock.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y);
+	scn.infoC.contentHeight = scn.infoC.topicH;
+	scn.infoC.infoBlock.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y);
 	scn.cam.topLimit = 0;
-	scn.cam.bottomLimit = -Math.trunc( infoContainer.contentHeight - scn.camViewSize.y/2 );
+	scn.cam.bottomLimit = -Math.trunc( scn.infoC.contentHeight - scn.camViewSize.y/2 );
 	displayInfo();
 }
 function displayInfo(){
 	scn.close.visible = true;
 	scn.topicRays.push(scn.close);
-	//let animeArray = [];
 	animeItem(scn.close, 'position', ['x'], [scn.close.lock.x], 0.5, 0);
-	animeItem(scn.infoContainer.infoTable, 'scale', ['y'], [scn.infoContainer.contentHeight], 0.7);
-	animeItem(scn.infoContainer.infoTable, 'position', ['y'], [-(scn.infoContainer.contentHeight/2 - (scn.camViewSize.y/2 - scn.brand.lock.y/2 ))], 0.7, 0, function(){
-		for(let i = 0; i < scn.infoContainer.infoBlock.children.length; i++){
-			for(let j = 0; j < scn.infoContainer.infoBlock.children[i].children.length; j++){
-				for(let k = 0; k < scn.infoContainer.infoBlock.children[i].children[j].children.length; k++){
-					scn.infoContainer.infoBlock.children[i].children[j].children[k].children.forEach((element) =>  animeItem(element, 'material', ['opacity'], [1], 0.5, i+j) ); 
+	animeItem(scn.infoC.infoT, 'scale', ['y'], [scn.infoC.contentHeight], 0.7);
+	animeItem(scn.infoC.infoT, 'position', ['y'], [ (-(scn.infoC.contentHeight/2 - (scn.camViewSize.y/2 - scn.brand.lock.y/2 )) )], 0.7, 0, function(){
+		for(let i = 0; i < scn.infoC.infoBlock.children.length; i++){
+			for(let j = 0; j < scn.infoC.infoBlock.children[i].children.length; j++){
+				for(let k = 0; k < scn.infoC.infoBlock.children[i].children[j].children.length; k++){
+					scn.infoC.infoBlock.children[i].children[j].children[k].traverse(function(child){
+						animeItem(child, 'material', ['opacity'], [1], 0.5);
+					});
 				}
-			
 			}
 		}
-		scn.renderer.domElement.addEventListener( "wheel", wheelEvent, false);
-		window.addEventListener( "keydown", keyDownEvent, false );
+		window.addEventListener( "keydown", keyDown, false );
 	});
-	/*
-	animeArray.push(
-		animeItem(scn.close.position, 'x', scn.close.lock.x, 20, 0, 
-		function(){
-			let animeArray = [];
-			animeArray.push(
-				animeItem(scn.infoContainer.infoTable.scale, 'y', scn.infoContainer.contentHeight, 20, 0),
-				animeItem(scn.infoContainer.infoTable.position, 'y', -(scn.infoContainer.contentHeight/2 - (scn.camViewSize.y/2 - scn.brand.lock.y/2 )), 20, 0,
-				function(){
-					let animeArray = [];
-					for(let i = 0; i < scn.infoContainer.infoBlock.children.length; i++){
-						let elmntGroup = scn.infoContainer.infoBlock.children[i].children;
-						for(let j = 0; j < elmntGroup.length; j++){
-							for(let k = 0; k < elmntGroup[j].children.length; k++){
-								if(elmntGroup[j].children[k].children.length > 0){
-									elmntGroup[j].children[k].children.forEach((element) => 
-									animeArray.push(
-										animeItem(element.material, 'opacity', 1, 20, i+j)
-										) ); 
-								}
-								animeArray.push(
-									animeItem(elmntGroup[j].children[k].material, 'opacity', 1, 20, i+j) ); } } }
-					animeArray.forEach((element) => scn.renderGroup.push(element));
-					scn.renderer.domElement.addEventListener( "wheel", wheelEvent, false);
-					window.addEventListener( "keydown", keyDownEvent, false );
-				} ) )
-			animeArray.forEach((element) => scn.renderGroup.push(element));
-		})	);
-		
-		*/
-	//animeArray.forEach((element) => scn.renderGroup.push(element));
 }
 function closeInfo(){
-	let infoContainer = scn.infoContainer;
-	let infoTable = infoContainer.infoTable;
-	scn.renderer.domElement.removeEventListener( "wheel", wheelEvent);
-	window.removeEventListener( "keydown", keyDownEvent);
+	window.removeEventListener( "keydown", keyDown);
 	scn.renderer.domElement.removeEventListener( "onTouchStart", onTouchStart);
 	scn.renderer.domElement.removeEventListener( "onTouchMove", onTouchMove);
-	/*
-	let animeArray = [];
-	for(let i = 0; i < infoContainer.infoBlock.children.length; i++){
-		let elmntGroup = infoContainer.infoBlock.children[i].children;
-		for(let j = 0; j < elmntGroup.length; j++){
-			for(let k = 0; k < elmntGroup[j].children.length; k++){
-				animeArray.push(
-					animeItem(elmntGroup[j].children[k].material, 'opacity', 0, 20, 0)
-				);
-				//svg children
-				if(elmntGroup[j].children[k].children.length > 0){
-					elmntGroup[j].children[k].children.forEach((element) => 
-					animeArray.push(
-						animeItem(element.material, 'opacity', 0, 20, i+j)
-						) ); 
-				}
-			} } 
+	for(let i = 0; i < scn.infoC.infoBlock.children.length; i++){
+		for(let j = 0; j < scn.infoC.infoBlock.children[i].children.length; j++){
+			for(let k = 0; k < scn.infoC.infoBlock.children[i].children[j].children.length; k++){
+				scn.infoC.infoBlock.children[i].children[j].children[k].traverse(function(child){
+					animeItem(child, 'material', ['opacity'], [0], 0.5);
+				});
+			}
+		}
 	}
-	*/
 	animeItem(scn.close, 'position', ['x'], [scn.close.mov.x], 0.5, 0, function(){
-		animeItem(infoTable, 'position', ['y'], [Math.trunc((scn.camViewSize.y/2 - scn.brand.lock.y/2)*100)/100], 0.7, 0, function(){
-			animeItem(infoTable, 'scale', ['x'],  0, 0.5);
-			animeItem(infoTable, 'position', ['x'], [-infoTable.infoTableW/2], 0.5, 0, function(){
+		animeItem(scn.infoC.infoT, 'scale', ['y'], [0.2], 0.5);
+		animeItem(scn.infoC.infoT, 'position', ['y'], [((scn.camViewSize.y/2 - scn.brand.lock.y/2))], 0.5, 0, function(){
+			animeItem(scn.infoC.infoT, 'scale', ['x'],  [0], 0.5);
+			animeItem(scn.infoC.infoT, 'position', ['x'], [-scn.infoC.infoT.infoTW/2], 0.5, 0, function(){
 				scn.close.visible = false;
 				hideInfo(scn);
-				infoContainer.infoBlock.clear();
-				changeColor(scn.currentIntersected.children[0], "normal");
+				scn.infoC.infoBlock.clear();
+				changeColor(scn.currIntersect.children[0], "normal");
 			});
 		});
 	
 	});
-	/*
-	animeArray.push(
-		animeItem(scn.close.position, 'x', scn.close.mov.x, 20, 0, 
-			function(){
-				let animeArray = [];
-				animeArray.push(
-					animeItem(infoTable.position, 'y', Math.trunc((scn.camViewSize.y/2 - scn.brand.lock.y/2)*100)/100, 20, 0, 
-						function(){
-							let animeArray = [];
-							animeArray.push(
-								animeItem(infoTable.scale, 'x',  0, 10, 0),
-								animeItem(infoTable.position, 'x', -infoTable.infoTableW/2, 10, 0)
-								 );
-							animeArray.forEach((element) => scn.renderGroup.push(element));
-							scn.close.visible = false;
-							hideInfo(scn);
-						}
-					),
-					animeItem(infoTable.scale, 'y', 0.5, 20, 0)
-				);
-				infoContainer.infoBlock.clear();
-				changeColor(scn.currentIntersected.children[0], "normal", animeArray);
-				animeArray.forEach((element) => scn.renderGroup.push(element));
-			}
-		)
-	);
-	animeArray.forEach((element) => scn.renderGroup.push(element));
-	*/
 }
 function hideInfo(){
 	scn.moving = true;
 	updateObjsPos();
 	for(let i = 0; i < scn.carousel.children.length; i++){
-		if(scn.carousel.children[i].name != scn.currentIntersected.name){
-			animeItem(scn.carousel.children[i], 'material', ['opacity'], [1], 0.6);
-		}
-		animeItem(scn.currentIntersected, 'scale', ['x', 'y'], [scn.carousel.cScale, scn.carousel.cScale], 0.6);
+		scn.carousel.children[i].traverse(function(child){
+			if(scn.carousel.children[i].name != scn.currIntersect.name){
+				animeItem(child, 'material', ['opacity'], [1], 0.5);
+			}
+		});
 	}
+	animeItem(scn.currIntersect, 'scale', ['x', 'y'], [scn.carousel.cScale, scn.carousel.cScale], 0.6);
 	animeItem(scn.brand, 'scale', ['x', 'y'], [scn.brand.scalarV, scn.brand.scalarV], 0.6);
 	animeItem(scn.brand, 'position', ['x', 'y'], [scn.brand.mov.x, scn.brand.mov.y], 0.6);
 	animeItem(scn.carousel, 'position', ['y'], [scn.carousel.mov.y], 0.6);
-	animeItem(scn.cam, 'position', ['x', 'y', 'z'], [scn.camMov.x, scn.camMov.y, scn.camMov.z], 0.6);
-	animeItem(scn.controls, 'target', ['y'], [scn.tgtMov.y], 0.6, 0, function(){
-		scn.controls.enableRotate = true;
-		scn.controls.enableZoom = true;
-		scn.controls.maxDistance = scn.camMov.z;
+	animeItem(scn.cam, 'target', ['y'], [scn.cam.mov.target], 0.7);	
+	animeItem(scn.cam, 'position', ['x', 'y', 'z'], [scn.cam.lock.x, scn.cam.lock.y, scn.cam.lock.z], 0.6, 0, function(){
 		scn.topicRays = [];	
 	});
 }
-
-function onWindowResize() {
-	scn.renderer.setSize( window.innerWidth, window.innerHeight );
-	scn.cam.aspect = window.innerWidth / window.innerHeight;
+function resize() {
+	scn.canvas = document.getElementById("canvas");
+	scn.canvas.bb = scn.canvas.getBoundingClientRect();
+	scn.canvas.width = Math.trunc(scn.canvas.bb.width*100)/100;
+	scn.canvas.height = Math.trunc(scn.canvas.bb.height*100)/100;
+	scn.cam.aspect = scn.canvas.width / scn.canvas.height;
 	scn.cam.updateProjectionMatrix();
-
+	scn.renderer.canvas = scn.canvas;
+	scn.renderer.setSize( scn.canvas.width, scn.canvas.height );
+	scn.renderer.setPixelRatio( scn.cam.aspect );
+	
 	updateObjsPos();
 	scn.brand.scale.setScalar( scn.brand.scalarV );
 	if(scn.moving == true){	
@@ -867,16 +773,17 @@ function onWindowResize() {
 		scn.close.position.y = scn.close.lock.y;
 		scn.carousel.position.y = scn.carousel.lock.y;
 	}
+	
 }
 function updateObjsPos(){
 	if(scn.moving == true){
-		scn.camViewSize = calcViewSize(scn.cam, scn.camMov.z, 0, 0);
+		scn.camViewSize = calcViewSize(scn.cam, scn.cam.mov.z, 0, 0);
 		scn.refSCaleY = Math.trunc((scn.camViewSize.y*scn.cam.aspect)*100)/100;
 		scn.refSCaleX = Math.trunc((scn.camViewSize.x*scn.cam.aspect)*100)/100;
 		scn.brand.scalarV = clamp(scn.refSCaleY/68, 0.6, 1.2);
 	}
 	if(scn.moving == false){
-		scn.camViewSize = calcViewSize(scn.cam, scn.camLock.z, 0, 0);
+		scn.camViewSize = calcViewSize(scn.cam, scn.cam.lock.z, 0, 0);
 		scn.refSCaleY = Math.trunc((scn.camViewSize.y*scn.cam.aspect)*100)/100;
 		scn.refSCaleX = Math.trunc((scn.camViewSize.x*scn.cam.aspect)*100)/100;
 		scn.brand.scalarV = clamp(scn.refSCaleY/160, 0.8, 1.5);
@@ -893,9 +800,50 @@ function updateObjsPos(){
 	scn.carousel.mov = {y: -scn.brand.mov.y};
 	scn.carousel.lock = {y: scn.camViewSize.y/2 - scn.brand.lock.y/2};
 }
-function onPointerMove( event ) {
+
+function pointerDown( event )  {
+	event.preventDefault();
+	scn.pointerDown = true;
+	window.removeEventListener( 'pointerdown', pointerDown );
+	window.addEventListener( 'pointermove', pointerMove );
+	window.addEventListener( 'pointerup', pointerUp );
+	scn.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	scn.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+	scn.raycaster.setFromCamera( scn.pointer, scn.cam );
+	scn.intersects = scn.raycaster.intersectObjects( scn.intersectedObjs, false );
+	if ( scn.intersects.length > 0 ) {
+		scn.currIntersect = scn.intersects[0].object;
+		if(scn.moving == true){
+			scn.intersectedObjs = scn.topicRays;
+			console.log(scn.menuObjs[scn.currIntersect.name].loaded)
+			if(scn.menuObjs[scn.currIntersect.name].loaded == false){
+				loadFiles( [ scn.menuObjs[scn.currIntersect.name] ], openInfo );
+			}
+			openInfo();
+			return;
+		}
+		if(scn.moving == false){
+			if(scn.currIntersect.name == "close"){
+				scn.intersectedObjs = scn.carouselRays;
+				closeInfo();
+				return; 
+			}
+			if(scn.currIntersect.name == "rayLink"){
+				linkPage(scn.currIntersect.url);
+			}
+		}
+	}
+}
+function pointerUp( event ){
+	event.preventDefault();
+	scn.pointerDown = false;
+	window.addEventListener( 'pointerdown', pointerDown );
+	window.removeEventListener( 'pointermove', pointerMove );
+	window.removeEventListener( 'pointerup', pointerUp );
+}
+function pointerMove( event ) {
+	event.preventDefault();
 	if(scn.moving == true){
-		event.preventDefault();
 		scn.v2.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 		scn.v2.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 		scn.raycaster.setFromCamera( scn.v2, scn.cam );
@@ -903,110 +851,46 @@ function onPointerMove( event ) {
 		if ( scn.intersects.length > 0 ) {
 			let animeArray = [];
 			scn.intersected = scn.intersects[0].object;
-			if(scn.currentIntersected == null){
+			if(scn.currIntersect == null){
 				//'new'			
-				scn.currentIntersected = scn.intersected;
-				changeColor(scn.currentIntersected.children[0], "hover" );
-				animeItem(scn.currentIntersected, 'scale', ['x','y'], [scn.carousel.cScale*1.6,scn.carousel.cScale*1.6], 0.5);
+				scn.currIntersect = scn.intersected;
+				changeColor(scn.currIntersect.children[0], "hover" );
+				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.cScale*1.6,scn.carousel.cScale*1.6], 0.5);
 			}
-			if(scn.intersected.name !== scn.currentIntersected.name){
+			if(scn.intersected.name !== scn.currIntersect.name){
 				//'changed'
-				scn.currentIntersected = scn.intersected;
-				changeColor(scn.currentIntersected.children[0], "hover");
+				changeColor(scn.currIntersect.children[0], "normal");
+				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.cScale,scn.carousel.cScale], 0.5);
+				changeColor(scn.intersected.children[0], "hover");
 				animeItem(scn.intersected, 'scale', ['x','y'], [scn.carousel.cScale*1.6,scn.carousel.cScale*1.6], 0.5);
-				for(let i = 0; i < scn.carousel.children.length; i++){
-					if(scn.carousel.children[i].name != scn.intersected.name){
-						changeColor(scn.carousel.children[i].children[0], "normal");
-						animeItem(scn.carousel.children[i], 'scale', ['x','y'], [scn.carousel.cScale,scn.carousel.cScale], 0.5);
-					}
-				}
+				scn.currIntersect = scn.intersected;			
 			}
 		}
 		if ( scn.intersects.length == 0 ) {
-			if(scn.currentIntersected != null){
+			if(scn.currIntersect != null){
 				let animeArray = [];
-				//'none'
-				for(let i = 0; i < scn.carousel.children.length; i++){
-					changeColor(scn.carousel.children[i].children[0], "normal");
-					animeItem(scn.carousel.children[i], 'scale', ['x','y'], [scn.carousel.cScale,scn.carousel.cScale], 0.5);
-				}
-				scn.currentIntersected = null;
+				changeColor(scn.currIntersect.children[0], "normal");
+				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.cScale,scn.carousel.cScale], 0.5);
+				scn.currIntersect = null;
+				scn.cam.position.x += scn.v2.x * 0.6;
+				scn.cam.position.x = clamp(scn.cam.position.x, -4, 4);
+				scn.cam.position.y -= scn.v2.y * 0.4;
+				scn.cam.position.y = clamp(scn.cam.position.y, 1.4, 5);
 			}
+			if( scn.pointerDown ){
+				scn.v2.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				scn.v2.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+				scn.cam.position.x += scn.v2.x;
+				scn.cam.position.x = clamp(scn.cam.position.x, -20, 20);
+				scn.cam.position.y -= scn.v2.y;
+				scn.cam.position.y = clamp(scn.cam.position.y, 0, 72);
+			}
+		
 		}
 	}
-}
-function animeItem(item, property, paramArr, endVArr, duration, delay=0, endAction=null, ease=easeInOutQuad){
-	duration = Math.trunc((duration + delay) * scn.raf.fpsD);
-	for (let i = 0; i < paramArr.length; i++){
-		let startV = item[property][paramArr[i]];
-		let deltaV = endVArr[i] - startV;
-		if(i > 0){endAction = null}
-		scn.renderGroup.push( [ scn.raf.currFrame, duration, item, property, [paramArr[i]], ease, startV, deltaV, endVArr[i], endAction ] );
-	}
-	return;
-}
-function animate() {				
-	scn.raf.fpsInterval = scn.raf.currT - scn.raf.prevT;
-	if(scn.raf.fpsInterval > scn.raf.fpsD){
-		scn.raf.prevT = scn.raf.currT;
-		render();
-	}
-	scn.raf.currT += scn.raf.fps;
-	requestAnimationFrame(animate);
-}
-function render(){
-	scn.raf.currFrame++;
-	if(scn.moving){ rotateCarousel( scn.carousel, scn.cam ); }
-	for (let i = 0; i < scn.carousel.children.length; i++){
-		scn.carousel.children[i].lookAt( scn.cam.position );
-	}
-	for(let i = 0; i < scn.renderGroup.length; i++){
-		// [ startFrame, duration(seconds), item, property, param, ease, startV, deltaV, endV, endAction ]
-		scn.raf.motionCount = scn.raf.currFrame - scn.renderGroup[i][0];
-		if(scn.raf.motionCount >= scn.renderGroup[i][1]){
-			scn.renderGroup[i][2][scn.renderGroup[i][3] ][scn.renderGroup[i][4] ] = scn.renderGroup[i][8];
-			if(scn.renderGroup[i][9]){
-				scn.renderGroup[i][9]();
-			}
-			scn.renderGroup.splice(i, 1);
-			continue;
-		}
-		scn.renderGroup[i][2][scn.renderGroup[i][3] ][scn.renderGroup[i][4] ] = Math.trunc(scn.renderGroup[i][5](scn.raf.motionCount, scn.renderGroup[i][6], scn.renderGroup[i][7], scn.renderGroup[i][1])*100 )/100;			
-	}
-	scn.controls.update();
-	scn.renderer.render( scn, scn.cam );
 }
 
-function onPointerDown( event )  {
-	scn.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	scn.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-	scn.raycaster.setFromCamera( scn.pointer, scn.cam );
-	scn.intersects = scn.raycaster.intersectObjects( scn.intersectedObjs, false );
-	if ( scn.intersects.length > 0 ) {
-		event.preventDefault();
-		scn.currentIntersected = scn.intersects[0].object;
-		if(scn.moving == true){
-			scn.intersectedObjs = scn.topicRays;
-			console.log(scn.menuObjs[scn.currentIntersected.name].loaded)
-			if(scn.menuObjs[scn.currentIntersected.name].loaded == false){
-				loadFiles( [ scn.menuObjs[scn.currentIntersected.name] ], openInfo );
-			}
-			openInfo();
-			return;
-		}
-		if(scn.moving == false){
-			if(scn.currentIntersected.name == "close"){
-				scn.intersectedObjs = scn.carouselRays;
-				closeInfo();
-				return; 
-			}
-			if(scn.currentIntersected.name == "rayLink"){
-				linkPage(scn.currentIntersected.url);
-			}
-		}
-	}
-}
-function keyDownEvent( event ){
+function keyDown( event ){
 	if (event.key === "ArrowUp") {
 		scrollScreen( -3.4, scn );
 	}
@@ -1014,8 +898,15 @@ function keyDownEvent( event ){
 		scrollScreen( 3.4, scn );
 	}
 }
-function wheelEvent( event ){
-	scrollScreen( event.deltaY/20, scn );
+function wheel( event ){
+	event.preventDefault();
+	if(scn.moving == true){
+		event.distance = Math.trunc((event.deltaY/16)*100)/100;
+		scn.cam.position.z += event.distance;
+		scn.cam.position.z = clamp(scn.cam.position.z, scn.cam.mov.z/1.4, scn.cam.mov.z*1.4);
+		return;
+	}
+	scrollScreen( event.deltaY/20 );
 }
 function onTouchStart( event ){
 	scn.cam.eventPosY = event.touches[ 0 ].pageY;
@@ -1028,14 +919,14 @@ function onTouchMove( event ){
 function scrollScreen( scrollV ){
 	if( scn.moving == false ){
 		scn.cam.position.y -= scrollV;
-		scn.controls.target.y -= scrollV;
+		scn.cam.target.y -= scrollV;
 		if(scn.cam.position.y >= scn.cam.topLimit ){
 			scn.cam.position.y = scn.cam.topLimit;
-			scn.controls.target.y = scn.cam.topLimit;
+			scn.cam.target.y = scn.cam.topLimit;
 		}
 		if(scn.cam.position.y <= scn.cam.bottomLimit ){
 			scn.cam.position.y = scn.cam.bottomLimit;
-			scn.controls.target.y = scn.cam.bottomLimit;
+			scn.cam.target.y = scn.cam.bottomLimit;
 		}
 	}
 }
@@ -1099,7 +990,6 @@ function generateSvg(data){
 	mat.dispose();
 	groupMesh.bb = {w:width, h:height};
 	groupMesh.aspect = Math.trunc((width/height)*100)/100;
-	//groupMesh.material = {opacity: 0};
 	let renderOrder = 2;
 	for ( const path of data.paths ){
 		const fillColor = path.userData.style.fill;
@@ -1227,8 +1117,14 @@ function rotateCarousel(obj, camera){
 }
 function setScene(){
 	scn.raf = setRAF(30);
+	scn.background = new Color( "#ffffff" );
+	scn.canvas = document.getElementById("canvas");
+	scn.canvas.bb = scn.canvas.getBoundingClientRect();
+	scn.canvas.width = Math.trunc(scn.canvas.bb.width*100)/100;
+	scn.canvas.height = Math.trunc(scn.canvas.bb.height*100)/100;
+	scn.pointerDown = false;
 	scn.moving = true;
-	scn.currentIntersected = null;
+	scn.currIntersect = null;
 	scn.pointer = new Vector2();
 	scn.raycaster = new Raycaster();
 	scn.intersectedObjs = [];
@@ -1238,14 +1134,8 @@ function setScene(){
 	scn.v2 = new Vector2();
 	scn.renderer = setRenderer();
 	scn.animeArray = [];
-	scn.camMov = { x:0, y:24, z:80 };
-	scn.camLock = { x:0, y:0, z:160 };
-	scn.tgtMov = { x:0, y:2, z:0 } ;	
-	scn.tgtLock = { x:0, y:0, z:-20 };
 	scn.cam = setCamera();
-	scn.controls = setControls();
 	scn.cam.lights = setLights();
-	
 	scn.colors = {
 		stroke: { 
 			"normal": {r: 0.004, g: 0.042, b: 0.036 },
@@ -1263,44 +1153,50 @@ function setScene(){
 			"active": {r: 0.9, g: 1.0, b: 0.9 }
 		}
 	}
+	scn.fonts =  {
+		rubick: {
+			loaded: false, topics: [
+				{ media: [{
+					data:[
+					{ src : 'static/fonts/rubik/Rubik-Regular.ttf', tag: 'ttf' },
+					{ src : 'static/fonts/rubik/Rubik-Bold.ttf', tag: 'ttf' } ]}
+				]}
+			]
+		}
+	};
+	scn.meshes = {
+		homepage: {
+			 loaded: false, topics: [
+				{ media: [{
+					data: [
+					{ src : 'static/js/webgl/models/homepage/homepage.fbx', tag: 'fbx' } ]}
+				]}
+			]
+		}
+	};
+	scn.loaderClasses = { fbx: [FBXLoader] , ttf: [TTFLoader], webp: [TextureLoader, generateImg], svg: [SVGLoader, generateSvg], mp4: [VideoTexture, generateVid] };
 	return scn;
 }
 function setRenderer(){
-	let renderer = new WebGLRenderer( { canvas: document.querySelector("canvas"), antialias: true, alpha: true, precision: "highp" } );
+	let renderer = new WebGLRenderer( { canvas:scn.canvas, antialias: true, alpha: false, precision: "highp" } );
+	renderer.setSize( scn.canvas.width, scn.canvas.height );
 	renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.shadowMap.enabled = false;
-	renderer.domElement.style.position = 'absolute';
-	renderer.domElement.style.top = 0;
+	//renderer.domElement.style.position = 'absolute';
+	//renderer.domElement.style.top = 0;
 	renderer.toneMapping = ACESFilmicToneMapping;
 	renderer.toneMappingExposure = 1;
-	renderer.autoClear = false;
+	//renderer.autoClear = false;
 	return renderer;
 }
 function setCamera(){
-	let camera = new PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 10, 400  );
-	camera.position.set( scn.camMov.x, scn.camMov.y, scn.camMov.z );	
-	scn.add( camera );
-	return camera;
-}
-function setControls(){
-	let controls = new OrbitControls( scn.cam, scn.renderer.domElement ); 
-	controls.rotateSpeed = 0.2;
-	controls.target.copy( scn.tgtMov );
-
-	controls.maxPolarAngle = 1.8;
-	controls.minPolarAngle = 1.0;
-	controls.minDistance = 16;
-	controls.maxDistance = scn.camMov.z;	
-	controls.minAzimuthAngle = -0.5;
-	controls.maxAzimuthAngle = 0.5;
-	controls.minZoom = 14;
-	controls.maxZoom = scn.camMov.z;
-
-	controls.enableDamping = true;				
-	controls.dampingFactor = 0.1;
-	controls.enablePan = false;
-	return controls;
+	let cam = new PerspectiveCamera( 50, scn.canvas.width / scn.canvas.height, 10, 400  );
+	cam.mov = { x:0, y:56, z:80, target: -8 };
+	cam.lock = { x:0, y:0, z:160, target: 0 };
+	cam.target = new Vector3(0, cam.mov.target, 0);
+	cam.position.set( cam.mov.x, cam.mov.y, cam.mov.z );
+	scn.add( cam );
+	return cam;
 }
 function setLights(){
 	let light = new DirectionalLight( 0xFEFEFE, 3 );
@@ -1314,38 +1210,38 @@ function setCarousel(){
 	scn.add(carousel);
 	return carousel;
 }
-function setInfoContainer(){
-	let infoContainer = new Group();
-	infoContainer.position.set(0, 0, 0);
-	infoContainer.h2 = {fontSize: 0, fontFamily: scn.fonts.rubick.topics[0].media[0].data[1].src}
-	infoContainer.p = {fontSize: 0, fontFamily: scn.fonts.rubick.topics[0].media[0].data[0].src}
-	infoContainer.contentHeight = 0;
+function setinfoC(){
+	let infoC = new Group();
+	infoC.position.set(0, 0, 0);
+	infoC.h2 = {fontSize: 0, fontFamily: scn.fonts.rubick.topics[0].media[0].data[1].src}
+	infoC.p = {fontSize: 0, fontFamily: scn.fonts.rubick.topics[0].media[0].data[0].src}
+	infoC.contentHeight = 0;
 	
 	let infoBlock = new Group();
-	infoContainer.add( infoBlock );
-	infoContainer.infoBlock = infoBlock;
+	infoC.add( infoBlock );
+	infoC.infoBlock = infoBlock;
 	
-	let infoTableGeo = new PlaneGeometry( 1, 1 );
-	let infoTableMat = new MeshPhongMaterial( { color: 0x33EBCB, flatShading: true ,transparent: false, fog: false } );
-	let infoTable = new Mesh( infoTableGeo, infoTableMat );
-	infoTableGeo.dispose();
-	infoTableMat.dispose();
-	let infoTableEdge = new EdgesGeometry(infoTableGeo.geometry);
-	let infoTableEdgeMat = new MeshPhongMaterial( { color: 0x0E3F36, flatShading: true ,transparent: false, fog: false } );
-	let infoTableEdgeLine = new LineSegments(infoTableEdge, infoTableEdgeMat ); 
-	infoTableEdge.dispose();
-	infoTableEdgeMat.dispose();
-	infoTable.add( infoTableEdgeLine );
-	infoContainer.add( infoTable );
-	infoContainer.infoTable = infoTable;
-	infoTable.geometry.computeBoundingBox();
-	infoTable.scale.normalize();
-	infoTable.renderOrder = 0;
-	infoTable.scale.y = 0.5;
-	infoTable.position.set(0, 0, -0.01);								
-	infoTable.visible = false;
-	scn.add( infoContainer );
-	return infoContainer;
+	let infoTGeo = new PlaneGeometry( 1, 1 );
+	let infoTMat = new MeshPhongMaterial( { color: 0x33EBCB, flatShading: true ,transparent: false, fog: false } );
+	let infoT = new Mesh( infoTGeo, infoTMat );
+	infoTGeo.dispose();
+	infoTMat.dispose();
+	let infoTEdge = new EdgesGeometry(infoTGeo.geometry);
+	let infoTEdgeMat = new MeshPhongMaterial( { color: 0x0E3F36, flatShading: true ,transparent: false, fog: false } );
+	let infoTEdgeLine = new LineSegments(infoTEdge, infoTEdgeMat ); 
+	infoTEdge.dispose();
+	infoTEdgeMat.dispose();
+	infoT.add( infoTEdgeLine );
+	infoC.add( infoT );
+	infoC.infoT = infoT;
+	infoT.geometry.computeBoundingBox();
+	infoT.scale.normalize();
+	infoT.renderOrder = 0;
+	infoT.scale.y = 0.5;
+	infoT.position.set(0, 0, -0.01);								
+	infoT.visible = false;
+	scn.add( infoC );
+	return infoC;
 }
 function changeColor(obj, mode){
 	obj.traverse(function(child){
@@ -1355,8 +1251,48 @@ function changeColor(obj, mode){
 function clamp(val, min, max) {
     return Math.trunc( (val > max ? max : val < min ? min : val) * 100) / 100;
 }
-
-
+function animeItem(item, property, paramArr, endVArr, duration, delay=0, endAction=null, ease=easeInOutQuad){
+	duration = Math.trunc((duration + delay) * scn.raf.fpsD);
+	for (let i = 0; i < paramArr.length; i++){
+		let startV = item[property][paramArr[i]];
+		let deltaV = endVArr[i] - startV;
+		if(i > 0){endAction = null}
+		scn.renderGroup.push( [ scn.raf.currFrame, duration, item, property, [paramArr[i]], ease, startV, deltaV, endVArr[i], endAction ] );
+	}
+	return;
+}
+function animate() {				
+	scn.raf.fpsInterval = scn.raf.currT - scn.raf.prevT;
+	if(scn.raf.fpsInterval > scn.raf.fpsD){
+		scn.raf.prevT = scn.raf.currT;
+		render();
+	}
+	scn.raf.currT += scn.raf.fps;
+	requestAnimationFrame(animate);
+}
+function render(){
+	scn.cam.lookAt(scn.cam.target);
+	if(scn.moving){ rotateCarousel( scn.carousel, scn.cam ); }
+	for (let i = 0; i < scn.carousel.children.length; i++){
+		scn.carousel.children[i].lookAt( scn.cam.position );
+	}
+	for(let i = 0; i < scn.renderGroup.length; i++){
+		// [ startFrame, duration(seconds), item, property, param, ease, startV, deltaV, endV, endAction ]
+		scn.raf.motionCount = scn.raf.currFrame - scn.renderGroup[i][0];
+		if(scn.raf.motionCount >= scn.renderGroup[i][1]){
+			scn.renderGroup[i][2][scn.renderGroup[i][3] ][scn.renderGroup[i][4] ] = scn.renderGroup[i][8];
+			if(scn.renderGroup[i][9]){
+				scn.renderGroup[i][9]();
+			}
+			scn.renderGroup.splice(i, 1);
+			continue;
+		}
+		scn.renderGroup[i][2][scn.renderGroup[i][3] ][scn.renderGroup[i][4] ] = Math.trunc(scn.renderGroup[i][5](scn.raf.motionCount, scn.renderGroup[i][6], scn.renderGroup[i][7], scn.renderGroup[i][1])*100 )/100;			
+	}
+	scn.raf.currFrame++;
+	scn.cam.updateProjectionMatrix();
+	scn.renderer.render( scn, scn.cam );
+}
 function setRAF(fps){
 	return { fps: fps, fpsD: Math.round( 1000/fps ), currFrame: 0, currT: 0, prevT: 0, fpsInterval: 0, motionCount: 0}
 }
