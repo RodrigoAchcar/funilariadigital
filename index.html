@@ -500,35 +500,40 @@ function buildScenario(){
 			continue;
 		}
 		if(item.name == "brand"){
+			mesh.name = item.name;
 			scn[item.name] = mesh;
 			scn.add(mesh);
 		}
 	}
 	scn.close.visible = false;
-	resize();
-	window.addEventListener( 'resize', resize, false );
-	window.addEventListener( 'pointerdown', pointerDown );
-	window.addEventListener('wheel', wheel, { passive: false } );
+	scn.carousel.angle = Math.trunc(( (Math.PI/180 * 360)/scn.carousel.children.length)*100)/100;
+	for(let i = 0; i < scn.carousel.children.length; i++){
+		scn.carousel.children[i].data = { angle: scn.carousel.angle*i, pX: Math.sin(scn.carousel.angle*i), pY: Math.cos(scn.carousel.angle*i) };
+	}
 	scn.intersectedObjs = scn.carouselRays;
 	delete scn.meshes;
 	let htmlElmn = document.getElementsByClassName('invisible')[0];
 	htmlElmn.style.opacity = 0;
 	htmlElmn.style.display = 'none';
+	resize();
+	window.addEventListener( 'resize', resize, false );
+	window.addEventListener( 'pointermove', pointerMove );
+	window.addEventListener( 'pointerdown', pointerDown );
+	window.addEventListener( 'wheel', wheel, { passive: false } );
 	animate();
 }
 function openInfo(){
-	scn.moving = false;
+	scn.stat = 'lock';
+	scn.carousel.active = scn.currIntersect;
 	updateObjsPos();
-	scn.camViewSize = calcViewSize(scn.cam, scn.cam.lock.z, 0, 0);
 	scn.close.position.y = scn.close.lock.y;
 	scn.infoC.infoT.infoTW = Math.trunc((scn.camViewSize.x * 0.8) *100)/100;
 	scn.infoC.infoT.position.x = -scn.infoC.infoT.infoTW/2;
 	scn.infoC.infoT.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2);
 	scn.infoC.infoT.visible = true;
 		
-	let itemRotationPos = Math.PI*2 - scn.carousel[scn.currIntersect.name]; 
+	let itemRotationPos = Math.PI*2 - scn.carousel.active.data.angle; 
 	let itemRotationDelta = itemRotationPos;
-	console.log(scn.carousel[scn.currIntersect.name], itemRotationPos)
 	if(Math.abs(scn.carousel.rotation.y - itemRotationPos) >= Math.PI){
 		if(scn.carousel.rotation.y >= itemRotationPos){
 			itemRotationDelta += Math.PI*2;
@@ -538,25 +543,26 @@ function openInfo(){
 	}
 	let carouselRotationDuration = Math.ceil(Math.abs(scn.carousel.rotation.y - itemRotationDelta))/Math.PI;
 	for(let i = 0; i < scn.carousel.children.length; i++){
-		if(scn.carousel.children[i].name != scn.currIntersect.name){
+		if(scn.carousel.children[i].data.angle != scn.carousel.active.data.angle){
 			scn.carousel.children[i].traverse(function(child){
 				animeItem(child, 'material', ['opacity'], [0], 0.7);
 			});
 		}
 	}
-	changeColor(scn.currIntersect.children[0], "active");
+	changeColor(scn.carousel.active.children[0], "active");
 	animeItem(scn.cam, 'position', ['x', 'y', 'z'], [scn.cam.lock.x, scn.cam.lock.y, scn.cam.lock.z], 0.7);
 	animeItem(scn.cam, 'target', ['y'], [scn.cam.lock.target], 0.7);	
-	animeItem(scn.currIntersect, 'scale', ['x', 'y'], [scn.carousel.cScale*2.6, scn.carousel.cScale*2.6], 0.7);
-	animeItem(scn.brand, 'scale', ['x', 'y'], [scn.brand.scalarV, scn.brand.scalarV], 0.7);
+	
 	animeItem(scn.brand, 'position', ['x', 'y'], [scn.brand.lock.x, scn.brand.lock.y], 0.7);
 	animeItem(scn.carousel, 'position', ['y'], [scn.carousel.lock.y], 0.7);
 	animeItem(scn.carousel, 'rotation', ['y'], [itemRotationDelta], carouselRotationDuration, 0, function() {
+		animeItem(scn.carousel.active, 'scale', ['x', 'y'], [scn.carousel.cScale*2.6, scn.carousel.cScale*2.6], 0.7);
 		animeItem(scn.infoC.infoT, 'position', ['x'], [0], 0.7);
 		animeItem(scn.infoC.infoT, 'scale', ['x'], [scn.infoC.infoT.infoTW], 0.7, 0, function(){
-			plotElements( scn.menuObjs[ scn.currIntersect.name ] );
+			plotElements( scn.menuObjs[ scn.carousel.active.name ] );
 		});
 	} );
+	
 }
 function plotElements( content ){
 	scn.infoC.cntntW = Math.trunc((scn.infoC.infoT.infoTW * 0.9) *100)/100;
@@ -567,7 +573,6 @@ function plotElements( content ){
 	scn.infoC.contentHeight = 0;
 	scn.infoC.topicH = 0;
 	for( let i = 0; i < content.topics.length; i++){
-	
 		let topic = content.topics[i];
 		let topicBlock = new Group();
 		let blockHigher = 0;
@@ -708,121 +713,87 @@ function closeInfo(){
 	}
 	animeItem(scn.close, 'position', ['x'], [scn.close.mov.x], 0.5, 0, function(){
 		animeItem(scn.infoC.infoT, 'scale', ['y'], [0.2], 0.5);
-		animeItem(scn.infoC.infoT, 'position', ['y'], [((scn.camViewSize.y/2 - scn.brand.lock.y/2))], 0.5, 0, function(){
+		animeItem(scn.infoC.infoT, 'position', ['y'], [(-(scn.camViewSize.y/2 - scn.brand.lock.y/2))], 0.5, 0, function(){
 			animeItem(scn.infoC.infoT, 'scale', ['x'],  [0], 0.5);
 			animeItem(scn.infoC.infoT, 'position', ['x'], [-scn.infoC.infoT.infoTW/2], 0.5, 0, function(){
 				scn.close.visible = false;
-				hideInfo(scn);
 				scn.infoC.infoBlock.clear();
-				changeColor(scn.currIntersect.children[0], "normal");
+				hideInfo(scn);
 			});
 		});
 	
 	});
 }
 function hideInfo(){
-	scn.moving = true;
+	scn.stat = 'mov';
 	updateObjsPos();
 	for(let i = 0; i < scn.carousel.children.length; i++){
-		scn.carousel.children[i].traverse(function(child){
-			if(scn.carousel.children[i].name != scn.currIntersect.name){
+		if(scn.carousel.children[i].name != scn.carousel.active.name){
+			scn.carousel.children[i].traverse(function(child){
 				animeItem(child, 'material', ['opacity'], [1], 0.5);
-			}
-		});
+			});
+		}
 	}
-	animeItem(scn.currIntersect, 'scale', ['x', 'y'], [scn.carousel.cScale, scn.carousel.cScale], 0.6);
-	animeItem(scn.brand, 'scale', ['x', 'y'], [scn.brand.scalarV, scn.brand.scalarV], 0.6);
+	changeColor(scn.carousel.active.children[0], "normal");
+	animeItem(scn.carousel.active, 'scale', ['x', 'y'], [scn.carousel.cScale, scn.carousel.cScale], 0.6);
 	animeItem(scn.brand, 'position', ['x', 'y'], [scn.brand.mov.x, scn.brand.mov.y], 0.6);
 	animeItem(scn.carousel, 'position', ['y'], [scn.carousel.mov.y], 0.6);
 	animeItem(scn.cam, 'target', ['y'], [scn.cam.mov.target], 0.7);	
-	animeItem(scn.cam, 'position', ['x', 'y', 'z'], [scn.cam.lock.x, scn.cam.lock.y, scn.cam.lock.z], 0.6, 0, function(){
-		scn.topicRays = [];	
+	animeItem(scn.cam, 'position', ['x', 'y', 'z'], [scn.cam.mov.x, scn.cam.mov.y, scn.cam.mov.z], 0.6, 0, function(){
+		scn.carousel.active = null;
 	});
 }
-function resize() {
-	scn.canvas = document.getElementById("canvas");
-	scn.canvas.bb = scn.canvas.getBoundingClientRect();
-	scn.canvas.width = Math.trunc(scn.canvas.bb.width*100)/100;
-	scn.canvas.height = Math.trunc(scn.canvas.bb.height*100)/100;
-	scn.cam.aspect = scn.canvas.width / scn.canvas.height;
+function resize(){
+	scn.cam.aspect = window.innerWidth / window.innerHeight;
 	scn.cam.updateProjectionMatrix();
-	scn.renderer.canvas = scn.canvas;
-	scn.renderer.setSize( scn.canvas.width, scn.canvas.height );
+	scn.renderer.setSize( window.innerWidth, window.innerHeight );
 	scn.renderer.setPixelRatio( scn.cam.aspect );
-	
 	updateObjsPos();
-	scn.brand.scale.setScalar( scn.brand.scalarV );
-	if(scn.moving == true){	
-		scn.brand.position.x = scn.brand.mov.x;
-		scn.brand.position.y = scn.brand.mov.y;
-		scn.close.position.x = scn.close.mov.x;
-		scn.close.position.y = scn.close.mov.y;
-		scn.carousel.position.x = 0;
-		scn.carousel.position.y = scn.carousel.mov.y;
+	scn.brand.position.x = scn.brand[scn.stat].x;
+	scn.brand.position.y = scn.brand[scn.stat].y;
+	scn.close.position.x = scn.close[scn.stat].x;
+	scn.close.position.y = scn.close[scn.stat].y;
+	scn.carousel.position.y = scn.carousel[scn.stat].y;
+	if(scn.stat == 'mov'){
+		scn.carousel.radius = clamp( scn.camViewSize.x/4, 2, 36 );
+		scn.carousel.cScale = clamp( scn.camViewSize.x/32, 0.2, 4 );
 		for(let i = 0; i < scn.carousel.children.length; i++){
-			scn.carousel.children[i].position.x = scn.carousel.radius * Math.sin(scn.carousel.angle*i);
-			scn.carousel.children[i].position.z = scn.carousel.radius * Math.cos(scn.carousel.angle*i);
-			scn.carousel[scn.carousel.children[i].name] = scn.carousel.angle*i;
+			scn.carousel.children[i].position.x = scn.carousel.radius * scn.carousel.children[i].data.pX;
+			scn.carousel.children[i].position.z = scn.carousel.radius * scn.carousel.children[i].data.pY;
 			scn.carousel.children[i].scale.setScalar( scn.carousel.cScale );
 		}
 	}
-	if(scn.moving == false){
-		scn.brand.position.x = scn.brand.lock.x;
-		scn.brand.position.y = scn.brand.lock.y;
-		scn.close.position.x = scn.close.lock.x;
-		scn.close.position.y = scn.close.lock.y;
-		scn.carousel.position.y = scn.carousel.lock.y;
-	}
-	
 }
 function updateObjsPos(){
-	if(scn.moving == true){
-		scn.camViewSize = calcViewSize(scn.cam, scn.cam.mov.z, 0, 0);
-		scn.refSCaleY = Math.trunc((scn.camViewSize.y*scn.cam.aspect)*100)/100;
-		scn.refSCaleX = Math.trunc((scn.camViewSize.x*scn.cam.aspect)*100)/100;
-		scn.brand.scalarV = clamp(scn.refSCaleY/68, 0.6, 1.2);
-	}
-	if(scn.moving == false){
-		scn.camViewSize = calcViewSize(scn.cam, scn.cam.lock.z, 0, 0);
-		scn.refSCaleY = Math.trunc((scn.camViewSize.y*scn.cam.aspect)*100)/100;
-		scn.refSCaleX = Math.trunc((scn.camViewSize.x*scn.cam.aspect)*100)/100;
-		scn.brand.scalarV = clamp(scn.refSCaleY/160, 0.8, 1.5);
-	}
-	scn.brand.mov = { x: 0, y: clamp( scn.camViewSize.y, 0, 8 ) };
+	scn.camViewSize = calcViewSize(scn.cam, scn.cam[scn.stat].z, 0, 0);
+	scn.brand.mov = { x: 0, y: clamp( scn.camViewSize.y/8, 0, 8 ) };
 	scn.brand.lock = { x: -scn.camViewSize.x/2 + scn.brand.bb.x, y: scn.camViewSize.y/2 - scn.brand.bb.y }; 
-	scn.close.scale.setScalar( scn.brand.scalarV );
 	scn.close.mov = { x: scn.camViewSize.x, y: scn.brand.lock.y };
 	scn.close.lock = { x: -scn.brand.lock.x, y: scn.brand.lock.y };
-
-	scn.carousel.radius = clamp( scn.refSCaleY/2, 2, 36 );
-	scn.carousel.angle = Math.trunc(( (Math.PI/180 * 360)/scn.carousel.children.length)*100)/100;
-	scn.carousel.cScale = clamp(scn.brand.scalarV*4, 0.6, 4) ;
-	scn.carousel.mov = {y: -scn.brand.mov.y};
-	scn.carousel.lock = {y: scn.camViewSize.y/2 - scn.brand.lock.y/2};
+	scn.carousel.mov = { y: -scn.brand.mov.y };
+	scn.carousel.lock = { y: scn.camViewSize.y/2 - scn.brand.lock.y/2 };
 }
-
 function pointerDown( event )  {
 	event.preventDefault();
 	scn.pointerDown = true;
 	window.removeEventListener( 'pointerdown', pointerDown );
-	window.addEventListener( 'pointermove', pointerMove );
 	window.addEventListener( 'pointerup', pointerUp );
-	scn.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	scn.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-	scn.raycaster.setFromCamera( scn.pointer, scn.cam );
+	scn.v2.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	scn.v2.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+	scn.initPos = {x: scn.v2.x, y: scn.v2.y} ;
+	scn.raycaster.setFromCamera( scn.v2, scn.cam );
 	scn.intersects = scn.raycaster.intersectObjects( scn.intersectedObjs, false );
 	if ( scn.intersects.length > 0 ) {
 		scn.currIntersect = scn.intersects[0].object;
-		if(scn.moving == true){
+		if(scn.stat == 'mov'){
 			scn.intersectedObjs = scn.topicRays;
-			console.log(scn.menuObjs[scn.currIntersect.name].loaded)
 			if(scn.menuObjs[scn.currIntersect.name].loaded == false){
 				loadFiles( [ scn.menuObjs[scn.currIntersect.name] ], openInfo );
 			}
 			openInfo();
 			return;
 		}
-		if(scn.moving == false){
+		if(scn.stat == 'lock'){
 			if(scn.currIntersect.name == "close"){
 				scn.intersectedObjs = scn.carouselRays;
 				closeInfo();
@@ -838,14 +809,14 @@ function pointerUp( event ){
 	event.preventDefault();
 	scn.pointerDown = false;
 	window.addEventListener( 'pointerdown', pointerDown );
-	window.removeEventListener( 'pointermove', pointerMove );
 	window.removeEventListener( 'pointerup', pointerUp );
 }
 function pointerMove( event ) {
 	event.preventDefault();
-	if(scn.moving == true){
+	if(scn.stat == 'mov'){
 		scn.v2.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 		scn.v2.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+		
 		scn.raycaster.setFromCamera( scn.v2, scn.cam );
 		scn.intersects = scn.raycaster.intersectObjects( scn.intersectedObjs, false );
 		if ( scn.intersects.length > 0 ) {
@@ -872,24 +843,16 @@ function pointerMove( event ) {
 				changeColor(scn.currIntersect.children[0], "normal");
 				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.cScale,scn.carousel.cScale], 0.5);
 				scn.currIntersect = null;
-				scn.cam.position.x += scn.v2.x * 0.6;
-				scn.cam.position.x = clamp(scn.cam.position.x, -4, 4);
-				scn.cam.position.y -= scn.v2.y * 0.4;
-				scn.cam.position.y = clamp(scn.cam.position.y, 1.4, 5);
 			}
 			if( scn.pointerDown ){
-				scn.v2.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-				scn.v2.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 				scn.cam.position.x += scn.v2.x;
 				scn.cam.position.x = clamp(scn.cam.position.x, -20, 20);
-				scn.cam.position.y -= scn.v2.y;
+				scn.cam.position.y -= scn.v2.y - scn.initPos.y;
 				scn.cam.position.y = clamp(scn.cam.position.y, 0, 72);
 			}
-		
 		}
 	}
 }
-
 function keyDown( event ){
 	if (event.key === "ArrowUp") {
 		scrollScreen( -3.4, scn );
@@ -900,7 +863,7 @@ function keyDown( event ){
 }
 function wheel( event ){
 	event.preventDefault();
-	if(scn.moving == true){
+	if(scn.stat == 'mov'){
 		event.distance = Math.trunc((event.deltaY/16)*100)/100;
 		scn.cam.position.z += event.distance;
 		scn.cam.position.z = clamp(scn.cam.position.z, scn.cam.mov.z/1.4, scn.cam.mov.z*1.4);
@@ -917,7 +880,7 @@ function onTouchMove( event ){
 	scrollScreen( deltaY * speed, scn );
 }
 function scrollScreen( scrollV ){
-	if( scn.moving == false ){
+	if( scn.stat == 'lock' ){
 		scn.cam.position.y -= scrollV;
 		scn.cam.target.y -= scrollV;
 		if(scn.cam.position.y >= scn.cam.topLimit ){
@@ -1123,7 +1086,6 @@ function setScene(){
 	scn.canvas.width = Math.trunc(scn.canvas.bb.width*100)/100;
 	scn.canvas.height = Math.trunc(scn.canvas.bb.height*100)/100;
 	scn.pointerDown = false;
-	scn.moving = true;
 	scn.currIntersect = null;
 	scn.pointer = new Vector2();
 	scn.raycaster = new Raycaster();
@@ -1133,8 +1095,9 @@ function setScene(){
 	scn.renderGroup = [];
 	scn.v2 = new Vector2();
 	scn.renderer = setRenderer();
-	scn.animeArray = [];
+	scn.stat = 'mov';
 	scn.cam = setCamera();
+	scn.camViewSize = calcViewSize(scn.cam, scn.cam[scn.stat].z, 0, 0);
 	scn.cam.lights = setLights();
 	scn.colors = {
 		stroke: { 
@@ -1207,6 +1170,7 @@ function setLights(){
 function setCarousel(){
 	let carousel = new Group();
 	carousel.scale.normalize();
+	
 	scn.add(carousel);
 	return carousel;
 }
@@ -1272,7 +1236,7 @@ function animate() {
 }
 function render(){
 	scn.cam.lookAt(scn.cam.target);
-	if(scn.moving){ rotateCarousel( scn.carousel, scn.cam ); }
+	if(scn.stat == 'mov'){ rotateCarousel( scn.carousel, scn.cam ); }
 	for (let i = 0; i < scn.carousel.children.length; i++){
 		scn.carousel.children[i].lookAt( scn.cam.position );
 	}
