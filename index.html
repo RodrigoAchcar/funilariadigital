@@ -526,16 +526,16 @@ function openInfo(){
 	scn.infoC.infoT.position.x = -scn.infoC.infoT.infoTW/2;
 	scn.infoC.infoT.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2);
 	scn.infoC.infoT.visible = true;
-	let itemRotationPos = Math.PI*2 - scn.carousel.active.data.angle; 
-	let itemRotationDelta = itemRotationPos;
-	if(Math.abs(scn.carousel.rotation.y - itemRotationPos) >= Math.PI){
-		if(scn.carousel.rotation.y > itemRotationPos){
-			itemRotationDelta += Math.PI*2;
+	scn.carousel.activeR = Math.PI*2 - scn.carousel.active.data.angle;
+	scn.carousel.activeRDelta = scn.carousel.activeR;
+	if(Math.abs(scn.carousel.rotation.y - scn.carousel.activeR) >= Math.PI){
+		if(scn.carousel.rotation.y > scn.carousel.activeR){
+			scn.carousel.activeRDelta += Math.PI*2;
 		}else{
 			scn.carousel.rotation.y += Math.PI*2;
 		}
 	}
-	let carouselRotationDuration = Math.ceil(Math.abs(scn.carousel.rotation.y - itemRotationDelta))/Math.PI;
+	scn.carousel.activeRDuration = Math.ceil(Math.abs(scn.carousel.rotation.y - scn.carousel.activeRDelta))/Math.PI;
 	for(let i = 0; i < scn.carousel.children.length; i++){
 		if(scn.carousel.children[i].data.angle != scn.carousel.active.data.angle){
 			scn.carousel.children[i].traverse(function(child){
@@ -548,7 +548,7 @@ function openInfo(){
 	animeItem(scn.cam, 'target', ['y'], [scn.cam.lock.target], 0.7);	
 	animeItem(scn.brand, 'position', ['x', 'y'], [scn.brand.lock.x, scn.brand.lock.y], 0.7);
 	animeItem(scn.carousel, 'position', ['y'], [scn.carousel.lock.y], 0.7);
-	animeItem(scn.carousel, 'rotation', ['y'], [itemRotationDelta], carouselRotationDuration, 0, function() {
+	animeItem(scn.carousel, 'rotation', ['y'], [scn.carousel.activeRDelta], scn.carousel.activeRDuration, 0, function() {
 		animeItem(scn.carousel.active, 'scale', ['x', 'y'], [scn.carousel.cScale*2.6, scn.carousel.cScale*2.6], 0.7);
 		animeItem(scn.infoC.infoT, 'position', ['x'], [0], 0.7);
 		animeItem(scn.infoC.infoT, 'scale', ['x'], [scn.infoC.infoT.infoTW], 0.7, 0, function(){
@@ -658,11 +658,11 @@ function plotElements( content ){
 		}
 		topicBlock.position.x = -(scn.infoC.cntntW/2);
 		topicBlock.position.y = - (scn.infoC.topicH + scn.infoC.itemPadW) ;
-		scn.infoC.topicH += blockHigher + scn.infoC.itemPadW;
+		scn.infoC.topicH += blockHigher + scn.infoC.itemPadH;
 		scn.infoC.infoBlock.add( topicBlock );
 	}
 	scn.infoC.contentHeight = scn.infoC.topicH;
-	scn.infoC.infoBlock.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y);
+	scn.infoC.infoBlock.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2);
 	scn.cam.bottomLimit = -Math.trunc( scn.infoC.contentHeight - scn.camViewSize.y/2 );
 	displayInfo();
 }
@@ -758,11 +758,11 @@ function updateObjsPos(){
 	scn.close.mov = { x: scn.camViewSize.x + (scn.close.bb.x/2), y: scn.brand.lock.y };
 	scn.close.lock = { x: -scn.brand.lock.x, y: scn.brand.lock.y };
 	scn.carousel.mov = { y: -scn.brand.mov.y };
-	scn.carousel.lock = { y: scn.brand.lock.y };
+	scn.carousel.lock = { y: scn.brand.lock.y/1.1 };
 	scn.infoC.infoT.infoTW = Math.trunc((scn.camViewSize.x * 0.8) *100)/100;
 	scn.infoC.cntntW = Math.trunc((scn.infoC.infoT.infoTW * 0.9) *100)/100;
-	scn.infoC.itemPadW = Math.trunc((scn.infoC.cntntW * 0.01) *100)/100;
-	scn.infoC.itemPadH = Math.trunc((scn.infoC.cntntW * 0.01) *100)/100;
+	scn.infoC.itemPadW = Math.trunc((scn.infoC.cntntW * 0.04) *100)/100;
+	scn.infoC.itemPadH = Math.trunc((scn.infoC.cntntW * 0.06) *100)/100;
 	scn.infoC.h2.fontSize = Math.trunc((scn.infoC.cntntW/20) * 100)/100;
 	scn.infoC.p.fontSize = Math.trunc((scn.infoC.cntntW/24) * 100)/100;
 }
