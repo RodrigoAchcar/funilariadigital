@@ -332,7 +332,7 @@
 	}
 </script>
 <script type="module">
-import { Cache, WebGLRenderer, ACESFilmicToneMapping, Color, SRGBColorSpace, Vector2, Vector3, Scene, PerspectiveCamera, DirectionalLight, Group, Raycaster, LoadingManager, TextureLoader, VideoTexture, Mesh, MeshStandardMaterial, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, PlaneGeometry, ShapeGeometry, EdgesGeometry, LineSegments, FrontSide} from 'three';
+import { Cache, WebGLRenderer, ACESFilmicToneMapping, Color, SRGBColorSpace, Vector2, Vector3, Scene, PerspectiveCamera, DirectionalLight, Group, Raycaster, LoadingManager, TextureLoader, VideoTexture, Mesh, MeshStandardMaterial, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, PlaneGeometry, ShapeGeometry, EdgesGeometry, LineSegments, FrontSide } from 'three';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';	
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { Font } from 'three/addons/loaders/FontLoader.js';
@@ -557,7 +557,6 @@ function openInfo(){
 	});
 }
 function plotElements( content ){
-	scn.infoC.contentHeight = 0;
 	scn.infoC.topicH = 0;
 	for( let i = 0; i < content.topics.length; i++){
 		let topic = content.topics[i];
@@ -582,10 +581,10 @@ function plotElements( content ){
 					let textMesh = generateText(textBlock, fontFamily, fontSize);
 					textMesh.position.y = -blockHeight;
 					scale = colW/textMesh.bb.w;
-					blockHeight += (textMesh.bb.h * scale) + scn.infoC.itemPadW;
+					blockHeight += (textMesh.bb.h * scale) + scn.infoC.itemPadH;
 					itemGroup.add(textMesh);
 				}
-				blockHeight += scn.infoC.itemPadW;
+				blockHeight += scn.infoC.itemPadH;
 				if(blockHeight > blockHigher){
 					blockHigher = blockHeight;
 				}
@@ -593,6 +592,7 @@ function plotElements( content ){
 				colPosXOrder.push( [ order+1, colW, itemGroup] );
 			}
 		}
+		/*
 		if( topic.media ){
 			for( let j = 0; j < topic.media.length; j++){
 				let block = topic.media[j];
@@ -629,14 +629,14 @@ function plotElements( content ){
 				// if topic has no text block, calc blockHigher
 				if(blockHigher == 0){
 					blockHeight = (colW/mediaAspectAll);
-					blockHigher = ((colW/mediaAspectAll)/block.data.length) + scn.infoC.itemPadW;
+					blockHigher = ((colW/mediaAspectAll)/block.data.length) + scn.infoC.itemPadH;
 				}else{
 					blockHeight = blockHigher;
 				}
 				let mediaCanvasAspect = colW/blockHeight;
 				for( let k = 0; k < itemGroup.children.length; k++){
 					let elmnt = itemGroup.children[k];
-					scale = ((blockHeight-scn.infoC.itemPadW)/elmnt.bb.h)/itemGroup.children.length;
+					scale = ((blockHeight-scn.infoC.itemPadH)/elmnt.bb.h)/itemGroup.children.length;
 					//scale = (colW/elmnt.bb.w)/itemGroup.children.length;
 					elmnt.scale.setScalar(scale);
 					if(mediaCanvasAspect >= 1){
@@ -644,34 +644,35 @@ function plotElements( content ){
 						elmnPosX += (elmnt.bb.w * scale) + scn.infoC.itemPadW;
 					}else{
 						elmnt.position.y = -elmnPosY;
-						elmnPosY += (elmnt.bb.h * scale) + scn.infoC.itemPadW;
+						elmnPosY += (elmnt.bb.h * scale) + scn.infoC.itemPadH;
 					}
 				}
 				topicBlock.add( itemGroup );
 				colPosXOrder.push( [ order+1, colW, itemGroup] );
 			}
 		}
+		*/
 		//position x itemGroups by order and col position
 		colPosXOrder.sort().unshift([0,0]);
 		for( let j = 1; j < colPosXOrder.length; j++){
 			colPosXOrder[j][2].position.x = colPosXOrder[j-1][1] + scn.infoC.itemPadW;
 		}
 		topicBlock.position.x = -(scn.infoC.cntntW/2);
-		topicBlock.position.y = - (scn.infoC.topicH + scn.infoC.itemPadW) ;
-		scn.infoC.topicH += blockHigher + scn.infoC.itemPadH;
+		topicBlock.position.y = - (scn.infoC.topicH) ;
+		scn.infoC.topicH += blockHigher;
 		scn.infoC.infoBlock.add( topicBlock );
 	}
-	scn.infoC.contentHeight = scn.infoC.topicH;
-	scn.infoC.infoBlock.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2);
-	scn.cam.bottomLimit = -Math.trunc( scn.infoC.contentHeight - scn.camViewSize.y/2 );
+	scn.infoC.infoBlock.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2) - (scn.infoC.itemPadH * 2);
+	//scn.infoC.infoBlock.position.y = scn.camViewSize.y/2 - (scn.brand.lock.y/2 + scn.infoC.itemPadH);
+	scn.cam.bottomLimit = -Math.trunc( scn.infoC.topicH - scn.camViewSize.y/2 );
 	displayInfo();
 }
 function displayInfo(){
 	scn.close.visible = true;
 	scn.close.position.y = scn.close.lock.y;
 	scn.topicRays.push(scn.close);
-	animeItem(scn.infoC.infoT, 'position', ['y'], [ (-(scn.infoC.contentHeight/2 - (scn.camViewSize.y/2 - scn.brand.lock.y/2 )) )], 0.7);
-	animeItem(scn.infoC.infoT, 'scale', ['y'], [scn.infoC.contentHeight], 0.7, 0, function(){
+	animeItem(scn.infoC.infoT, 'position', ['y'], [ (-(scn.infoC.topicH/2 - (scn.camViewSize.y/2 - scn.brand.lock.y/2 )) )], 0.7);
+	animeItem(scn.infoC.infoT, 'scale', ['y'], [scn.infoC.topicH], 0.7, 0, function(){
 		for(let i = 0; i < scn.infoC.infoBlock.children.length; i++){
 			for(let j = 0; j < scn.infoC.infoBlock.children[i].children.length; j++){
 				for(let k = 0; k < scn.infoC.infoBlock.children[i].children[j].children.length; k++){
@@ -763,7 +764,7 @@ function updateObjsPos(){
 	scn.infoC.cntntW = Math.trunc((scn.infoC.infoT.infoTW * 0.9) *100)/100;
 	scn.infoC.itemPadW = Math.trunc((scn.infoC.cntntW * 0.04) *100)/100;
 	scn.infoC.itemPadH = Math.trunc((scn.infoC.cntntW * 0.06) *100)/100;
-	scn.infoC.h2.fontSize = Math.trunc((scn.infoC.cntntW/20) * 100)/100;
+	scn.infoC.h2.fontSize = Math.trunc((scn.infoC.cntntW/18) * 100)/100;
 	scn.infoC.p.fontSize = Math.trunc((scn.infoC.cntntW/24) * 100)/100;
 }
 function pointerDown( event ){
@@ -1003,12 +1004,12 @@ function generateSvg(data){
 function alignTextBlock(wordsArr, colW, fontSize){
 	let wordCueX = 0;
 	let textLine = "";
-	fontSize = Math.floor((fontSize/2.5)*100)/100; // case of fontSize less than 1
-	colW = Math.ceil(colW*100)/100;
-	let lineChars = Math.ceil(colW/fontSize);
+	fontSize = Math.ceil((fontSize/2.5)*100)/100; // case of fontSize less than 1
+	colW = Math.floor(colW*100)/100;
+	let lineChars = Math.floor(colW/fontSize);
 	for (let i = 0; i < wordsArr.length; i++){
 		if(i == wordsArr.length-1){
-			if( wordCueX + wordsArr[i].length > lineChars ) {
+			if( wordCueX + 1 + wordsArr[i].length >= lineChars ) {
 				textLine += "\n";
 			}
 			textLine += wordsArr[i];
@@ -1174,7 +1175,6 @@ function setinfoC(){
 	infoC.position.set(0, 0, 0);
 	infoC.h2 = {fontSize: 0, fontFamily: scn.fonts.rubick.topics[0].media[0].data[1].src}
 	infoC.p = {fontSize: 0, fontFamily: scn.fonts.rubick.topics[0].media[0].data[0].src}
-	infoC.contentHeight = 0;
 	
 	let infoBlock = new Group();
 	infoC.add( infoBlock );
