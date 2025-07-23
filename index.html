@@ -521,7 +521,7 @@ function buildScenario(){
 }
 function openInfo(){
 	scn.stat = 'lock';
-	updateObjsPos();
+	updateObjs();
 	scn.infoC.infoT.w = Math.trunc((scn.camViewSize.x * 0.8) *100)/100;
 	scn.infoC.infoT.position.x = -scn.infoC.infoT.w/2;
 	scn.infoC.infoT.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2);
@@ -545,11 +545,12 @@ function openInfo(){
 	}
 	changeColor(scn.carousel.active.children[0], "active");
 	animeItem(scn.cam, 'position', ['x', 'y', 'z'], [scn.cam.lock.x, scn.cam.lock.y, scn.cam.lock.z], 0.7);
-	animeItem(scn.cam, 'target', ['y'], [scn.cam.lock.target], 0.7);	
+	animeItem(scn.cam, 'target', ['y'], [scn.cam.lock.target], 0.7);
+	animeItem(scn.brand, 'scale', ['x', 'y'], [scn.brand.lock.s, scn.brand.lock.s], 0.7);	
 	animeItem(scn.brand, 'position', ['x', 'y'], [scn.brand.lock.x, scn.brand.lock.y], 0.7);
-	animeItem(scn.carousel, 'position', ['y'], [scn.carousel.lock.y], 0.7);
+	animeItem(scn.carousel, 'position', ['y', 'z'], [scn.carousel.lock.y, scn.carousel.radius], 0.7);
 	animeItem(scn.carousel, 'rotation', ['y'], [scn.carousel.activeRDelta], scn.carousel.activeRDuration, 0, function() {
-		animeItem(scn.carousel.active, 'scale', ['x', 'y'], [scn.carousel.cScale*2.6, scn.carousel.cScale*2.6], 0.7);
+		animeItem(scn.carousel.active, 'scale', ['x', 'y'], [scn.carousel.childScale*2.6, scn.carousel.childScale*2.6], 0.7);
 		animeItem(scn.infoC.infoT, 'position', ['x'], [0], 0.7);
 		animeItem(scn.infoC.infoT, 'scale', ['x'], [scn.infoC.infoT.w], 0.7, 0, function(){
 			plotElements( scn.menuObjs[ scn.carousel.active.name ] );
@@ -698,7 +699,6 @@ function displayInfo(){
 	});
 }
 function closeInfo(){
-	updateObjsPos();
 	scn.currIntersect = null;
 	window.removeEventListener( "keydown", keyDown);
 	scn.renderer.domElement.removeEventListener( "touchStart", touchStart);
@@ -726,6 +726,7 @@ function closeInfo(){
 }
 function hideInfo(){
 	scn.stat = 'mov';
+	updateObjs();
 	for(let i = 0; i < scn.carousel.children.length; i++){
 		if(scn.carousel.children[i].name != scn.carousel.active.name){
 			scn.carousel.children[i].traverse(function(child){
@@ -734,9 +735,9 @@ function hideInfo(){
 		}
 	}
 	changeColor(scn.carousel.active.children[0], "normal");
-	animeItem(scn.carousel.active, 'scale', ['x', 'y'], [scn.carousel.cScale, scn.carousel.cScale], 0.6);
+	animeItem(scn.carousel.active, 'scale', ['x', 'y'], [scn.carousel.childScale, scn.carousel.childScale], 0.6);
 	animeItem(scn.brand, 'position', ['x', 'y'], [scn.brand.mov.x, scn.brand.mov.y], 0.6);
-	animeItem(scn.carousel, 'position', ['y'], [scn.carousel.mov.y], 0.6);
+	animeItem(scn.carousel, 'position', ['y', 'z'], [scn.carousel.mov.y, 0], 0.6);
 	animeItem(scn.cam, 'target', ['y'], [scn.cam.mov.target], 0.7);	
 	animeItem(scn.cam, 'position', ['x', 'y', 'z'], [scn.cam.mov.x, scn.cam.mov.y, scn.cam.mov.z], 0.6, 0, function(){
 		scn.carousel.active = null;
@@ -745,35 +746,46 @@ function hideInfo(){
 function resize(){
 	scn.canvas.width = window.innerWidth;
 	scn.canvas.height = window.innerHeight;
+	scn.renderer.setSize( scn.canvas.width, scn.canvas.height );
 	scn.cam.aspect = scn.canvas.clientWidth / scn.canvas.clientHeight;
-	scn.renderer.setSize( window.innerWidth, window.innerHeight );
 	scn.cam.updateProjectionMatrix();
-	updateObjsPos();
-	
+	updateObjs();
+	scn.brand.scale.setScalar( scn.brand[scn.stat].s );
 	scn.brand.position.x = scn.brand[scn.stat].x;
 	scn.brand.position.y = scn.brand[scn.stat].y;
+	
+	scn.close.scale.setScalar( scn.close[scn.stat].s );
 	scn.close.position.x = scn.close[scn.stat].x;
 	scn.close.position.y = scn.close[scn.stat].y;
+	
 	scn.carousel.position.y = scn.carousel[scn.stat].y;
 	if(scn.stat == 'mov'){
-		scn.carousel.radius = clamp( scn.camViewSize.x/4, 2, 36 );
-		scn.carousel.cScale = clamp( scn.camViewSize.x/32, 0.2, 4 );
+		scn.carousel.radius = clamp( scn.camViewSize.x/3, 3, 16 );
+		scn.carousel.childScale = clamp( scn.camViewSize.x/22, 0.2, 2 );
 		for(let i = 0; i < scn.carousel.children.length; i++){
 			scn.carousel.children[i].position.x = scn.carousel.radius * scn.carousel.children[i].data.pX;
 			scn.carousel.children[i].position.z = scn.carousel.radius * scn.carousel.children[i].data.pY;
-			scn.carousel.children[i].scale.setScalar( scn.carousel.cScale );
+			scn.carousel.children[i].scale.setScalar( scn.carousel.childScale );
 		}
 	}
-	
+	if(scn.stat == 'lock'){
+		scn.carousel.active.children[0].scale.setScalar( scn.close[scn.stat].s );
+	}
 }
-function updateObjsPos(){
+function updateObjs(){
 	scn.camViewSize = calcViewSize(scn.cam, scn.cam[scn.stat].z, 0, 0);
-	scn.brand.mov = { x: 0, y: clamp( scn.camViewSize.y/8, 0, 8 ) };
-	scn.brand.lock = { x: -scn.camViewSize.x/2 + (scn.brand.bb.x/2), y: scn.camViewSize.y/2 - (scn.brand.bb.y/2)}; 
-	scn.close.mov = { x: scn.camViewSize.x + (scn.close.bb.x/2), y: scn.brand.lock.y };
-	scn.close.lock = { x: -scn.brand.lock.x, y: scn.brand.lock.y };
+	
+	scn.brand.mov = { x: 0, y: clamp( scn.camViewSize.x/10, 0, scn.camViewSize.x/8 ), s: clamp( scn.camViewSize.x/64, 0.2, 0.6 ) };
+	
+	scn.brand.lock = { x: -scn.camViewSize.x/2 + (scn.brand.bb.x/2), y: scn.camViewSize.y/2 - (scn.brand.bb.x/2), s: clamp( scn.camViewSize.x/112, 0.2, 0.6 )}; 
+	
+	scn.close.mov = { x: scn.camViewSize.x + (scn.close.bb.x/2), y: scn.brand.lock.y, s: clamp( scn.camViewSize.x/72, 0.6, 1.2 )  };
+	
+	scn.close.lock = { x: -scn.brand.lock.x, y: scn.brand.lock.y, s: clamp( scn.camViewSize.x/72, 0.6, 1.2 ) };
+
+	
 	scn.carousel.mov = { y: -scn.brand.mov.y };
-	scn.carousel.lock = { y: scn.brand.lock.y/1.1 };
+	scn.carousel.lock = { y: scn.brand.lock.y/1.2 };
 }
 function pointerDown( event ){
 	event.preventDefault();
@@ -829,14 +841,14 @@ function pointerMove( event ) {
 				//'new'			
 				scn.currIntersect = scn.intersected;
 				changeColor(scn.currIntersect.children[0], "hover" );
-				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.cScale*1.6,scn.carousel.cScale*1.6], 0.5);
+				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.childScale*1.6,scn.carousel.childScale*1.6], 0.5);
 			}
 			if(scn.intersected.name !== scn.currIntersect.name){
 				//'changed'
 				changeColor(scn.currIntersect.children[0], "normal");
-				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.cScale,scn.carousel.cScale], 0.5);
+				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.childScale,scn.carousel.childScale], 0.5);
 				changeColor(scn.intersected.children[0], "hover");
-				animeItem(scn.intersected, 'scale', ['x','y'], [scn.carousel.cScale*1.6,scn.carousel.cScale*1.6], 0.5);
+				animeItem(scn.intersected, 'scale', ['x','y'], [scn.carousel.childScale*1.6,scn.carousel.childScale*1.6], 0.5);
 				scn.currIntersect = scn.intersected;			
 			}
 		}
@@ -844,7 +856,7 @@ function pointerMove( event ) {
 			if(scn.currIntersect != null){
 				let animeArray = [];
 				changeColor(scn.currIntersect.children[0], "normal");
-				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.cScale,scn.carousel.cScale], 0.5);
+				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.childScale,scn.carousel.childScale], 0.5);
 				scn.currIntersect = null;
 			}
 			if( scn.pointerDown ){
