@@ -192,7 +192,7 @@
 		<div class="topicBlock">
 			<div data-width="100" data-order="0" data-type="media">
 				<noscript>
-				<img src="./media/seo/vector/seo-graphic-analysis.svg" alt="seo-graphic-analysis" />
+				<img src="./media/seo/vector/engagement-statistic-analysis.svg" alt="engagement-statistic-analysis" />
 				</noscript>
 			</div>
 		</div>
@@ -209,7 +209,7 @@
 		<div class="topicBlock">
 			<div data-width="100" data-order="0" data-type="media">
 				<noscript>
-				<img src="./media/seo/vector/seo-bars-regression.svg" alt="seo-bars-regression" />
+				<img src="./media/seo/vector/consumer-audience-monitoring.svg" alt="consumer-audience-monitoring" />
 				</noscript>
 			</div>
 		</div>
@@ -230,7 +230,7 @@
 		<div class="topicBlock">
 			<div data-width="100" data-order="0" data-type="media">
 				<noscript>
-				<img src="./media/api/vector/api-integration.svg" alt="api-integration" />
+				<img src="./media/api/vector/workflow-convenience.svg" alt="workflow-convenience" />
 				</noscript>
 			</div>
 		</div>
@@ -247,7 +247,7 @@
 		<div class="topicBlock">
 			<div data-width="100" data-order="0" data-type="media">
 				<noscript>
-				<img src="./media/api/vector/api-handshake-connection-security.svg" alt="api-handshake-connection-security" />
+				<img src="./media/api/vector/application-cross-reference.svg" alt="application-cross-reference" />
 				</noscript>
 			</div>
 		</div>
@@ -264,7 +264,7 @@
 				<img src="./media/api/picture/mobile/api-google-maps-data-overlay.webp" alt="api-google-maps-data-overlay" />
 				</noscript>
 				<noscript>
-				<img src="./media/api/vector/api-multi-providers-cross-reference.svg" alt="api-multi-providers-cross-reference" />
+				<img src="./media/api/vector/social-media-integrate.svg" alt="social-media-integrate" />
 				</noscript>
 			</div>
 		</div>
@@ -295,7 +295,7 @@
 				</a>
 				<a href="https://github.com/RodrigoAchcar" target="_blank" >
 				<noscript>
-				<img src="./media/info/vector/github-funilaria-digital.svg" alt="github-funilaria-digital" />
+				<img src="./media/info/vector/github-rodrigo-achcar.svg" alt="github-rodrigo-achcar" />
 				</noscript>
 				</a>
 				<a href="https://wa.me/5561992720142" >
@@ -522,7 +522,8 @@ function buildScenario(){
 function openInfo(){
 	scn.stat = 'lock';
 	updateObjsPos();
-	scn.infoC.infoT.position.x = -scn.infoC.infoT.infoTW/2;
+	scn.infoC.infoT.w = Math.trunc((scn.camViewSize.x * 0.8) *100)/100;
+	scn.infoC.infoT.position.x = -scn.infoC.infoT.w/2;
 	scn.infoC.infoT.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2);
 	scn.infoC.infoT.visible = true;
 	scn.carousel.activeR = Math.PI*2 - scn.carousel.active.data.angle;
@@ -550,128 +551,139 @@ function openInfo(){
 	animeItem(scn.carousel, 'rotation', ['y'], [scn.carousel.activeRDelta], scn.carousel.activeRDuration, 0, function() {
 		animeItem(scn.carousel.active, 'scale', ['x', 'y'], [scn.carousel.cScale*2.6, scn.carousel.cScale*2.6], 0.7);
 		animeItem(scn.infoC.infoT, 'position', ['x'], [0], 0.7);
-		animeItem(scn.infoC.infoT, 'scale', ['x'], [scn.infoC.infoT.infoTW], 0.7, 0, function(){
+		animeItem(scn.infoC.infoT, 'scale', ['x'], [scn.infoC.infoT.w], 0.7, 0, function(){
 			plotElements( scn.menuObjs[ scn.carousel.active.name ] );
 		});
 	});
 }
 function plotElements( content ){
-	scn.infoC.topicH = 0;
+	scn.infoC.infoBlock.h = 0;
+	scn.infoC.infoBlock.w = Math.trunc((scn.infoC.infoT.w * 0.9) *100)/100;
+	scn.infoC.infoBlock.padW = Math.trunc((scn.infoC.infoBlock.w * 0.04) *100)/100;
+	scn.infoC.infoBlock.padH = Math.trunc((scn.infoC.infoBlock.w * 0.04) *100)/100;
+
+	scn.infoC.h2.fontSize = Math.trunc((scn.infoC.infoBlock.w/18) * 100)/100;
+	scn.infoC.p.fontSize = Math.trunc((scn.infoC.infoBlock.w/24) * 100)/100;
+	
 	for( let i = 0; i < content.topics.length; i++){
 		let topic = content.topics[i];
 		let topicBlock = new Group();
-		let blockHigher = 0;
-		let colPosXOrder = [];
+		//topicBlock.cols = { qtd: 0, sort: [] };
+		topicBlock.blockHigher = 0;
+		
+		//if( topic.text ){ topicBlock.cols.qtd += topic.text.length - 1; }
+		//if( topic.media ){ topicBlock.cols.qtd += topic.media.length - 1; }
+		
 		//topic height calc by text blocks first if there's text block
-		if( topic.text ){
-			for( let j = 0; j < topic.text.length; j++){
-				let block = topic.text[j];
-				let colW = Math.ceil(((scn.infoC.cntntW*block.width)/100) * 100 )/100;
-				let order = parseInt(block.order);
-				let itemGroup = new Group();
-				let scale;
-				let blockHeight = 0;
-				for( let k = 0; k < block.data.length; k++){
-					let elmnt = block.data[k];
-					let wordsArr = elmnt.info;
-					let fontSize = scn.infoC[elmnt.tag].fontSize;
-					let fontFamily = scn.infoC[elmnt.tag].fontFamily;
-					let textBlock = alignTextBlock(wordsArr, colW, fontSize);
-					let textMesh = generateText(textBlock, fontFamily, fontSize);
-					textMesh.position.y = -blockHeight;
-					scale = colW/textMesh.bb.w;
-					blockHeight += (textMesh.bb.h * scale) + scn.infoC.itemPadH;
-					itemGroup.add(textMesh);
-				}
-				blockHeight += scn.infoC.itemPadH;
-				if(blockHeight > blockHigher){
-					blockHigher = blockHeight;
-				}
-				topicBlock.add( itemGroup );
-				colPosXOrder.push( [ order+1, colW, itemGroup] );
+		if( topic.text ){ setBlockTexts(topicBlock, topic.text); }
+		if( topic.media ){ setBlockMedias(topicBlock, topic.media); }
+		
+		topicBlock.children.sort((a,b) => a.order - b.order);
+		for( let j = 0; j < topicBlock.children.length; j++){
+			if(j == 0){
+				continue;
 			}
+			topicBlock.children[j].position.x = topicBlock.children[j-1].colW;
 		}
-		/*
-		if( topic.media ){
-			for( let j = 0; j < topic.media.length; j++){
-				let block = topic.media[j];
-				let colW = Math.ceil(((scn.infoC.cntntW*block.width)/100) * 100 )/100;
-				let order = parseInt(block.order);
-				let itemGroup = new Group();
-				let scale;
-				let blockHeight = 0;
-				//block text sorted first to reference blockHigher for block media
-				itemGroup.name = "media";
-				let mesh;
-				let mediaWidthAll = 0;
-				let mediaHeightAll = 0;
-				let mediaAspectAll = 0;
-				let elmnPosX = 0;
-				let elmnPosY = 0;
-				let blockAspect;
-				for( let k = 0; k < block.data.length; k++){
-					let elmnt = block.data[k];
-					mesh = scn.loaderClasses[elmnt.tag][1](elmnt.src);
-					if(elmnt.href != null){
-						let rayMesh = genRaycastMesh(mesh.bb.w, mesh.bb.h);
-						rayMesh.name = 'rayLink';
-						rayMesh.url = elmnt.href;
-						rayMesh.position.set(mesh.bb.w/2, -mesh.bb.h/2, 0);
-						mesh.add(rayMesh);
-						scn.topicRays.push(rayMesh);						
-					}
-					mediaWidthAll += mesh.bb.w;
-					mediaHeightAll += mesh.bb.h;
-					itemGroup.add(mesh);
-				}
-				mediaAspectAll = mediaWidthAll/mediaHeightAll;
-				// if topic has no text block, calc blockHigher
-				if(blockHigher == 0){
-					blockHeight = (colW/mediaAspectAll);
-					blockHigher = ((colW/mediaAspectAll)/block.data.length) + scn.infoC.itemPadH;
-				}else{
-					blockHeight = blockHigher;
-				}
-				let mediaCanvasAspect = colW/blockHeight;
-				for( let k = 0; k < itemGroup.children.length; k++){
-					let elmnt = itemGroup.children[k];
-					scale = ((blockHeight-scn.infoC.itemPadH)/elmnt.bb.h)/itemGroup.children.length;
-					//scale = (colW/elmnt.bb.w)/itemGroup.children.length;
-					elmnt.scale.setScalar(scale);
-					if(mediaCanvasAspect >= 1){
-						elmnt.position.x = elmnPosX;
-						elmnPosX += (elmnt.bb.w * scale) + scn.infoC.itemPadW;
-					}else{
-						elmnt.position.y = -elmnPosY;
-						elmnPosY += (elmnt.bb.h * scale) + scn.infoC.itemPadH;
-					}
-				}
-				topicBlock.add( itemGroup );
-				colPosXOrder.push( [ order+1, colW, itemGroup] );
-			}
-		}
-		*/
-		//position x itemGroups by order and col position
-		colPosXOrder.sort().unshift([0,0]);
-		for( let j = 1; j < colPosXOrder.length; j++){
-			colPosXOrder[j][2].position.x = colPosXOrder[j-1][1] + scn.infoC.itemPadW;
-		}
-		topicBlock.position.x = -(scn.infoC.cntntW/2);
-		topicBlock.position.y = - (scn.infoC.topicH) ;
-		scn.infoC.topicH += blockHigher;
+		topicBlock.position.x = -(scn.infoC.infoBlock.w/2);
+		topicBlock.position.y = - (scn.infoC.infoBlock.h);
+		scn.infoC.infoBlock.h += topicBlock.blockHigher;
 		scn.infoC.infoBlock.add( topicBlock );
 	}
-	scn.infoC.infoBlock.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2) - (scn.infoC.itemPadH * 2);
-	//scn.infoC.infoBlock.position.y = scn.camViewSize.y/2 - (scn.brand.lock.y/2 + scn.infoC.itemPadH);
-	scn.cam.bottomLimit = -Math.trunc( scn.infoC.topicH - scn.camViewSize.y/2 );
+	scn.infoC.infoBlock.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2) - (scn.infoC.infoBlock.padH * 2);
+	//scn.infoC.infoBlock.position.y = scn.camViewSize.y/2 - (scn.brand.lock.y/2 + scn.infoC.infoBlock.padH);
+	scn.cam.bottomLimit = -Math.trunc( scn.infoC.infoBlock.h - scn.camViewSize.y/2 );
 	displayInfo();
+}
+function setBlockTexts(topicBlock, topicTexts){
+	for( let j = 0; j < topicTexts.length; j++){
+		let block = topicTexts[j];
+		let item = new Group();
+		item.colW = Math.ceil(((scn.infoC.infoBlock.w *block.width)/100) * 100 )/100;
+		item.order = parseInt(block.order);
+		item.scalar = 0;
+		item.blockHeight = 0;
+		for( let k = 0; k < block.data.length; k++){
+			let elmnt = block.data[k];
+			let wordsArr = elmnt.info;
+			let fontSize = scn.infoC[elmnt.tag].fontSize;
+			let fontFamily = scn.infoC[elmnt.tag].fontFamily;
+			let textBlock = alignTextBlock(wordsArr, item.colW, fontSize);
+			let textMesh = generateText(textBlock, fontFamily, fontSize);
+			item.scalar = item.colW/textMesh.bb.w;
+			textMesh.position.y = -(item.blockHeight) * item.scalar;
+			item.blockHeight += (textMesh.bb.h) * item.scalar;
+			item.add(textMesh);
+		}
+		if(item.blockHeight > topicBlock.blockHigher){
+			topicBlock.blockHigher = item.blockHeight;
+		}
+		topicBlock.add( item );
+	}
+}
+function setBlockMedias(topicBlock, topicMedias){
+	for( let j = 0; j < topicMedias.length; j++){
+		let block = topicMedias[j];
+		let item = new Group();
+		item.colW = Math.ceil(((scn.infoC.infoBlock.w *block.width)/100) * 100 )/100;
+		item.order = parseInt(block.order);
+		item.scalar = 0;
+		item.blockHeight = 0;
+		item.pX = -1;
+		//block text sorted first to reference blockHigher for block media
+		let mesh;
+		let mediaWidthAll = 0;
+		let mediaHeightAll = 0;
+		let mediaAspectAll = 0;
+		let elmnPosX = 0;
+		let elmnPosY = 0;
+		let blockAspect;
+		for( let k = 0; k < block.data.length; k++){
+			let elmnt = block.data[k];
+			mesh = scn.loaderClasses[elmnt.tag][1](elmnt.src);
+			if(elmnt.href != null){
+				let rayMesh = genRaycastMesh(mesh.bb.w, mesh.bb.h);
+				rayMesh.name = 'rayLink';
+				rayMesh.url = elmnt.href;
+				rayMesh.position.set(mesh.bb.w/2, -mesh.bb.h/2, 0);
+				mesh.add(rayMesh);
+				scn.topicRays.push(rayMesh);						
+			}
+			mediaWidthAll += mesh.bb.w;
+			mediaHeightAll += mesh.bb.h;
+			item.add(mesh);
+		}
+		mediaAspectAll = mediaWidthAll/mediaHeightAll;
+		// if topic has no text block, calc blockHigher
+		if(topicBlock.blockHigher == 0){
+			item.blockHeight = (item.colW/mediaAspectAll);
+			topicBlock.blockHigher = ((item.colW/mediaAspectAll)/block.data.length) + scn.infoC.infoBlock.padH;
+		}else{
+			item.blockHeight = topicBlock.blockHigher;
+		}
+		let mediaCanvasAspect = item.colW/item.blockHeight;
+		for( let k = 0; k < item.children.length; k++){
+			let elmnt = item.children[k];
+			item.scalar = ((item.blockHeight - scn.infoC.infoBlock.padH)/elmnt.bb.h)/item.children.length;
+			//item.scalar = (item.colW/elmnt.bb.w)/item.children.length;
+			elmnt.scale.setScalar(item.scalar);
+			if(mediaCanvasAspect >= 1){
+				elmnt.position.x = elmnPosX;
+				elmnPosX += (elmnt.bb.w * item.scalar) + scn.infoC.infoBlock.padW;
+			}else{
+				elmnt.position.y = -elmnPosY;
+				elmnPosY += (elmnt.bb.h * item.scalar) + scn.infoC.infoBlock.padH;
+			}
+		}
+		topicBlock.add( item );
+	}
 }
 function displayInfo(){
 	scn.close.visible = true;
 	scn.close.position.y = scn.close.lock.y;
 	scn.topicRays.push(scn.close);
-	animeItem(scn.infoC.infoT, 'position', ['y'], [ (-(scn.infoC.topicH/2 - (scn.camViewSize.y/2 - scn.brand.lock.y/2 )) )], 0.7);
-	animeItem(scn.infoC.infoT, 'scale', ['y'], [scn.infoC.topicH], 0.7, 0, function(){
+	animeItem(scn.infoC.infoT, 'position', ['y'], [ (-(scn.infoC.infoBlock.h/2 - (scn.camViewSize.y/2 - scn.brand.lock.y/2 )) )], 0.7);
+	animeItem(scn.infoC.infoT, 'scale', ['y'], [scn.infoC.infoBlock.h], 0.7, 0, function(){
 		for(let i = 0; i < scn.infoC.infoBlock.children.length; i++){
 			for(let j = 0; j < scn.infoC.infoBlock.children[i].children.length; j++){
 				for(let k = 0; k < scn.infoC.infoBlock.children[i].children[j].children.length; k++){
@@ -703,7 +715,7 @@ function closeInfo(){
 	animeItem(scn.close, 'position', ['x'], [scn.close.mov.x], 0.5, 0, function(){
 		animeItem(scn.infoC.infoT, 'position', ['y'], [(scn.camViewSize.y/2 - scn.brand.lock.y/2)], 0.5);
 		animeItem(scn.infoC.infoT, 'scale', ['y'], [0.2], 0.5, 0, function(){
-			animeItem(scn.infoC.infoT, 'position', ['x'], [-scn.infoC.infoT.infoTW/2], 0.5);
+			animeItem(scn.infoC.infoT, 'position', ['x'], [-scn.infoC.infoT.w/2], 0.5);
 			animeItem(scn.infoC.infoT, 'scale', ['x'],  [0], 0.5, 0, function(){
 				scn.close.visible = false;
 				scn.infoC.infoBlock.clear();
@@ -731,11 +743,13 @@ function hideInfo(){
 	});
 }
 function resize(){
-	scn.cam.aspect = window.innerWidth / window.innerHeight;
-	scn.cam.updateProjectionMatrix();
+	scn.canvas.width = window.innerWidth;
+	scn.canvas.height = window.innerHeight;
+	scn.cam.aspect = scn.canvas.clientWidth / scn.canvas.clientHeight;
 	scn.renderer.setSize( window.innerWidth, window.innerHeight );
-	scn.renderer.setPixelRatio( scn.cam.aspect );
+	scn.cam.updateProjectionMatrix();
 	updateObjsPos();
+	
 	scn.brand.position.x = scn.brand[scn.stat].x;
 	scn.brand.position.y = scn.brand[scn.stat].y;
 	scn.close.position.x = scn.close[scn.stat].x;
@@ -750,6 +764,7 @@ function resize(){
 			scn.carousel.children[i].scale.setScalar( scn.carousel.cScale );
 		}
 	}
+	
 }
 function updateObjsPos(){
 	scn.camViewSize = calcViewSize(scn.cam, scn.cam[scn.stat].z, 0, 0);
@@ -759,12 +774,6 @@ function updateObjsPos(){
 	scn.close.lock = { x: -scn.brand.lock.x, y: scn.brand.lock.y };
 	scn.carousel.mov = { y: -scn.brand.mov.y };
 	scn.carousel.lock = { y: scn.brand.lock.y/1.1 };
-	scn.infoC.infoT.infoTW = Math.trunc((scn.camViewSize.x * 0.8) *100)/100;
-	scn.infoC.cntntW = Math.trunc((scn.infoC.infoT.infoTW * 0.9) *100)/100;
-	scn.infoC.itemPadW = Math.trunc((scn.infoC.cntntW * 0.04) *100)/100;
-	scn.infoC.itemPadH = Math.trunc((scn.infoC.cntntW * 0.06) *100)/100;
-	scn.infoC.h2.fontSize = Math.trunc((scn.infoC.cntntW/18) * 100)/100;
-	scn.infoC.p.fontSize = Math.trunc((scn.infoC.cntntW/24) * 100)/100;
 }
 function pointerDown( event ){
 	event.preventDefault();
@@ -1014,14 +1023,15 @@ function alignTextBlock(wordsArr, colW, fontSize){
 			textLine += wordsArr[i];
 			return textLine;
 		}
-		if( wordCueX < lineChars ) {
-			textLine += wordsArr[i];
-			wordCueX += (wordsArr[i].length);
-		}
+		
 		if( wordCueX + 1 >= lineChars || wordCueX + 1 + wordsArr[i+1].length > lineChars ) {
 			textLine += "\n";
 			wordCueX = 0;
 			continue;
+		}
+		if( wordCueX < lineChars ) {
+			textLine += wordsArr[i];
+			wordCueX += (wordsArr[i].length);
 		}
 		if( wordCueX + 1 < lineChars ) {
 			textLine += " ";
@@ -1045,7 +1055,7 @@ function generateText(textContent, fontStyle, fontSize){
 	geometry.computeVertexNormals();
 	let width = Math.trunc( Math.abs(geometry.boundingBox.min.x - geometry.boundingBox.max.x) *100)/100 ;
 	let height = Math.trunc( Math.abs(geometry.boundingBox.min.y - geometry.boundingBox.max.y) *100)/100 ;
-	//geometry.translate(-width/2, 0, 0);
+	geometry.translate(0, -height/2, 0);
 	let textMat = new MeshBasicMaterial( { color: "#04453A", transparent: true, fog: false } );
 	let textMesh = new Mesh( geometry, textMat );
 	textMesh.bb = {w:width, h:height};
