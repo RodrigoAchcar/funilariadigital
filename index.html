@@ -56,11 +56,11 @@
 			</div>
 		</div>
 		<div class="topicBlock">
-			<div data-width="38" data-order="0" data-type="text">
+			<div data-width="44" data-order="0" data-type="text">
 				<h2>Graphic Layer Only</h2>
 				<p>Dynamic or static display done with regular HTML/XML inputs. Preview integrity preserved on improvement updates.</p>
 			</div>
-			<div data-width="60" data-order="1" data-type="text">
+			<div data-width="54" data-order="1" data-type="text">
 				<h2>Product Immersion by Refresh Rate</h2>
 				<p>3D available for market strategies and business tools. A medium to provide consumers be part of what they are interested.</p>
 			</div>
@@ -252,11 +252,11 @@
 			</div>
 		</div>
 		<div class="topicBlock">
-			<div data-width="44" data-order="0" data-type="text">
+			<div data-width="24" data-order="0" data-type="text">
 				<h2>Unified Social Media Manage</h2>
 				<p>Media brands have APIs allowed to interact. Social medias, websites, analytics, apps, converged to one assistance asset.</p>
 			</div>
-			<div data-width="40" data-order="1" data-type="media">
+			<div data-width="60" data-order="1" data-type="media">
 				<noscript>
 				<img src="./media/api/picture/mobile/api-google-maps-gps-track.webp" alt="api-google-maps-gps-track" />
 				</noscript>
@@ -521,8 +521,9 @@ function buildScenario(){
 }
 function openInfo(){
 	scn.stat = 'lock';
+	scn.camViewSize = calcViewSize(scn.cam, scn.cam[scn.stat].z, 0, 0);
 	updateObjs();
-	scn.infoC.infoT.w = Math.trunc((scn.camViewSize.x * 0.8) *100)/100;
+	scn.infoC.infoT.w = Math.trunc((scn.camViewSize.x * 0.9) *100)/100;
 	scn.infoC.infoT.position.x = -scn.infoC.infoT.w/2;
 	scn.infoC.infoT.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2);
 	scn.infoC.infoT.visible = true;
@@ -548,7 +549,7 @@ function openInfo(){
 	animeItem(scn.cam, 'target', ['y'], [scn.cam.lock.target], 0.7);
 	animeItem(scn.brand, 'scale', ['x', 'y'], [scn.brand.lock.s, scn.brand.lock.s], 0.7);	
 	animeItem(scn.brand, 'position', ['x', 'y'], [scn.brand.lock.x, scn.brand.lock.y], 0.7);
-	animeItem(scn.carousel, 'position', ['y', 'z'], [scn.carousel.lock.y, scn.carousel.radius], 0.7);
+	animeItem(scn.carousel, 'position', ['y'], [scn.carousel.lock.y], 0.7);
 	animeItem(scn.carousel, 'rotation', ['y'], [scn.carousel.activeRDelta], scn.carousel.activeRDuration, 0, function() {
 		animeItem(scn.carousel.active, 'scale', ['x', 'y'], [scn.carousel.childScale*2.6, scn.carousel.childScale*2.6], 0.7);
 		animeItem(scn.infoC.infoT, 'position', ['x'], [0], 0.7);
@@ -559,23 +560,22 @@ function openInfo(){
 }
 function plotElements( content ){
 	scn.infoC.infoBlock.h = 0;
-	scn.infoC.infoBlock.w = Math.trunc((scn.infoC.infoT.w * 0.9) *100)/100;
-	scn.infoC.infoBlock.padW = Math.trunc((scn.infoC.infoBlock.w * 0.04) *100)/100;
-	scn.infoC.infoBlock.padH = Math.trunc((scn.infoC.infoBlock.w * 0.04) *100)/100;
-
-	scn.infoC.h2.fontSize = Math.trunc((scn.infoC.infoBlock.w/18) * 100)/100;
-	scn.infoC.p.fontSize = Math.trunc((scn.infoC.infoBlock.w/24) * 100)/100;
-	
+	scn.infoC.infoBlock.w = Math.ceil((scn.infoC.infoT.w * 0.95) *100)/100;
+	scn.infoC.infoBlock.padW = Math.round((scn.infoC.infoBlock.w * 0.04) *100)/100;
+	scn.infoC.infoBlock.padH = Math.round((scn.infoC.infoBlock.w * 0.05) *100)/100;
+	scn.infoC.h2.fontSize = Math.ceil((scn.infoC.infoBlock.w/18) * 100)/100;
+	scn.infoC.p.fontSize = Math.ceil((scn.infoC.infoBlock.w/24) * 100)/100;
 	for( let i = 0; i < content.topics.length; i++){
 		let topic = content.topics[i];
 		let topicBlock = new Group();
-		//topicBlock.cols = { qtd: 0, sort: [] };
+
 		topicBlock.blockHigher = 0;
-		
-		//if( topic.text ){ topicBlock.cols.qtd += topic.text.length - 1; }
-		//if( topic.media ){ topicBlock.cols.qtd += topic.media.length - 1; }
-		
-		//topic height calc by text blocks first if there's text block
+		topicBlock.cols = -1;
+		if( topic.text ){ topicBlock.cols += topic.text.length }
+		if( topic.media ){ topicBlock.cols += topic.media.length }
+		topicBlock.colsW = scn.infoC.infoBlock.w - (scn.infoC.infoBlock.padW * topicBlock.cols);
+
+		//block text sorted first to reference blockHigher for block media
 		if( topic.text ){ setBlockTexts(topicBlock, topic.text); }
 		if( topic.media ){ setBlockMedias(topicBlock, topic.media); }
 		
@@ -587,22 +587,22 @@ function plotElements( content ){
 			topicBlock.children[j].position.x = topicBlock.children[j-1].colW;
 		}
 		topicBlock.position.x = -(scn.infoC.infoBlock.w/2);
-		topicBlock.position.y = - (scn.infoC.infoBlock.h);
+		topicBlock.position.y = -(scn.infoC.infoBlock.h);
 		scn.infoC.infoBlock.h += topicBlock.blockHigher;
 		scn.infoC.infoBlock.add( topicBlock );
+
 	}
-	scn.infoC.infoBlock.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2) - (scn.infoC.infoBlock.padH * 2);
-	//scn.infoC.infoBlock.position.y = scn.camViewSize.y/2 - (scn.brand.lock.y/2 + scn.infoC.infoBlock.padH);
+	scn.infoC.infoBlock.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2);
 	scn.cam.bottomLimit = -Math.trunc( scn.infoC.infoBlock.h - scn.camViewSize.y/2 );
 	displayInfo();
 }
-function setBlockTexts(topicBlock, topicTexts){
-	for( let j = 0; j < topicTexts.length; j++){
-		let block = topicTexts[j];
-		let item = new Group();
-		item.colW = Math.ceil(((scn.infoC.infoBlock.w *block.width)/100) * 100 )/100;
+function setBlockTexts(topicBlock, topicTextsBlocks){
+	let block, item;
+	for( let j = 0; j < topicTextsBlocks.length; j++){
+		block = topicTextsBlocks[j];
+		item = new Group();
+		item.colW = Math.round(((topicBlock.colsW * block.width)/100) * 100 )/100;
 		item.order = parseInt(block.order);
-		item.scalar = 0;
 		item.blockHeight = 0;
 		for( let k = 0; k < block.data.length; k++){
 			let elmnt = block.data[k];
@@ -611,34 +611,40 @@ function setBlockTexts(topicBlock, topicTexts){
 			let fontFamily = scn.infoC[elmnt.tag].fontFamily;
 			let textBlock = alignTextBlock(wordsArr, item.colW, fontSize);
 			let textMesh = generateText(textBlock, fontFamily, fontSize);
-			item.scalar = item.colW/textMesh.bb.w;
-			textMesh.position.y = -(item.blockHeight) * item.scalar;
-			item.blockHeight += (textMesh.bb.h) * item.scalar;
+			textMesh.position.y = -(item.blockHeight - ((textMesh.bb.h/fontSize)*2) ) ;
+			item.blockHeight += textMesh.bb.h;
 			item.add(textMesh);
 		}
-		if(item.blockHeight > topicBlock.blockHigher){
+		if( topicBlock.blockHigher < item.blockHeight){
 			topicBlock.blockHigher = item.blockHeight;
 		}
 		topicBlock.add( item );
 	}
 }
 function setBlockMedias(topicBlock, topicMedias){
+	let block, item, mesh, mediaCanvasAspect, scalar, posVector, scaleVector, posT;
+	
 	for( let j = 0; j < topicMedias.length; j++){
-		let block = topicMedias[j];
-		let item = new Group();
-		item.colW = Math.ceil(((scn.infoC.infoBlock.w *block.width)/100) * 100 )/100;
+		block = topicMedias[j];
+		item = new Group();
+		item.colW = Math.round(((topicBlock.colsW * block.width)/100) * 100 )/100;
 		item.order = parseInt(block.order);
-		item.scalar = 0;
 		item.blockHeight = 0;
-		item.pX = -1;
-		//block text sorted first to reference blockHigher for block media
-		let mesh;
-		let mediaWidthAll = 0;
-		let mediaHeightAll = 0;
-		let mediaAspectAll = 0;
-		let elmnPosX = 0;
-		let elmnPosY = 0;
-		let blockAspect;
+		posVector = 'x';
+		scaleVector = 'w';
+		posT = 0;
+		if(topicBlock.blockHigher == 0){
+			if(block.width >= 50){
+				item.blockHeight = item.colW/block.data.length;
+			}
+			if(block.width < 50){
+				item.blockHeight = item.colW*block.data.length;
+			}
+			topicBlock.blockHigher = item.blockHeight;
+		}
+		mediaCanvasAspect = item.colW/item.blockHeight;
+		
+		
 		for( let k = 0; k < block.data.length; k++){
 			let elmnt = block.data[k];
 			mesh = scn.loaderClasses[elmnt.tag][1](elmnt.src);
@@ -650,37 +656,28 @@ function setBlockMedias(topicBlock, topicMedias){
 				mesh.add(rayMesh);
 				scn.topicRays.push(rayMesh);						
 			}
-			mediaWidthAll += mesh.bb.w;
-			mediaHeightAll += mesh.bb.h;
+			if(mediaCanvasAspect >= 1){
+				scalar = item.colW/mesh.bb.w;
+			}
+			if(mediaCanvasAspect < 1){
+				posVector = 'y';
+				scaleVector = 'h';
+				scalar = item.blockHeight/mesh.bb.h;
+			}
+			mesh.scale.setScalar(scalar/block.data.length);
+			mesh.position.posVector = posT;
+			posT += mesh.bb.scaleVector;
 			item.add(mesh);
 		}
-		mediaAspectAll = mediaWidthAll/mediaHeightAll;
-		// if topic has no text block, calc blockHigher
-		if(topicBlock.blockHigher == 0){
-			item.blockHeight = (item.colW/mediaAspectAll);
-			topicBlock.blockHigher = ((item.colW/mediaAspectAll)/block.data.length) + scn.infoC.infoBlock.padH;
-		}else{
-			item.blockHeight = topicBlock.blockHigher;
-		}
-		let mediaCanvasAspect = item.colW/item.blockHeight;
-		for( let k = 0; k < item.children.length; k++){
-			let elmnt = item.children[k];
-			item.scalar = ((item.blockHeight - scn.infoC.infoBlock.padH)/elmnt.bb.h)/item.children.length;
-			//item.scalar = (item.colW/elmnt.bb.w)/item.children.length;
-			elmnt.scale.setScalar(item.scalar);
-			if(mediaCanvasAspect >= 1){
-				elmnt.position.x = elmnPosX;
-				elmnPosX += (elmnt.bb.w * item.scalar) + scn.infoC.infoBlock.padW;
-			}else{
-				elmnt.position.y = -elmnPosY;
-				elmnPosY += (elmnt.bb.h * item.scalar) + scn.infoC.infoBlock.padH;
-			}
+		if( topicBlock.blockHigher < item.blockHeight){
+			topicBlock.blockHigher = item.blockHeight;
 		}
 		topicBlock.add( item );
 	}
 }
 function displayInfo(){
 	scn.close.visible = true;
+	scn.close.scale.setScalar( scn.close[scn.stat].s );
 	scn.close.position.y = scn.close.lock.y;
 	scn.topicRays.push(scn.close);
 	animeItem(scn.infoC.infoT, 'position', ['y'], [ (-(scn.infoC.infoBlock.h/2 - (scn.camViewSize.y/2 - scn.brand.lock.y/2 )) )], 0.7);
@@ -699,6 +696,7 @@ function displayInfo(){
 	});
 }
 function closeInfo(){
+	updateObjs();
 	scn.currIntersect = null;
 	window.removeEventListener( "keydown", keyDown);
 	scn.renderer.domElement.removeEventListener( "touchStart", touchStart);
@@ -769,7 +767,7 @@ function resize(){
 		}
 	}
 	if(scn.stat == 'lock'){
-		scn.carousel.active.children[0].scale.setScalar( scn.close[scn.stat].s );
+		scn.carousel.active.children[0].scale.setScalar( scn.brand.lock.s );
 	}
 }
 function updateObjs(){
@@ -785,7 +783,7 @@ function updateObjs(){
 
 	
 	scn.carousel.mov = { y: -scn.brand.mov.y };
-	scn.carousel.lock = { y: scn.brand.lock.y/1.2 };
+	scn.carousel.lock = { y: scn.camViewSize.y/2  - (scn.brand.bb.y/2)};
 }
 function pointerDown( event ){
 	event.preventDefault();
@@ -1065,16 +1063,16 @@ function generateText(textContent, fontStyle, fontSize){
 	geometry.clearGroups();
 	geometry.computeBoundingBox();
 	geometry.computeVertexNormals();
-	let width = Math.trunc( Math.abs(geometry.boundingBox.min.x - geometry.boundingBox.max.x) *100)/100 ;
-	let height = Math.trunc( Math.abs(geometry.boundingBox.min.y - geometry.boundingBox.max.y) *100)/100 ;
-	geometry.translate(0, -height/2, 0);
+	
 	let textMat = new MeshBasicMaterial( { color: "#04453A", transparent: true, fog: false } );
 	let textMesh = new Mesh( geometry, textMat );
-	textMesh.bb = {w:width, h:height};
+	
 	textMesh.material.opacity = 0;
-
 	textMesh.scale.normalize();
-
+	let width = Math.trunc( Math.abs(textMesh.geometry.boundingBox.min.x - textMesh.geometry.boundingBox.max.x) *100)/100 ;
+	let height = Math.trunc( Math.abs(textMesh.geometry.boundingBox.min.y - textMesh.geometry.boundingBox.max.y) *100)/100 ;
+	textMesh.geometry.translate(0, -height, 0);
+	textMesh.bb = {w:width, h:height};
 	geometry.dispose();
 	textMat.dispose();
 	return textMesh;
@@ -1194,8 +1192,8 @@ function setCarousel(){
 function setinfoC(){
 	let infoC = new Group();
 	infoC.position.set(0, 0, 0);
-	infoC.h2 = {fontSize: 0, fontFamily: scn.fonts.rubick.topics[0].media[0].data[1].src}
-	infoC.p = {fontSize: 0, fontFamily: scn.fonts.rubick.topics[0].media[0].data[0].src}
+	infoC.h2 = {fontSize: 12, fontFamily: scn.fonts.rubick.topics[0].media[0].data[1].src}
+	infoC.p = {fontSize: 6, fontFamily: scn.fonts.rubick.topics[0].media[0].data[0].src}
 	
 	let infoBlock = new Group();
 	infoC.add( infoBlock );
