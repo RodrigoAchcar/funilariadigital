@@ -110,16 +110,16 @@
 		<div class="topicBlock">
 			<div data-width="100" data-order="0" data-type="media">
 				<noscript>
-				<img src="./media/ux/vector/javascript-logo.svg" alt="javascript-logo" />
+				<img src="./media/ux/vector/javascript-logo.svg" width="40" height="40" alt="javascript-logo" />
 				</noscript>
 				<noscript>
-				<img src="./media/ux/vector/webgl-logo.svg" alt="webgl-logo" />
+				<img src="./media/ux/vector/webgl-logo.svg" width="95" height="40" alt="webgl-logo" />
 				</noscript>
 				<noscript>
-				<img src="./media/ux/vector/python-logo.svg" alt="python-logo" />
+				<img src="./media/ux/vector/python-logo.svg" width="164" height="40" alt="python-logo" />
 				</noscript>
 				<noscript>
-				<img src="./media/ux/vector/css3-logo.svg" alt="css3-logo" />
+				<img src="./media/ux/vector/css3-logo.svg" width="28" height="40" alt="css3-logo" />
 				</noscript>
 			</div>
 		</div>
@@ -378,6 +378,21 @@ async function loadFiles( filesArray, endAction=null ){
 						if(filesArray[i].topics[j].media[k].data[l].tag !== 'mp4'){
 							let data = await loadFile(new scn.loaderClasses[filesArray[i].topics[j].media[k].data[l].tag][0](manager), filesArray[i].topics[j].media[k].data[l].src);
 							filesArray[i].topics[j].media[k].data[l].src = data;
+							
+							if( filesArray[i].topics[j].media[k].data[l].tag == "webp" ){
+								filesArray[i].topics[j].media[k].data[l].w = data.source.data.width;
+								filesArray[i].topics[j].media[k].data[l].h = data.source.data.height;
+								filesArray[i].topics[j].media[k].mediasW += data.source.data.width;
+								filesArray[i].topics[j].media[k].mediasH += data.source.data.height;
+							}
+							if( filesArray[i].topics[j].media[k].data[l].tag == "svg" ){
+								
+								filesArray[i].topics[j].media[k].data[l].w = data.xml.width.baseVal.value;
+								filesArray[i].topics[j].media[k].data[l].h = data.xml.height.baseVal.value;
+								filesArray[i].topics[j].media[k].mediasW += data.xml.width.baseVal.value;
+								filesArray[i].topics[j].media[k].mediasH += data.xml.height.baseVal.value;
+								
+							}
 							if( filesArray[i].topics[j].media[k].data[l].tag == "ttf" ){
 								filesArray[i].topics[j].media[k].data[l].src = new Font( data );
 							}
@@ -412,12 +427,17 @@ function getMenuItems(){
 			for(let k = 0; k < topics.children.length; k++){
 				let block = topics.children[k];
 				let blockObj = { type: block.getAttribute("data-type"), order: block.getAttribute("data-order"), width: block.getAttribute("data-width"), data: [] };
+				if( blockObj.type == 'media'){
+					blockObj.mediasW = 0;
+					blockObj.mediasH = 0;
+				}
 				for(let l = 0; l < block.children.length; l++){
 					let elm = block.children[l];
 					if( blockObj.type == 'text'){
 						blockObj.data.push( { tag: elm.localName, info: elm.innerHTML.split(' ')} );
 					}
 					if( blockObj.type == 'media'){
+						
 						let dataObj = {};
 						if(elm.localName == 'a'){
 							dataObj.href = elm.getAttribute("href");
@@ -428,6 +448,11 @@ function getMenuItems(){
 						if(dataObj.tag == 'mp4'){
 							const fragment = document.createRange().createContextualFragment(elm.firstChild.textContent).children[0];
 							dataObj.src = fragment;
+							dataObj.w = fragment.width;
+							dataObj.h = fragment.height;
+							blockObj.mediasW += fragment.width;
+							blockObj.mediasH += fragment.height;
+
 						}
 						blockObj.data.push( dataObj );
 					}
@@ -563,6 +588,7 @@ function plotElements( content ){
 	scn.infoC.infoBlock.w = Math.ceil((scn.infoC.infoT.w * 0.95) *100)/100;
 	scn.infoC.infoBlock.padW = Math.round((scn.infoC.infoBlock.w * 0.04) *100)/100;
 	scn.infoC.infoBlock.padH = Math.round((scn.infoC.infoBlock.w * 0.05) *100)/100;
+	scn.infoC.infoBlock.padMedia = Math.round((scn.infoC.infoBlock.padW/2) *100)/100;
 	scn.infoC.h2.fontSize = Math.ceil((scn.infoC.infoBlock.w/18) * 100)/100;
 	scn.infoC.p.fontSize = Math.ceil((scn.infoC.infoBlock.w/24) * 100)/100;
 	for( let i = 0; i < content.topics.length; i++){
@@ -590,7 +616,6 @@ function plotElements( content ){
 		topicBlock.position.y = -(scn.infoC.infoBlock.h);
 		scn.infoC.infoBlock.h += topicBlock.blockHigher;
 		scn.infoC.infoBlock.add( topicBlock );
-
 	}
 	scn.infoC.infoBlock.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2);
 	scn.cam.bottomLimit = -Math.trunc( scn.infoC.infoBlock.h - scn.camViewSize.y/2 );
@@ -611,7 +636,7 @@ function setBlockTexts(topicBlock, topicTextsBlocks){
 			let fontFamily = scn.infoC[elmnt.tag].fontFamily;
 			let textBlock = alignTextBlock(wordsArr, item.colW, fontSize);
 			let textMesh = generateText(textBlock, fontFamily, fontSize);
-			textMesh.position.y = -(item.blockHeight - ((textMesh.bb.h/fontSize)*2) ) ;
+			textMesh.position.y = -(item.blockHeight - (textMesh.bb.h/fontSize) ) ;
 			item.blockHeight += textMesh.bb.h;
 			item.add(textMesh);
 		}
@@ -622,55 +647,45 @@ function setBlockTexts(topicBlock, topicTextsBlocks){
 	}
 }
 function setBlockMedias(topicBlock, topicMedias){
-	let block, item, mesh, mediaCanvasAspect, scalar, posVector, scaleVector, posT;
-	
+	let block, item, mesh, scalar, posVector, scaleVector, posT;
 	for( let j = 0; j < topicMedias.length; j++){
 		block = topicMedias[j];
 		item = new Group();
 		item.colW = Math.round(((topicBlock.colsW * block.width)/100) * 100 )/100;
 		item.order = parseInt(block.order);
-		item.blockHeight = 0;
+		let blockHeight = 0;
 		posVector = 'x';
 		scaleVector = 'w';
 		posT = 0;
-		if(topicBlock.blockHigher == 0){
-			if(block.width >= 50){
-				item.blockHeight = item.colW/block.data.length;
-			}
-			if(block.width < 50){
-				item.blockHeight = item.colW*block.data.length;
-			}
-			topicBlock.blockHigher = item.blockHeight;
+		item.mediasAspect = block.mediasW/block.mediasH;
+		if(topicBlock.blockHigher == 0){ 
+			topicBlock.blockHigher = (item.colW/block.data.length)/item.mediasAspect;
 		}
-		mediaCanvasAspect = item.colW/item.blockHeight;
-		
-		
+		if( item.mediasAspect >= 1){
+			scalar = (item.colW)/(block.mediasW/block.data.length);
+			blockHeight = topicBlock.blockHigher * scalar;
+		}
+		if( item.mediasAspect < 1){
+			scalar = topicBlock.blockHigher/(block.mediasH/block.data.length);
+			blockHeight = topicBlock.blockHigher * scalar;
+			posVector = 'y';
+			scaleVector = 'h';
+		}
 		for( let k = 0; k < block.data.length; k++){
 			let elmnt = block.data[k];
 			mesh = scn.loaderClasses[elmnt.tag][1](elmnt.src);
+			mesh.scale.setScalar(scalar/block.data.length);
+			mesh.position[posVector] = posT;
+			posT += ((mesh.bb[scaleVector]/block.data.length)*scalar) + scn.infoC.infoBlock.padMedia;
+			item.add(mesh);
 			if(elmnt.href != null){
 				let rayMesh = genRaycastMesh(mesh.bb.w, mesh.bb.h);
 				rayMesh.name = 'rayLink';
 				rayMesh.url = elmnt.href;
 				rayMesh.position.set(mesh.bb.w/2, -mesh.bb.h/2, 0);
 				mesh.add(rayMesh);
-				scn.topicRays.push(rayMesh);						
+				scn.topicRays.push(rayMesh);
 			}
-			if(mediaCanvasAspect >= 1){
-				scalar = item.colW/mesh.bb.w;
-			}
-			if(mediaCanvasAspect < 1){
-				posVector = 'y';
-				scaleVector = 'h';
-				scalar = item.blockHeight/mesh.bb.h;
-			}
-			mesh.scale.setScalar(scalar/block.data.length);
-			mesh.position.posVector = posT;
-			posT += mesh.bb.scaleVector;
-			item.add(mesh);
-		}
-		if( topicBlock.blockHigher < item.blockHeight){
-			topicBlock.blockHigher = item.blockHeight;
 		}
 		topicBlock.add( item );
 	}
@@ -1245,7 +1260,7 @@ function animate() {
 		scn.raf.prevT = scn.raf.currT;
 		render();
 	}
-	scn.raf.currT += scn.raf.fps;
+	scn.raf.currT += scn.raf.fpsD;
 	requestAnimationFrame(animate);
 }
 function render(){
