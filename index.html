@@ -1256,7 +1256,7 @@ function animeItem(item, property, paramArr, endVArr, duration, delay=0, endActi
 }
 function animate() {
 	scn.raf.fpsInterval = scn.raf.currT - scn.raf.prevT;
-	if(scn.raf.fpsInterval >= scn.raf.fpsD){
+	if(scn.raf.fpsInterval > scn.raf.fpsD){
 		scn.raf.prevT = scn.raf.currT;
 		render();
 	}
