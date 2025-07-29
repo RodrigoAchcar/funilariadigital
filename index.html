@@ -550,7 +550,7 @@ function openInfo(){
 	updateObjs();
 	scn.infoC.infoT.w = Math.trunc((scn.camViewSize.x * 0.9) *100)/100;
 	scn.infoC.infoT.position.x = -scn.infoC.infoT.w/2;
-	scn.infoC.infoT.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2);
+	scn.infoC.infoT.position.y = (scn.camViewSize.y/2) - (scn.brand.lock.y/3);
 	scn.infoC.infoT.visible = true;
 	scn.carousel.activeR = Math.PI*2 - scn.carousel.active.data.angle;
 	scn.carousel.activeRDelta = scn.carousel.activeR;
@@ -584,13 +584,13 @@ function openInfo(){
 	});
 }
 function plotElements( content ){
-	scn.infoC.infoBlock.h = 0;
 	scn.infoC.infoBlock.w = Math.ceil((scn.infoC.infoT.w * 0.95) *100)/100;
 	scn.infoC.infoBlock.padW = Math.round((scn.infoC.infoBlock.w * 0.04) *100)/100;
 	scn.infoC.infoBlock.padH = Math.round((scn.infoC.infoBlock.w * 0.05) *100)/100;
 	scn.infoC.infoBlock.padMedia = Math.round((scn.infoC.infoBlock.padW/2) *100)/100;
 	scn.infoC.h2.fontSize = Math.ceil((scn.infoC.infoBlock.w/18) * 100)/100;
 	scn.infoC.p.fontSize = Math.ceil((scn.infoC.infoBlock.w/24) * 100)/100;
+	scn.infoC.infoBlock.h = scn.infoC.infoBlock.padH;
 	for( let i = 0; i < content.topics.length; i++){
 		let topic = content.topics[i];
 		let topicBlock = new Group();
@@ -614,10 +614,11 @@ function plotElements( content ){
 		}
 		topicBlock.position.x = -(scn.infoC.infoBlock.w/2);
 		topicBlock.position.y = -(scn.infoC.infoBlock.h);
+		topicBlock.blockHigher += scn.infoC.infoBlock.padH;
 		scn.infoC.infoBlock.h += topicBlock.blockHigher;
 		scn.infoC.infoBlock.add( topicBlock );
 	}
-	scn.infoC.infoBlock.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/2);
+	scn.infoC.infoBlock.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/3);
 	scn.cam.bottomLimit = -Math.trunc( scn.infoC.infoBlock.h - scn.camViewSize.y/2 );
 	displayInfo();
 }
@@ -647,7 +648,7 @@ function setBlockTexts(topicBlock, topicTextsBlocks){
 	}
 }
 function setBlockMedias(topicBlock, topicMedias){
-	let block, item, mesh, scalar, posVector, scaleVector, posT;
+	let block, item, mesh, scalar, posVector, scaleVector, direction, posT;
 	for( let j = 0; j < topicMedias.length; j++){
 		block = topicMedias[j];
 		item = new Group();
@@ -655,6 +656,7 @@ function setBlockMedias(topicBlock, topicMedias){
 		item.order = parseInt(block.order);
 		posVector = 'x';
 		scaleVector = 'w';
+		direction = 1;
 		posT = 0;
 		item.mediasAspect = block.mediasW/block.mediasH;
 		if(topicBlock.blockHigher == 0){
@@ -662,19 +664,20 @@ function setBlockMedias(topicBlock, topicMedias){
 		}
 		item.colAspect = item.colW/topicBlock.blockHigher;
 		if( item.colAspect >= 1){
-			scalar = (item.colW)/(block.mediasW/block.data.length);
+			scalar = (item.colW - (scn.infoC.infoBlock.padMedia * (block.data.length-1)))/(block.mediasW/block.data.length);
 		}
 		if( item.colAspect < 1){
 			scalar = topicBlock.blockHigher/(block.mediasH/block.data.length);
 			posVector = 'y';
 			scaleVector = 'h';
+			direction = -1;
 		}
 		for( let k = 0; k < block.data.length; k++){
 			let elmnt = block.data[k];
 			mesh = scn.loaderClasses[elmnt.tag][1](elmnt.src);
 			mesh.scale.setScalar(scalar/block.data.length);
 			mesh.position[posVector] = posT;
-			posT += ((mesh.bb[scaleVector]/block.data.length)*scalar) + scn.infoC.infoBlock.padMedia;
+			posT += (((mesh.bb[scaleVector]/block.data.length)*scalar) + scn.infoC.infoBlock.padMedia) * direction;
 			item.add(mesh);
 			if(elmnt.href != null){
 				let rayMesh = genRaycastMesh(mesh.bb.w, mesh.bb.h);
@@ -693,7 +696,7 @@ function displayInfo(){
 	scn.close.scale.setScalar( scn.close[scn.stat].s );
 	scn.close.position.y = scn.close.lock.y;
 	scn.topicRays.push(scn.close);
-	animeItem(scn.infoC.infoT, 'position', ['y'], [ (-(scn.infoC.infoBlock.h/2 - (scn.camViewSize.y/2 - scn.brand.lock.y/2 )) )], 0.7);
+	animeItem(scn.infoC.infoT, 'position', ['y'], [ (-(scn.infoC.infoBlock.h/2 - (scn.camViewSize.y/2 - scn.brand.lock.y/3 )) )], 0.7);
 	animeItem(scn.infoC.infoT, 'scale', ['y'], [scn.infoC.infoBlock.h], 0.7, 0, function(){
 		for(let i = 0; i < scn.infoC.infoBlock.children.length; i++){
 			for(let j = 0; j < scn.infoC.infoBlock.children[i].children.length; j++){
@@ -724,7 +727,7 @@ function closeInfo(){
 		}
 	}
 	animeItem(scn.close, 'position', ['x'], [scn.close.mov.x], 0.5, 0, function(){
-		animeItem(scn.infoC.infoT, 'position', ['y'], [(scn.camViewSize.y/2 - scn.brand.lock.y/2)], 0.5);
+		animeItem(scn.infoC.infoT, 'position', ['y'], [(scn.camViewSize.y/2 - scn.brand.lock.y/3)], 0.5);
 		animeItem(scn.infoC.infoT, 'scale', ['y'], [0.2], 0.5, 0, function(){
 			animeItem(scn.infoC.infoT, 'position', ['x'], [-scn.infoC.infoT.w/2], 0.5);
 			animeItem(scn.infoC.infoT, 'scale', ['x'],  [0], 0.5, 0, function(){
@@ -780,21 +783,20 @@ function resize(){
 		}
 	}
 	if(scn.stat == 'lock'){
-		scn.carousel.active.children[0].scale.setScalar( scn.brand.lock.s );
+		scn.carousel.active.children[0].scale.setScalar( scn.close.lock.s );
 	}
 }
 function updateObjs(){
 	scn.camViewSize = calcViewSize(scn.cam, scn.cam[scn.stat].z, 0, 0);
 	
-	scn.brand.mov = { x: 0, y: clamp( scn.camViewSize.x/10, 0, scn.camViewSize.x/8 ), s: clamp( scn.camViewSize.x/64, 0.2, 0.6 ) };
+	scn.brand.mov = { x: 0, y: clamp( scn.camViewSize.x/12, 2, scn.camViewSize.x/10 ), s: clamp( scn.camViewSize.x/72, 0.2, 0.6 ) };
 	
-	scn.brand.lock = { x: -scn.camViewSize.x/2 + (scn.brand.bb.x/2), y: scn.camViewSize.y/2 - (scn.brand.bb.x/2), s: clamp( scn.camViewSize.x/112, 0.2, 0.6 )}; 
+	scn.brand.lock = { x: (-scn.camViewSize.x/2 + (scn.brand.bb.x/2) ), y: (scn.camViewSize.y/2 - (scn.brand.bb.x/2) ), s: clamp( scn.camViewSize.x/124, 0.2, 0.6 )}; 
 	
-	scn.close.mov = { x: scn.camViewSize.x + (scn.close.bb.x/2), y: scn.brand.lock.y, s: clamp( scn.camViewSize.x/72, 0.6, 1.2 )  };
+	scn.close.mov = { x: (scn.camViewSize.x + (scn.close.bb.x/2)), y: (scn.brand.lock.y), s: clamp( scn.camViewSize.x/72, 0.2, 0.6 )  };
 	
-	scn.close.lock = { x: -scn.brand.lock.x, y: scn.brand.lock.y, s: clamp( scn.camViewSize.x/72, 0.6, 1.2 ) };
+	scn.close.lock = { x: -scn.brand.lock.x, y: scn.brand.lock.y, s: clamp( scn.camViewSize.x/72, 0.4, 0.8 ) };
 
-	
 	scn.carousel.mov = { y: -scn.brand.mov.y };
 	scn.carousel.lock = { y: scn.camViewSize.y/2  - (scn.brand.bb.y/2)};
 }
@@ -1243,7 +1245,7 @@ function clamp(val, min, max) {
     return Math.trunc( (val > max ? max : val < min ? min : val) * 100) / 100;
 }
 function animeItem(item, property, paramArr, endVArr, duration, delay=0, endAction=null, ease=easeInOutQuad){
-	duration = Math.trunc((duration + delay) * scn.raf.fpsD);
+	duration = Math.trunc(((duration + delay) * 1000)/scn.raf.fps);
 	for (let i = 0; i < paramArr.length; i++){
 		let startV = item[property][paramArr[i]];
 		let deltaV = endVArr[i] - startV;
@@ -1252,13 +1254,14 @@ function animeItem(item, property, paramArr, endVArr, duration, delay=0, endActi
 	}
 	return;
 }
-function animate() {				
+function animate() {
 	scn.raf.fpsInterval = scn.raf.currT - scn.raf.prevT;
-	if(scn.raf.fpsInterval > scn.raf.fpsD){
+	if(scn.raf.fpsInterval >= scn.raf.fpsD){
 		scn.raf.prevT = scn.raf.currT;
 		render();
 	}
-	scn.raf.currT += scn.raf.fpsD;
+	scn.raf.currT += scn.raf.fps;
+	
 	requestAnimationFrame(animate);
 }
 function render(){
