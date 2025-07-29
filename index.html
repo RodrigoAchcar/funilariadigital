@@ -653,21 +653,19 @@ function setBlockMedias(topicBlock, topicMedias){
 		item = new Group();
 		item.colW = Math.round(((topicBlock.colsW * block.width)/100) * 100 )/100;
 		item.order = parseInt(block.order);
-		let blockHeight = 0;
 		posVector = 'x';
 		scaleVector = 'w';
 		posT = 0;
 		item.mediasAspect = block.mediasW/block.mediasH;
-		if(topicBlock.blockHigher == 0){ 
+		if(topicBlock.blockHigher == 0){
 			topicBlock.blockHigher = (item.colW/block.data.length)/item.mediasAspect;
 		}
-		if( item.mediasAspect >= 1){
+		item.colAspect = item.colW/topicBlock.blockHigher;
+		if( item.colAspect >= 1){
 			scalar = (item.colW)/(block.mediasW/block.data.length);
-			blockHeight = topicBlock.blockHigher * scalar;
 		}
-		if( item.mediasAspect < 1){
+		if( item.colAspect < 1){
 			scalar = topicBlock.blockHigher/(block.mediasH/block.data.length);
-			blockHeight = topicBlock.blockHigher * scalar;
 			posVector = 'y';
 			scaleVector = 'h';
 		}
