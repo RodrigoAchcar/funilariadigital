@@ -542,6 +542,8 @@ function buildScenario(){
 	window.addEventListener( 'pointermove', pointerMove );
 	window.addEventListener( 'pointerdown', pointerDown );
 	window.addEventListener( 'wheel', wheel, { passive: false } );
+	scn.then = performance.now();
+	scn.now = performance.now();
 	animate();
 }
 function openInfo(){
@@ -565,20 +567,20 @@ function openInfo(){
 	for(let i = 0; i < scn.carousel.children.length; i++){
 		if(scn.carousel.children[i].data.angle != scn.carousel.active.data.angle){
 			scn.carousel.children[i].traverse(function(child){
-				animeItem(child, 'material', ['opacity'], [0], 0.7);
+				animeItem(child, 'material', ['opacity'], [0], 0.5);
 			});
 		}
 	}
 	changeColor(scn.carousel.active.children[0], "active");
-	animeItem(scn.cam, 'position', ['x', 'y', 'z'], [scn.cam.lock.x, scn.cam.lock.y, scn.cam.lock.z], 0.7);
-	animeItem(scn.cam, 'target', ['y'], [scn.cam.lock.target], 0.7);
-	animeItem(scn.brand, 'scale', ['x', 'y'], [scn.brand.lock.s, scn.brand.lock.s], 0.7);	
-	animeItem(scn.brand, 'position', ['x', 'y'], [scn.brand.lock.x, scn.brand.lock.y], 0.7);
-	animeItem(scn.carousel, 'position', ['y'], [scn.carousel.lock.y], 0.7);
+	animeItem(scn.cam, 'position', ['x', 'y', 'z'], [scn.cam.lock.x, scn.cam.lock.y, scn.cam.lock.z], 0.5);
+	animeItem(scn.cam, 'target', ['y'], [scn.cam.lock.target], 0.5);
+	animeItem(scn.brand, 'scale', ['x', 'y'], [scn.brand.lock.s, scn.brand.lock.s], 0.5);	
+	animeItem(scn.brand, 'position', ['x', 'y'], [scn.brand.lock.x, scn.brand.lock.y], 0.5);
+	animeItem(scn.carousel, 'position', ['y'], [scn.carousel.lock.y], 0.5);
 	animeItem(scn.carousel, 'rotation', ['y'], [scn.carousel.activeRDelta], scn.carousel.activeRDuration, 0, function() {
-		animeItem(scn.carousel.active, 'scale', ['x', 'y'], [scn.carousel.childScale*2.6, scn.carousel.childScale*2.6], 0.7);
-		animeItem(scn.infoC.infoT, 'position', ['x'], [0], 0.7);
-		animeItem(scn.infoC.infoT, 'scale', ['x'], [scn.infoC.infoT.w], 0.7, 0, function(){
+		animeItem(scn.carousel.active, 'scale', ['x', 'y'], [scn.carousel.childScale*2.6, scn.carousel.childScale*2.6], 0.5);
+		animeItem(scn.infoC.infoT, 'position', ['x'], [0], 0.5);
+		animeItem(scn.infoC.infoT, 'scale', ['x'], [scn.infoC.infoT.w], 0.5, 0, function(){
 			plotElements( scn.menuObjs[ scn.carousel.active.name ] );
 		});
 	});
@@ -696,18 +698,18 @@ function displayInfo(){
 	scn.close.scale.setScalar( scn.close[scn.stat].s );
 	scn.close.position.y = scn.close.lock.y;
 	scn.topicRays.push(scn.close);
-	animeItem(scn.infoC.infoT, 'position', ['y'], [ (-(scn.infoC.infoBlock.h/2 - (scn.camViewSize.y/2 - scn.brand.lock.y/3 )) )], 0.7);
-	animeItem(scn.infoC.infoT, 'scale', ['y'], [scn.infoC.infoBlock.h], 0.7, 0, function(){
+	animeItem(scn.infoC.infoT, 'position', ['y'], [ (-(scn.infoC.infoBlock.h/2 - (scn.camViewSize.y/2 - scn.brand.lock.y/3 )) )], 0.5);
+	animeItem(scn.infoC.infoT, 'scale', ['y'], [scn.infoC.infoBlock.h], 0.5, 0, function(){
 		for(let i = 0; i < scn.infoC.infoBlock.children.length; i++){
 			for(let j = 0; j < scn.infoC.infoBlock.children[i].children.length; j++){
 				for(let k = 0; k < scn.infoC.infoBlock.children[i].children[j].children.length; k++){
 					scn.infoC.infoBlock.children[i].children[j].children[k].traverse(function(child){
-						animeItem(child, 'material', ['opacity'], [1], 0.5);
+						animeItem(child, 'material', ['opacity'], [1], 0.3);
 					});
 				}
 			}
 		}
-		animeItem(scn.close, 'position', ['x'], [scn.close.lock.x], 0.5, 0);
+		animeItem(scn.close, 'position', ['x'], [scn.close.lock.x], 0.3, 0);
 		window.addEventListener( "keydown", keyDown, false );
 	});
 }
@@ -744,16 +746,16 @@ function hideInfo(){
 	for(let i = 0; i < scn.carousel.children.length; i++){
 		if(scn.carousel.children[i].name != scn.carousel.active.name){
 			scn.carousel.children[i].traverse(function(child){
-				animeItem(child, 'material', ['opacity'], [1], 0.5);
+				animeItem(child, 'material', ['opacity'], [1], 0.3);
 			});
 		}
 	}
 	changeColor(scn.carousel.active.children[0], "normal");
-	animeItem(scn.carousel.active, 'scale', ['x', 'y'], [scn.carousel.childScale, scn.carousel.childScale], 0.6);
-	animeItem(scn.brand, 'position', ['x', 'y'], [scn.brand.mov.x, scn.brand.mov.y], 0.6);
-	animeItem(scn.carousel, 'position', ['y', 'z'], [scn.carousel.mov.y, 0], 0.6);
-	animeItem(scn.cam, 'target', ['y'], [scn.cam.mov.target], 0.7);	
-	animeItem(scn.cam, 'position', ['x', 'y', 'z'], [scn.cam.mov.x, scn.cam.mov.y, scn.cam.mov.z], 0.6, 0, function(){
+	animeItem(scn.carousel.active, 'scale', ['x', 'y'], [scn.carousel.childScale, scn.carousel.childScale], 0.5);
+	animeItem(scn.brand, 'position', ['x', 'y'], [scn.brand.mov.x, scn.brand.mov.y], 0.5);
+	animeItem(scn.carousel, 'position', ['y', 'z'], [scn.carousel.mov.y, 0], 0.5);
+	animeItem(scn.cam, 'target', ['y'], [scn.cam.mov.target], 0.5);	
+	animeItem(scn.cam, 'position', ['x', 'y', 'z'], [scn.cam.mov.x, scn.cam.mov.y, scn.cam.mov.z], 0.5, 0, function(){
 		scn.carousel.active = null;
 	});
 }
@@ -854,14 +856,14 @@ function pointerMove( event ) {
 				//'new'			
 				scn.currIntersect = scn.intersected;
 				changeColor(scn.currIntersect.children[0], "hover" );
-				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.childScale*1.6,scn.carousel.childScale*1.6], 0.5);
+				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.childScale*1.6,scn.carousel.childScale*1.6], 0.2);
 			}
 			if(scn.intersected.name !== scn.currIntersect.name){
 				//'changed'
 				changeColor(scn.currIntersect.children[0], "normal");
-				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.childScale,scn.carousel.childScale], 0.5);
+				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.childScale,scn.carousel.childScale], 0.2);
 				changeColor(scn.intersected.children[0], "hover");
-				animeItem(scn.intersected, 'scale', ['x','y'], [scn.carousel.childScale*1.6,scn.carousel.childScale*1.6], 0.5);
+				animeItem(scn.intersected, 'scale', ['x','y'], [scn.carousel.childScale*1.6,scn.carousel.childScale*1.6], 0.2);
 				scn.currIntersect = scn.intersected;			
 			}
 		}
@@ -869,7 +871,7 @@ function pointerMove( event ) {
 			if(scn.currIntersect != null){
 				let animeArray = [];
 				changeColor(scn.currIntersect.children[0], "normal");
-				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.childScale,scn.carousel.childScale], 0.5);
+				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.childScale,scn.carousel.childScale], 0.2);
 				scn.currIntersect = null;
 			}
 			if( scn.pointerDown ){
@@ -1105,10 +1107,12 @@ function rotateCarousel(obj, camera){
 	if(obj.rotation.y < 0){
 		obj.rotation.y = obj.rotation.y + Math.PI*2;
 	}
-	obj.rotation.y -= camera.position.x/500 + 0.002;
+	obj.rotation.y -= camera.position.x/200 + 0.002;
 }
 function setScene(){
-	scn.raf = setRAF(30);
+	scn.fps = 30;
+	scn.currFrame = 0;
+	scn.motionCount = 0;
 	scn.background = new Color( "#ffffff" );
 	scn.canvas = document.getElementById("canvas");
 	scn.canvas.bb = scn.canvas.getBoundingClientRect();
@@ -1245,23 +1249,21 @@ function clamp(val, min, max) {
     return Math.trunc( (val > max ? max : val < min ? min : val) * 100) / 100;
 }
 function animeItem(item, property, paramArr, endVArr, duration, delay=0, endAction=null, ease=easeInOutQuad){
-	duration = Math.trunc(((duration + delay) * 1000)/scn.raf.fps);
+	duration = Math.trunc(((duration + delay)* 1000)/scn.fps);
 	for (let i = 0; i < paramArr.length; i++){
 		let startV = item[property][paramArr[i]];
 		let deltaV = endVArr[i] - startV;
 		if(i > 0){endAction = null}
-		scn.renderGroup.push( [ scn.raf.currFrame, duration, item, property, [paramArr[i]], ease, startV, deltaV, endVArr[i], endAction ] );
+		scn.renderGroup.push( [ scn.currFrame, duration, item, property, [paramArr[i]], ease, startV, deltaV, endVArr[i], endAction ] );
 	}
 	return;
 }
 function animate() {
-	scn.raf.fpsInterval = scn.raf.currT - scn.raf.prevT;
-	if(scn.raf.fpsInterval > scn.raf.fpsD){
-		scn.raf.prevT = scn.raf.currT;
+	if( scn.now - scn.then >= scn.fps){
+		scn.then = performance.now();
 		render();
 	}
-	scn.raf.currT += scn.raf.fps;
-	
+	scn.now = performance.now();
 	requestAnimationFrame(animate);
 }
 function render(){
@@ -1272,8 +1274,8 @@ function render(){
 	}
 	for(let i = 0; i < scn.renderGroup.length; i++){
 		// [ startFrame, duration(seconds), item, property, param, ease, startV, deltaV, endV, endAction ]
-		scn.raf.motionCount = scn.raf.currFrame - scn.renderGroup[i][0];
-		if(scn.raf.motionCount >= scn.renderGroup[i][1]){
+		scn.motionCount = scn.currFrame - scn.renderGroup[i][0];
+		if(scn.motionCount >= scn.renderGroup[i][1]){
 			scn.renderGroup[i][2][scn.renderGroup[i][3] ][scn.renderGroup[i][4] ] = scn.renderGroup[i][8];
 			if(scn.renderGroup[i][9]){
 				scn.renderGroup[i][9]();
@@ -1281,14 +1283,11 @@ function render(){
 			scn.renderGroup.splice(i, 1);
 			continue;
 		}
-		scn.renderGroup[i][2][scn.renderGroup[i][3] ][scn.renderGroup[i][4] ] = Math.trunc(scn.renderGroup[i][5](scn.raf.motionCount, scn.renderGroup[i][6], scn.renderGroup[i][7], scn.renderGroup[i][1])*100 )/100;			
+		scn.renderGroup[i][2][scn.renderGroup[i][3] ][scn.renderGroup[i][4] ] = Math.trunc(scn.renderGroup[i][5](scn.motionCount, scn.renderGroup[i][6], scn.renderGroup[i][7], scn.renderGroup[i][1])*100 )/100;			
 	}
-	scn.raf.currFrame++;
+	scn.currFrame++;
 	scn.cam.updateProjectionMatrix();
 	scn.renderer.render( scn, scn.cam );
-}
-function setRAF(fps){
-	return { fps: fps, fpsD: Math.round( 1000/fps ), currFrame: 0, currT: 0, prevT: 0, fpsInterval: 0, motionCount: 0}
 }
 function easeInOutQuad(t, b, c, d) {
 	if ((t /= d / 2) < 1) return c / 2 * t * t + b;
