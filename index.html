@@ -9,7 +9,13 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="./media/icon/favicon/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="./media/icon/favicon/favicon-16x16.png">
 	<link rel="manifest" href="./media/icon/favicon/site.webmanifest">
-	<link rel="stylesheet" href="./static/css/pages/base.css">
+	<style>
+        html, body, #content { width: 100%; height:100%; min-height:100%; overflow: hidden;}
+        * {padding: 0; margin: 0;}
+        .invisible{ opacity: 1; display: none; }
+        h1, h2, p{ color: #ffffff; }
+        canvas{ width: 100%; height: 100%; 	object-fit: contain; }	
+	</style>
 </head>
 <body>
 <canvas id="canvas"></canvas>
@@ -19,15 +25,15 @@
 			<div data-width="100" data-order="0" data-type="media">
 				<a href="https://funilariadigital.com.br/art-gallery-display/" target="_blank" >
 					<noscript>
-					<video width="462" height="260" title="Art Gallery Display" muted loop>
-						<source src="./media/3d/vid/mobile/Art-Gallery-Display.mp4" type="video/mp4">
+					<video title="Art Gallery Display" muted loop>
+						<source src="./media/site/videos/Art-Gallery-Display-mobile.mp4" type="video/mp4">
 					</video>
 					</noscript>
 				</a>
 				<a href="https://funilariadigital.com.br/open-map-scenario/" target="_blank" >
 					<noscript>
-					<video width="462" height="260" title="3D open map scenario" muted loop>
-					<source src="./media/3d/vid/mobile/Open-Map-Scenario.mp4" type="video/mp4">
+					<video title="3D open map scenario" muted loop>
+					<source src="./media/site/videos/Open-Map-Scenario-mobile.mp4" type="video/mp4">
 					</video>
 					</noscript>
 				</a>
@@ -44,35 +50,36 @@
 				<h2>Clients and Workforce Visualized</h2>
 				<p>Enhance daily tasks, sales presentation, point-of-sale display, team briefing. Easy to use resources at hand.</p>
 			</div>
-			<div data-width="38" data-order="1" data-type="media">
+			<div data-width="40" data-order="1" data-type="media">
 			<a href="https://funilariadigital.com.br/object-3d-menu/" target="_blank" >
 				<noscript>
-				<img src="./media/3d/picture/mobile/3d-shape-mesh-menu.webp" alt="3d-shape-mesh-menu" />
+				<img src="./media/site/pictures/interactive-brain-shaped-menu-mobile.avif" alt="Mesh Shape Menu" />
 				</noscript>
 			</a>
+			<a href="https://funilariadigital.com.br/character-interactivity/" target="_blank" >
 			<noscript>
-			<img src="./media/3d/picture/mobile/cad-blueprint-projection.webp" alt="cad-blueprint-projection" />
+			<img src="./media/site/pictures/character-rigging-mobile.avif" alt="Rigging Setup Character" />
 			</noscript>
+			</a>
 			</div>
 		</div>
 		<div class="topicBlock">
-			<div data-width="44" data-order="0" data-type="text">
+			<div data-width="40" data-order="0" data-type="text">
 				<h2>Graphic Layer Only</h2>
 				<p>Dynamic or static display done with regular HTML/XML inputs. Preview integrity preserved on improvement updates.</p>
 			</div>
-			<div data-width="54" data-order="1" data-type="text">
+			<div data-width="60" data-order="1" data-type="text">
 				<h2>Product Immersion by Refresh Rate</h2>
 				<p>3D available for market strategies and business tools. A medium to provide consumers be part of what they are interested.</p>
 			</div>
 		</div>
 		<div class="topicBlock">
 			<div data-width="100" data-order="0" data-type="media">
+				<a href="https://funilariadigital.com.br/planetarium/" target="_blank" >
 				<noscript>
-				<img src="./media/3d/picture/mobile/solar-system-model-3d.webp" alt="solar-system-model-3d" />
+				<img src="./media/site/pictures/planetarium-mobile.avif" alt="solar-system-model-3d" />
 				</noscript>
-				<noscript>
-				<img src="./media/3d/picture/mobile/rigging-setup-character.webp" alt="rigging-setup-character" />
-				</noscript>
+				</a>
 			</div>
 		</div>
 	</div>
@@ -84,16 +91,19 @@
 			</div>
 		</div>
 		<div class="topicBlock">
-			<div data-width="50" data-order="1" data-type="text">
+			<div data-width="60" data-order="1" data-type="text">
 				<h2>Customized Templates on Demmand</h2>
 				<p>Convenient user access on what matters. Unique shapes and widgets made for every job. Original medias presented to the audience.</p>
 			</div>
-			<div data-width="34" data-order="0" data-type="media">
+			<div data-width="40" data-order="0" data-type="media">
 				<noscript>
-				<img src="./media/ux/picture/mobile/custom-professional-ux.webp" alt="custom-professional-ux" />
+				<img src="./media/site/pictures/interactive-layout-preview-daylight-mobile.avif" alt="Business makeover viewer day" />
 				</noscript>
 				<noscript>
-				<img src="./media/ux/picture/mobile/photo-overlay-ux.webp" alt="photo-overlay-ux" />
+				<img src="./media/site/pictures/interactive-layout-preview-afternoon-mobile.avif" alt="Business makeover viewer afternoon" />
+				</noscript>
+				<noscript>
+				<img src="./media/site/pictures/interactive-layout-preview-night-mobile.avif" alt="Business makeover viewer night" />
 				</noscript>
 			</div>
 		</div>
@@ -102,7 +112,7 @@
 				<h2>Logic Over Third Parties</h2>
 				<p>Strict native script features. Vanilla JS, HTML and CSS. Less libraries overhead or multi featured addons. Know whats happening in all lines.</p>
 			</div>
-			<div data-width="48" data-order="1" data-type="text">
+			<div data-width="50" data-order="1" data-type="text">
 				<h2>Useful Responsive Layouts</h2>
 				<p>Improve feedback insights by an easy to see interface. Figure which strategies are doing positive results and what needs update.</p>
 			</div>
@@ -110,16 +120,16 @@
 		<div class="topicBlock">
 			<div data-width="100" data-order="0" data-type="media">
 				<noscript>
-				<img src="./media/ux/vector/javascript-logo.svg" width="40" height="40" alt="javascript-logo" />
+				<img src="./media/site/vectors/javascript-logo.svg" alt="javascript-logo" />
 				</noscript>
 				<noscript>
-				<img src="./media/ux/vector/webgl-logo.svg" width="95" height="40" alt="webgl-logo" />
+				<img src="./media/site/vectors/webgl-logo.svg" alt="webgl-logo" />
 				</noscript>
 				<noscript>
-				<img src="./media/ux/vector/python-logo.svg" width="164" height="40" alt="python-logo" />
+				<img src="./media/site/vectors/python-logo.svg" alt="python-logo" />
 				</noscript>
 				<noscript>
-				<img src="./media/ux/vector/css3-logo.svg" width="28" height="40" alt="css3-logo" />
+				<img src="./media/site/vectors/css3-logo.svg"  alt="css3-logo" />
 				</noscript>
 			</div>
 		</div>
@@ -128,56 +138,49 @@
 		<div class="topicBlock">
 			<div data-width="100" data-order="0" data-type="media">
 				<noscript>
-				<video width="462" height="260" title="Sun Timelapse" muted loop>
-					<source src="./media/img/vid/mobile/sun-timelapse.mp4" type="video/mp4">
+				<video title="Sun Timelapse" muted loop>
+					<source src="./media/site/videos/sun-timelapse-mobile.mp4" type="video/mp4">
 				</video>
 				</noscript>
 				<noscript>
-				<video width="462" height="260" title="Drone Aerial Take" muted loop>
-					<source src="./media/img/vid/mobile/drone-aerial.mp4" type="video/mp4">
+				<video title="Drone Aerial Footage" muted loop>
+					<source src="./media/site/videos/drone-florianopolis-beiramar-mobile.mp4" type="video/mp4">
 				</video>
 				</noscript>
 			</div>
 		</div>
 		<div class="topicBlock">
-			<div data-width="100" data-order="0" data-type="text">
+			<div data-width="40" data-order="0" data-type="text">
 				<h2>Media Output Profiles Render</h2>
 				<p>Quality files processed for screen sizes. Fast loading time, color fidelity, smooth organic shapes, fluid animations.</p>
 			</div>
-		</div>
-		<div class="topicBlock">
-			<div data-width="64" data-order="0" data-type="text">
+			<div data-width="50" data-order="1" data-type="text">
 				<h2>Audience Range Achieved Through Performance</h2>
 				<p>Up to date format standards display art and documents at the right medium. Correct measures means less bounces, positive user experience.</p>
 			</div>
-			<div data-width="32" data-order="1" data-type="media">
-				<noscript>
-				<img src="./media/img/picture/mobile/night-sky.webp" alt="night-sky" />
-				</noscript>
-			</div>
 		</div>
 		<div class="topicBlock">
-			<div data-width="64" data-order="1" data-type="text">
-				<h2>Indexed Media Versions Routine</h2>
-				<p>Batch process versatile formats by devices required. Aspect ratio, connection bandwidth, bit rates carefuly revised for publishing.</p>
-			</div>
-			<div data-width="32" data-order="0" data-type="media">
+			<div data-width="100" data-order="0" data-type="media">
 				<noscript>
-				<img src="./media/img/picture/mobile/uv-ligh-paint-gueixa.webp" alt="uv-ligh-paint-gueixa" />
+				<img src="./media/site/pictures/rodrigo-dias-painting-shirt-mobile.avif" alt="Rodrigo Dias Ink on Fabric Art" />
 				</noscript>
 			</div>
 		</div>
+		
 		<div class="topicBlock">
 			<div data-width="50" data-order="0" data-type="text">
 				<h2>Better Ranks with Best Practices</h2>
 				<p>Search engines, social media alghoritms, web analytics prevails fit medias. A lean payload saves time, agregate crawlers priority points.</p>
 			</div>
-			<div data-width="32" data-order="1" data-type="media">
+			<div data-width="50" data-order="1" data-type="text">
+				<h2>Indexed Media Versions Routine</h2>
+				<p>Batch process versatile formats by devices required. Aspect ratio, connection bandwidth, bit rates carefuly revised for publishing.</p>
+			</div>
+		</div>
+		<div class="topicBlock">
+			<div data-width="100" data-order="0" data-type="media">
 				<noscript>
-				<img src="./media/img/picture/mobile/lord-cat-pose.webp" alt="lord-cat-pose" />
-				</noscript>
-				<noscript>
-				<img src="./media/img/picture/mobile/dogs-ocean.webp" alt="dogs-ocean" />
+				<img src="./media/site/pictures/orthophoto-utfpr-campus-downtown-mobile.avif" alt="Orthomosaic georeferenced composition" />
 				</noscript>
 			</div>
 		</div>
@@ -192,12 +195,12 @@
 		<div class="topicBlock">
 			<div data-width="100" data-order="0" data-type="media">
 				<noscript>
-				<img src="./media/seo/vector/engagement-statistic-analysis.svg" alt="engagement-statistic-analysis" />
+				<img src="./media/site/vectors/engagement-statistic-analysis.svg" alt="engagement statistic analysis" />
 				</noscript>
 			</div>
 		</div>
 		<div class="topicBlock">
-			<div data-width="48" data-order="0" data-type="text">
+			<div data-width="50" data-order="0" data-type="text">
 				<h2>Efficient Data Classify</h2>
 				<p>Gather massive sorted data. Intuitive easy to feed, clear to visualize. Strategies built from current feedbacks.</p>
 			</div>
@@ -209,7 +212,7 @@
 		<div class="topicBlock">
 			<div data-width="100" data-order="0" data-type="media">
 				<noscript>
-				<img src="./media/seo/vector/consumer-audience-monitoring.svg" alt="consumer-audience-monitoring" />
+				<img src="./media/site/vectors/consumer-audience-monitoring.svg" alt="consumer audience monitoring" />
 				</noscript>
 			</div>
 		</div>
@@ -230,7 +233,7 @@
 		<div class="topicBlock">
 			<div data-width="100" data-order="0" data-type="media">
 				<noscript>
-				<img src="./media/api/vector/workflow-convenience.svg" alt="workflow-convenience" />
+				<img src="./media/site/vectors/workflow-convenience.svg" alt="workflow convenience" />
 				</noscript>
 			</div>
 		</div>
@@ -239,7 +242,7 @@
 				<h2>Tools You Already Work</h2>
 				<p>Most Saas providers offers a complete interface usage. Onboard internal presets with custom tools available. Accessed by latest security procedures.</p>
 			</div>
-			<div data-width="48" data-order="1" data-type="text">
+			<div data-width="50" data-order="1" data-type="text">
 				<h2>Multiple Sources Data Feed</h2>
 				<p>Bundles mounted at the business desired specs. With buit in cross provider hooks, officialy registered. Live, safe, legal.</p>
 			</div>
@@ -247,24 +250,19 @@
 		<div class="topicBlock">
 			<div data-width="100" data-order="0" data-type="media">
 				<noscript>
-				<img src="./media/api/vector/application-cross-reference.svg" alt="application-cross-reference" />
+				<img src="./media/site/vectors/application-cross-reference.svg" alt="application cross reference" />
 				</noscript>
 			</div>
 		</div>
 		<div class="topicBlock">
-			<div data-width="24" data-order="0" data-type="text">
+			<div data-width="42" data-order="1" data-type="text">
 				<h2>Unified Social Media Manage</h2>
 				<p>Media brands have APIs allowed to interact. Social medias, websites, analytics, apps, converged to one assistance asset.</p>
 			</div>
-			<div data-width="60" data-order="1" data-type="media">
+
+			<div data-width="30" data-order="0" data-type="media">
 				<noscript>
-				<img src="./media/api/picture/mobile/api-google-maps-gps-track.webp" alt="api-google-maps-gps-track" />
-				</noscript>
-				<noscript>
-				<img src="./media/api/picture/mobile/api-google-maps-data-overlay.webp" alt="api-google-maps-data-overlay" />
-				</noscript>
-				<noscript>
-				<img src="./media/api/vector/social-media-integrate.svg" alt="social-media-integrate" />
+				<img src="./media/site/vectors/social-media-integrate.svg" alt="social media integrate" />
 				</noscript>
 			</div>
 		</div>
@@ -273,7 +271,7 @@
 		<div class="topicBlock">
 			<div data-width="100" data-order="0" data-type="media">
 				<noscript>
-				<img src="./media/info/picture/mobile/about-rodrigo-achcar.webp" alt="about-rodrigo-achcar" />
+				<img src="./media/site/pictures/about-rodrigo-achcar-mobile.avif" alt="about Rodrigo Achcar" />
 				</noscript>
 			</div>
 		</div>
@@ -290,32 +288,32 @@
 			<div data-width="100" data-order="0" data-type="media">
 				<a href="https://www.linkedin.com/in/rodrigo-achcar/" target="_blank" >
 				<noscript>
-				<img src="./media/info/vector/linkedin-rodrigo-achcar.svg" alt="linkedin-rodrigo-achcar" />
+				<img src="./media/site/vectors/linkedin-rodrigo-achcar.svg" alt="linkedin-rodrigo-achcar" />
 				</noscript>
 				</a>
 				<a href="https://github.com/RodrigoAchcar" target="_blank" >
 				<noscript>
-				<img src="./media/info/vector/github-rodrigo-achcar.svg" alt="github-rodrigo-achcar" />
+				<img src="./media/site/vectors/github-rodrigo-achcar.svg" alt="github-rodrigo-achcar" />
 				</noscript>
 				</a>
 				<a href="https://wa.me/5561992720142" >
 				<noscript>
-				<img src="./media/info/vector/whatsapp-phone-rodrigo-achcar.svg" alt="whatsapp-phone-rodrigo-achcar" />
+				<img src="./media/site/vectors/whatsapp-phone-rodrigo-achcar.svg" alt="whatsapp-phone-rodrigo-achcar" />
 				</noscript>
 				</a>
 				<a href="https://www.facebook.com/rodrigo.achcar.9/" target="_blank" >
 				<noscript>
-				<img src="./media/info/vector/facebook-rodrigo-achcar.svg" alt="facebook-rodrigo-achcar" />
+				<img src="./media/site/vectors/facebook-rodrigo-achcar.svg" alt="facebook-rodrigo-achcar" />
 				</noscript>
 				</a>
 				<a href="https://www.instagram.com/rodrigorachcar/" target="_blank" >
 				<noscript>
-				<img src="./media/info/vector/instagram-rodrigo-achcar.svg" alt="instagram-rodrigo-achcar" />
+				<img src="./media/site/vectors/instagram-rodrigo-achcar.svg" alt="instagram-rodrigo-achcar" />
 				</noscript>
 				</a>
 				<a href="mailto:rodrigor.achcar@gmail.com" target="_blank" >
 				<noscript>
-				<img src="./media/info/vector/email-contact.svg" alt="email-contact" />
+				<img src="./media/site/vectors/email-contact.svg" alt="email-contact" />
 				</noscript>
 				</a>
 			</div>
@@ -331,7 +329,7 @@
 	}
 </script>
 <script type="module">
-import { Cache, WebGLRenderer, ACESFilmicToneMapping, Color, SRGBColorSpace, Vector2, Vector3, Scene, PerspectiveCamera, DirectionalLight, Group, Raycaster, LoadingManager, TextureLoader, VideoTexture, Mesh, MeshStandardMaterial, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, PlaneGeometry, ShapeGeometry, EdgesGeometry, LineSegments, FrontSide } from 'three';
+import { Cache, WebGLRenderer, ACESFilmicToneMapping, Color, SRGBColorSpace, Vector2, Vector3, Object3D, Scene, PerspectiveCamera, DirectionalLight, Group, Raycaster, LoadingManager, TextureLoader, Texture, VideoTexture, Mesh, MeshStandardMaterial, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, PlaneGeometry, ShapeGeometry, EdgesGeometry, LineSegments, FrontSide, LineBasicMaterial } from 'three';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';	
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { Font } from 'three/addons/loaders/FontLoader.js';
@@ -342,102 +340,46 @@ const scn = new Scene();
 const requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 function init(){
-	setScene(scn);
-	loadFiles( [ scn.fonts.rubick, scn.meshes.homepage ] , getMenuItems);
+	scn.fileObjs = fileObjsLoad();
+	scn.filePaths = filePathsLoad();
+	scn.menuInfo = {};
+	scn.loaderClasses = { fbx: [FBXLoader] , ttf: [TTFLoader], avif: [TextureLoader, generateImg], svg: [SVGLoader, generateSvg], mp4: [VideoTexture, generateVid] };
+	updateMediaUrls(scn.filePaths)
+	loadFiles( scn.fileObjs, clearFirstLoad);
 }
-function loadFile(loaderClass, filePath) {
-	return new Promise((resolve) => {
-		const loader = loaderClass;
-		loader.load(filePath, (data) => {
-			resolve(data);
-		});
-	});
-}
-async function loadFiles( filesArray, endAction=null ){
-	const manager = new LoadingManager();
-	let filesLoadQtd = 0;
-	let loadCount = 0;
-	for(let i = 0; i < filesArray.length; i++){
-		for(let j = 0; j < filesArray[i].topics.length; j++){
-			if(filesArray[i].topics[j].media){
-				for(let k = 0; k < filesArray[i].topics[j].media.length; k++){
-					for(let l = 0; l < filesArray[i].topics[j].media[k].data.length; l++){
-						if(filesArray[i].topics[j].media[k].data[l].tag !== 'mp4'){
-							filesLoadQtd++;
-						}
-					}
-				}
-			}
+function fileObjsLoad(){
+	return {
+		fonts: {
+			media: [
+				{ data: [ {src: '/static/fonts/rubik/Rubik-Regular.ttf', tag: 'ttf', name:'Rubik-Regular'}, {src:'/static/fonts/rubik/Rubik-Bold.ttf', tag: 'ttf', name:'Rubik-Bold' } ] }, 
+			]
+		},
+		models: {
+			media: [
+				{ data: [ {src: '/static/js/webgl/models/homepage/homepage.fbx', tag: 'fbx', name:'homepage' } ]},
+			]
 		}
 	}
-	for(let i = 0; i < filesArray.length; i++){
-		for(let j = 0; j < filesArray[i].topics.length; j++){
-			if(filesArray[i].topics[j].media){
-				for(let k = 0; k < filesArray[i].topics[j].media.length; k++){
-					for(let l = 0; l < filesArray[i].topics[j].media[k].data.length; l++){
-						if(filesArray[i].topics[j].media[k].data[l].tag !== 'mp4'){
-							let data = await loadFile(new scn.loaderClasses[filesArray[i].topics[j].media[k].data[l].tag][0](manager), filesArray[i].topics[j].media[k].data[l].src);
-							filesArray[i].topics[j].media[k].data[l].src = data;
-							
-							if( filesArray[i].topics[j].media[k].data[l].tag == "webp" ){
-								filesArray[i].topics[j].media[k].data[l].w = data.source.data.width;
-								filesArray[i].topics[j].media[k].data[l].h = data.source.data.height;
-								filesArray[i].topics[j].media[k].mediasW += data.source.data.width;
-								filesArray[i].topics[j].media[k].mediasH += data.source.data.height;
-							}
-							if( filesArray[i].topics[j].media[k].data[l].tag == "svg" ){
-								
-								filesArray[i].topics[j].media[k].data[l].w = data.xml.width.baseVal.value;
-								filesArray[i].topics[j].media[k].data[l].h = data.xml.height.baseVal.value;
-								filesArray[i].topics[j].media[k].mediasW += data.xml.width.baseVal.value;
-								filesArray[i].topics[j].media[k].mediasH += data.xml.height.baseVal.value;
-								
-							}
-							if( filesArray[i].topics[j].media[k].data[l].tag == "ttf" ){
-								filesArray[i].topics[j].media[k].data[l].src = new Font( data );
-							}
-							loadCount++;
-						}
-					}
-				}
-			}
-		}
-		filesArray[i].loaded = true;
-	}
-	if(loadCount == filesLoadQtd){
-		//console.log('loading complete');
-		endAction();
-		return;
-	}
-	manager.onStart = function () {};
-	manager.onProgress = function () {};
-	manager.onLoad = function () {};
-	manager.onError = function () {};
 }
-function getMenuItems(){
+function filePathsLoad(){
 	const obj = {};
 	const content = document.getElementById("container");
 	for(let i = 0; i < content.children.length; i++){
 		let menuItem = content.children[i];
 		let itemID = menuItem.getAttribute("id");
-		obj[itemID] = { loaded : false, topics: []};
+		obj[itemID] = [];
 		for(let j = 0; j < menuItem.children.length; j++){
 			let topics = menuItem.children[j];
 			let topicObj = { media: [], text: [] };
 			for(let k = 0; k < topics.children.length; k++){
 				let block = topics.children[k];
 				let blockObj = { type: block.getAttribute("data-type"), order: block.getAttribute("data-order"), width: block.getAttribute("data-width"), data: [] };
-				if( blockObj.type == 'media'){
-					blockObj.mediasW = 0;
-					blockObj.mediasH = 0;
-				}
 				for(let l = 0; l < block.children.length; l++){
 					let elm = block.children[l];
 					if( blockObj.type == 'text'){
 						blockObj.data.push( { tag: elm.localName, info: elm.innerHTML.split(' ')} );
 					}
 					if( blockObj.type == 'media'){
-						
 						let dataObj = {};
 						if(elm.localName == 'a'){
 							dataObj.href = elm.getAttribute("href");
@@ -448,180 +390,398 @@ function getMenuItems(){
 						if(dataObj.tag == 'mp4'){
 							const fragment = document.createRange().createContextualFragment(elm.firstChild.textContent).children[0];
 							dataObj.src = fragment;
-							dataObj.w = fragment.width;
-							dataObj.h = fragment.height;
-							blockObj.mediasW += fragment.width;
-							blockObj.mediasH += fragment.height;
-
 						}
 						blockObj.data.push( dataObj );
 					}
 				}
 				topicObj[blockObj.type].push(blockObj);
 			}
-			if(topicObj.media.length == 0){ delete topicObj.media;	}
-			if(topicObj.text.length == 0){ delete topicObj.text; }
-			obj[itemID].topics.push(topicObj);
+			if(topicObj.media.length === 0){ delete topicObj.media}
+			if(topicObj.text.length === 0){ delete topicObj.text}
+			obj[itemID].push(topicObj);
 		}
 	}
-	scn.menuObjs = obj;
+	return obj;
+}
+function updateMediaUrls(filePathsObj){
+	let list = [];
+	let regexp = /src\s*=\s*"(.+?)"/g;
+	let canvas = window.innerWidth;
+	let sizePath = 'mobile'
+	if(canvas > 480){ sizePath = 'pc'; }
+	if(canvas > 1080){ sizePath = 'tv'; }
+	for(let [k,v] of Object.entries(filePathsObj) ){
+		for(let i = 0; i<v.length; i++){
+			if( v[i].media ){
+				for(let j = 0; j<v[i].media[0].data.length; j++){
+					if(v[i].media[0].data[j].tag === 'avif'){
+						let path = v[i].media[0].data[j].src.replace(/mobile/i, sizePath);
+						v[i].media[0].data[j].src = path;
+					}
+					if(v[i].media[0].data[j].tag === 'mp4'){
+						let path = v[i].media[0].data[j].src.firstElementChild.src.replace(/mobile/i, sizePath);
+						v[i].media[0].data[j].src.setAttribute('src', path);
+						v[i].media[0].data[j].src.load();
+					}
+				}
+			}
+		}
+	}
+	return list;
+}
+async function loadFiles( filesObj, endAction=null ){
+	const manager = new LoadingManager();
+	let filesLoadQtd = 0;
+	let loadCount = 0;
+	for(let types of Object.entries(filesObj) ){
+		if(types[1].media){
+			for(let i = 0; i < types[1].media.length; i++){
+				for(let j = 0; j < types[1].media[i].data.length; j++){
+					if(types[1].media[i].data[j].tag !== 'mp4'){
+						filesLoadQtd++;
+					}
+				}
+			}
+		}
+	}
+	for(let types of Object.entries(filesObj) ){
+
+		if(types[1].media){
+			for(let i = 0; i < types[1].media.length; i++){
+				for(let j = 0; j < types[1].media[i].data.length; j++){
+					if(types[1].media[i].data[j].tag !== 'mp4'){
+						const data = await loadFile(scn.loaderClasses[types[1].media[i].data[j].tag][0], `${types[1].media[i].data[j].src}`);
+						if(types[1].media[i].data[j].tag === 'avif'){
+							data.colorSpace = SRGBColorSpace;
+							types[1].media[i].data[j].width = data.source.data.width;
+							types[1].media[i].data[j].height = data.source.data.height;
+						}
+						if(types[1].media[i].data[j].tag === 'svg'){
+							data.colorSpace = SRGBColorSpace;
+							types[1].media[i].data[j].width = parseFloat(data.xml.attributes.width.nodeValue);
+							types[1].media[i].data[j].height = parseFloat(data.xml.attributes.height.nodeValue);
+						}
+						types[1].media[i].data[j].src = data;
+						if( types[1].media[i].data[j].tag === 'ttf' ){
+							types[1].media[i].data[j].src = new Font( data );
+						}
+						loadCount++;
+					}
+					if(types[1].media[i].data[j].tag === 'mp4'){
+						types[1].media[i].data[j].width = types[1].media[i].data[j].src.videoWidth;
+						types[1].media[i].data[j].height = types[1].media[i].data[j].src.videoHeight;
+					}
+				}
+			}
+		}
+		
+	}
+	if(loadCount === filesLoadQtd){
+		//console.log('loading complete');
+		endAction();
+	}
+	manager.onStart = function () {};
+	manager.onProgress = function () {};
+	manager.onLoad = function () {};
+	manager.onError = function () {};
+}
+function clearFirstLoad(){
+	scn.fonts = {};
+	scn.models = {};
+	for(let [k, v] of Object.entries(scn.fileObjs) ){
+		for(let i = 0; i < v.media[0].data.length; i++){	
+			scn[k][v.media[0].data[i].name] = v.media[0].data[i].src;
+		}
+	}
+	dispose(scn.fileObjs.models.media[0].data[0].src);
+	delete scn.fileObjs;
+	setScene();
+}
+function setScene(){
+	scn.fps = 30;
+	scn.fpsD = Math.trunc((1000/scn.fps)*100)/100;
+	scn.currFrame = 0;
+	scn.motionCount = 0;
+	scn.then = performance.now();
+	scn.now = performance.now();
+	scn.background = new Color( 0xffffff );
+	scn.canvas = document.getElementById("canvas");
+	scn.canvas.w = window.innerWidth;
+	scn.canvas.h = window.innerHeight;
+	scn.canvas.deltaW = 0;
+	scn.canvas.deltaH = 0;
+	scn.pointerDown = false;
+	scn.currIntrsc = null;
+	scn.pointer = new Vector2();
+	scn.raycaster = new Raycaster();
+	scn.renderGroup = [];
+	scn.initPos = new Vector2();
+	scn.renderer = setRenderer();
+	scn.attach( setCamera() );
+	scn.colors = {
+		stroke: { 
+			"normal": {r: 0.004, g: 0.042, b: 0.036 },
+			"hover": {r: 0.006, g: 0.08, b: 0.06 },
+			"active": {r: 0.006, g: 0.08, b: 0.05 }
+		},
+		fill: {
+			"normal": {r: 0.024, g: 0.57, b: 0.41 }, 
+			"hover": {r: 0.1, g: 0.72, b: 0.4 },
+			"active": {r: 0.1, g: 0.72, b: 0.7 }
+		},
+		glow: {
+			"normal": {r: 0.033, g: 0.830, b: 0.597 }, 
+			"hover": {r: 0.5, g: 0.9, b: 0.8},
+			"active": {r: 0.9, g: 1.0, b: 0.9 }
+		}
+	}
 	buildScenario();
-	return;
 }
 function buildScenario(){
-	scn.carousel = setCarousel();
-	scn.infoC = setinfoC();
-	for(let item of Object.values(scn.meshes.homepage.topics[0].media[0].data[0].src.children) ){
-		let geo = item.geometry;
-		let strokeMat = new MeshStandardMaterial( { color: new Color('#0E3F36'), fog: false, toneMapped: false, transparent: true } );
+	scn.attach(setCarousel());
+	scn.attach(setinfoC());
+	let infoBtns = new Group();
+	infoBtns.name = 'infoBtns';
+	scn.attach(infoBtns);
+	let models = scn.models.homepage.children;
+	for(let i=0; i< models.length; i++ ){
+		let geo = models[i].geometry;
+		let strokeMat = new MeshStandardMaterial( { color: new Color('#0E3F36'), fog: false, toneMapped: false, transparent: true, depthWrite : false } );
 		let mesh = new Mesh(geo, strokeMat);
-		geo.dispose();
-		strokeMat.dispose();
-		mesh.name = 'stroke';
-		if(item.children.length > 0){
-			let geoFill = item.children[0].geometry;
-			let fillMat =  new MeshStandardMaterial( { color: new Color('#2BC7AC'), roughness: 1, metalness: 0, fog: false, toneMapped: false, transparent: true } );
-			let meshFill = new Mesh(geoFill, fillMat);
-			meshFill.name = 'fill';
-			geoFill.dispose();
-			fillMat.dispose();
-			item.children[0].geometry.dispose();
-			item.children[0].material.dispose();
-			if(item.children[0].children.length > 0){
-				let geoGlow = item.children[0].children[0].geometry;
-				let glowMat = new MeshStandardMaterial( { color: new Color('#33EBCB'), roughness: 1, metalness: 0, fog: false, toneMapped: false, transparent: true } );
-				let meshGlow = new Mesh(geoGlow, glowMat);
-				meshGlow.name = 'glow';
-				geoGlow.dispose();
-				glowMat.dispose();
-				meshFill.add(meshGlow);
-			}
-			mesh.add(meshFill);
-		}
 		mesh.scale.normalize();
 		mesh.geometry.computeBoundingBox();
 		mesh.geometry.computeBoundingSphere();
 		mesh.bb = {x: Math.abs(mesh.geometry.boundingBox.min.x - mesh.geometry.boundingBox.max.x), y: Math.abs(mesh.geometry.boundingBox.min.y - mesh.geometry.boundingBox.max.y)}; 
-		if(Object.keys(scn.menuObjs).includes(item.name)){
+		mesh.name = 'stroke';
+		geo.dispose();
+		strokeMat.dispose();
+		if(models[i].children.length > 0){
+			let geoFill = models[i].children[0].geometry;
+			let fillMat =  new MeshStandardMaterial( { color: new Color('#2BC7AC'), roughness: 1, metalness: 0, fog: false, toneMapped: false, transparent: true, depthWrite : false } );
+			let meshFill = new Mesh(geoFill, fillMat);
+			meshFill.scale.normalize();
+			meshFill.geometry.computeBoundingBox();
+			meshFill.geometry.computeBoundingSphere();
+			meshFill.name = 'fill';
+			geoFill.dispose();
+			fillMat.dispose();
+			if(models[i].children[0].children.length > 0){
+				let geoGlow = models[i].children[0].children[0].geometry;
+				let glowMat = new MeshStandardMaterial( { color: new Color('#33EBCB'), roughness: 1, metalness: 0, fog: false, toneMapped: false, transparent: true, depthWrite : false } );
+				let meshGlow = new Mesh(geoGlow, glowMat);
+				meshGlow.scale.normalize();
+				meshGlow.geometry.computeBoundingBox();
+				meshGlow.geometry.computeBoundingSphere();
+				meshGlow.name = 'glow';
+				geoGlow.dispose();
+				glowMat.dispose();
+				meshFill.attach(meshGlow);
+			}
+			mesh.attach(meshFill);
+		}
+		if(Object.keys(scn.filePaths).includes(models[i].name)){
 			let rayMesh = genRaycastMesh(mesh.bb.x, mesh.bb.y);
+			rayMesh.scale.normalize();
 			rayMesh.bb = mesh.bb; 
-			rayMesh.name = item.name;
-			rayMesh.add(mesh);
-			scn.carousel[item.name] = rayMesh;
-			scn.carousel.add(rayMesh);
-			scn.carouselRays.push(rayMesh);
+			rayMesh.name = models[i].name;
+			rayMesh.attach(mesh);
+			getMesh('menu').attach(rayMesh);
 			continue;
 		}
-		if(item.name == "close"){
+		if(models[i].name === "close"){
 			let rayMesh = genRaycastMesh(mesh.bb.x, mesh.bb.y);
+			rayMesh.scale.normalize();
 			rayMesh.bb = mesh.bb;
-			rayMesh.name = item.name;
-			rayMesh.add(mesh);
-			scn[item.name] = rayMesh;
-			scn.add(rayMesh);
+			rayMesh.name = models[i].name;
+			rayMesh.attach(mesh);
+			//scn.attach(rayMesh);
+			getMesh('infoBtns').attach(rayMesh);
+			rayMesh.visible = false;
 			continue;
 		}
-		if(item.name == "brand"){
-			mesh.name = item.name;
-			scn[item.name] = mesh;
-			scn.add(mesh);
+		if(models[i].name == "brand"){
+			mesh.name = models[i].name;
+			scn.attach(mesh);
 		}
 	}
-	scn.close.visible = false;
-	scn.carousel.angle = Math.trunc(( (Math.PI/180 * 360)/scn.carousel.children.length)*100)/100;
-	for(let i = 0; i < scn.carousel.children.length; i++){
-		scn.carousel.children[i].data = { angle: scn.carousel.angle*i, pX: Math.sin(scn.carousel.angle*i), pY: Math.cos(scn.carousel.angle*i) };
+	dispose(scn.models.homepage);
+	delete scn.models;
+	setup();
+	getMesh('menu').angle = Math.round(( (Math.PI/180 * 360)/getMesh('menu').children.length)*10)/10;
+	for(let i = 0; i < getMesh('menu').children.length; i++){
+		getMesh('menu').children[i].data = { angle: getMesh('menu').angle*i, pX: Math.sin(getMesh('menu').angle*i), pY: Math.cos(getMesh('menu').angle*i) };		
 	}
-	scn.intersectedObjs = scn.carouselRays;
-	delete scn.meshes;
-	let htmlElmn = document.getElementsByClassName('invisible')[0];
-	htmlElmn.style.opacity = 0;
-	htmlElmn.style.display = 'none';
-	resize();
+	getMesh('menu').r = getMesh('menu').children.length*2;
+	for(let i = 0; i < getMesh('menu').children.length; i++){
+		getMesh('menu').children[i].position.x = getMesh('menu').r * getMesh('menu').children[i].data.pX;
+		getMesh('menu').children[i].position.z = getMesh('menu').r * getMesh('menu').children[i].data.pY;
+	}
 	window.addEventListener( 'resize', resize, false );
-	window.addEventListener( 'pointermove', pointerMove );
-	window.addEventListener( 'pointerdown', pointerDown );
-	window.addEventListener( 'wheel', wheel, { passive: false } );
-	scn.then = performance.now();
-	scn.now = performance.now();
+	scn.canvas.addEventListener( 'pointermove', pointermove );
+	scn.canvas.addEventListener( 'pointerdown', pointerdown );
+	window.addEventListener( 'pointerup', pointerup );
+	scn.canvas.addEventListener( 'touchstart', touchstart );
+	scn.canvas.addEventListener( 'touchmove', touchmove );
+	scn.canvas.addEventListener( 'touchend', touchend );
+	scn.canvas.addEventListener( 'wheel', wheel );
+
+	scn.stat = 'mov';
+	
+	getMesh('cam').position.set(0, Math.ceil(-getMesh('brand').bb.y*0.2), Math.ceil(getMesh('brand').bb.y*2) );
+	getMesh('cam').target.y = Math.ceil(-getMesh('brand').bb.y*1.2);
+	getMesh('brand').position.set(0, Math.ceil(-getMesh('brand').bb.y), 0);
+	getMesh('menu').position.y = Math.ceil(-getMesh('brand').bb.y)*1.4;
+	resize();
 	animate();
 }
-function openInfo(){
-	scn.stat = 'lock';
-	scn.camViewSize = calcViewSize(scn.cam, scn.cam[scn.stat].z, 0, 0);
-	updateObjs();
-	scn.infoC.infoT.w = Math.trunc((scn.camViewSize.x * 0.9) *100)/100;
-	scn.infoC.infoT.position.x = -scn.infoC.infoT.w/2;
-	scn.infoC.infoT.position.y = (scn.camViewSize.y/2) - (scn.brand.lock.y/3);
-	scn.infoC.infoT.visible = true;
-	scn.carousel.activeR = Math.PI*2 - scn.carousel.active.data.angle;
-	scn.carousel.activeRDelta = scn.carousel.activeR;
-	if(Math.abs(scn.carousel.rotation.y - scn.carousel.activeR) >= Math.PI){
-		if(scn.carousel.rotation.y > scn.carousel.activeR){
-			scn.carousel.activeRDelta += Math.PI*2;
-		}else{
-			scn.carousel.rotation.y += Math.PI*2;
+function setup(){
+	scn.v = {
+		mov: {
+			camP: [0, Math.ceil(-getMesh('brand').bb.y*0.2), Math.ceil(getMesh('brand').bb.y*4)],
+			tP: Math.ceil(-getMesh('brand').bb.y*1.2),
+			brandP: [0, Math.ceil(-getMesh('brand').bb.y), 0],
+		},
+		scroll:{
+			camP: Math.floor(getMesh('brand').bb.y*4),
+			brandP: [Math.ceil(getMesh('brand').bb.x/2), Math.floor(-getMesh('brand').bb.y), 0]
 		}
 	}
-	scn.carousel.activeRDuration = Math.ceil(Math.abs(scn.carousel.rotation.y - scn.carousel.activeRDelta))/Math.PI;
-	for(let i = 0; i < scn.carousel.children.length; i++){
-		if(scn.carousel.children[i].data.angle != scn.carousel.active.data.angle){
-			scn.carousel.children[i].traverse(function(child){
+	scn.states = {
+		mov: ( function(){
+			rotateCarousel( getMesh('menu'), getMesh('cam') );
+			getMesh('cam').position.x = clamp(getMesh('cam').position.x, -20, 20);
+			getMesh('cam').position.y = clamp(getMesh('cam').position.y, -30, 0);			
+			getMesh('cam').position.z = clamp(getMesh('cam').position.z, 40, 70);
+		} ),
+		scroll: (
+			function(){
+			getMesh('cam').position.y = clamp(getMesh('cam').position.y, getMesh('cam').bottomLimit, getMesh('cam').topLimit);
+			getMesh('close', ['infoBtns']).position.y = ( (getMesh('cam').position.y) - (getMesh('cam').topLimit) ) + Math.ceil(getMesh('brand').bb.y/2);
+			getMesh('cam').target.y = getMesh('cam').position.y;
+			getMesh('lightTarget').position.y = getMesh('cam').position.y/2;
+		}),
+		locked: (function(){})
+	};	
+}
+function resize(){
+	scn.renderer.setSize( scn.canvas.parentElement.clientWidth, scn.canvas.parentElement.clientHeight );
+	getMesh('cam').aspect = scn.canvas.offsetWidth/ scn.canvas.offsetHeight;
+	getMesh('cam').updateProjectionMatrix();
+	getMesh('cam').view = calcViewSize( Math.ceil(scn.v.scroll.camP), getMesh('cam').view);
+	getMesh('cam').topLimit = Math.ceil(-getMesh('cam').view.y/2);
+	let v;
+	if(scn.stat === 'mov'){
+		v = clamp(Math.floor(getMesh('cam').position.z/getMesh('cam').aspect), 40, 70);
+		animeItem(getMesh('cam'), 'position', ['z'], [v], 0.3);
+	}
+	if(scn.stat === 'scroll'){
+		v = clamp( (Math.ceil(scn.v.scroll.camP)*getMesh('cam').aspect), 40, 80);
+		animeItem(getMesh('cam'), 'position', ['z'], [v], 0.3);
+		if(getMesh('cam').position.y < getMesh('cam').topLimit){
+			animeItem(getMesh('cam'), 'position', ['y'], [getMesh('cam').topLimit], 0.3);
+		}
+	}	
+}
+function openInfo(){
+	scn.stat = 'locked';
+	getMesh('cam').view = calcViewSize( scn.v.scroll.camP, getMesh('cam').view);
+	getMesh('cam').topLimit = Math.floor(-getMesh('cam').view.y/2);
+	let v;
+	v = clamp( (Math.ceil(scn.v.scroll.camP)*getMesh('cam').aspect), 40, 80);
+
+	getMesh('infoT', ['infoC']).w = Math.floor(getMesh('cam').view.x * 0.9);
+	getMesh('infoT', ['infoC']).position.x = -getMesh('infoT', ['infoC']).w/2;
+	getMesh('infoT', ['infoC']).position.y = Math.round(-getMesh('brand').bb.y);
+	
+	animeItem(getMesh('cam'), 'position', ['x', 'y', 'z'], [0, getMesh('cam').topLimit, v], 0.5);
+	animeItem(getMesh('cam'), 'target', ['y'], [getMesh('cam').topLimit], 0.5);	
+	animeItem(getMesh('brand'), 'position', ['x', 'y'], [ (-getMesh('cam').view.x/2) + getMesh('brand').bb.x,  -getMesh('brand').bb.y/2 ], 0.5);
+	animeItem(getMesh(scn.currIntrsc, ['menu']), 'scale', ['x', 'y', 'z'], [3, 3, 5	], 0.4, 0, function() {
+		getMesh('infoT', ['infoC']).visible = true;
+		animeItem(getMesh('infoT', ['infoC']), 'position', ['x'], [0], 0.4);
+		animeItem(getMesh('infoT', ['infoC']), 'scale', ['x'], [getMesh('infoT', ['infoC']).w], 0.4, 0, function(){
+			plotElements( scn.menuInfo[scn.currIntrsc] );
+		});
+	});
+	
+	changeColor(scn.currIntrsc, 'active');
+	getMesh('menu').activeR = (Math.PI/180 * 360) - getMesh(scn.currIntrsc, ['menu']).data.angle;
+	getMesh('menu').activeRDelta = getMesh('menu').activeR;
+	if(Math.abs(getMesh('menu').rotation.y - getMesh('menu').activeR) >= Math.PI){
+		if(getMesh('menu').rotation.y > getMesh('menu').activeR){
+			getMesh('menu').activeRDelta += Math.PI*2;
+		}else{
+			getMesh('menu').rotation.y += Math.PI*2;
+		}
+	}
+	getMesh('menu').activeRDuration = Math.abs(getMesh('menu').rotation.y - getMesh('menu').activeRDelta)/(Math.PI/180 * 360);
+	for(let i = 0; i < getMesh('menu').children.length; i++){
+		if(getMesh('menu').children[i].name !== scn.currIntrsc){
+			getMesh('menu').children[i].traverse(function(child){
 				animeItem(child, 'material', ['opacity'], [0], 0.5);
 			});
 		}
 	}
-	changeColor(scn.carousel.active.children[0], "active");
-	animeItem(scn.cam, 'position', ['x', 'y', 'z'], [scn.cam.lock.x, scn.cam.lock.y, scn.cam.lock.z], 0.5);
-	animeItem(scn.cam, 'target', ['y'], [scn.cam.lock.target], 0.5);
-	animeItem(scn.brand, 'scale', ['x', 'y'], [scn.brand.lock.s, scn.brand.lock.s], 0.5);	
-	animeItem(scn.brand, 'position', ['x', 'y'], [scn.brand.lock.x, scn.brand.lock.y], 0.5);
-	animeItem(scn.carousel, 'position', ['y'], [scn.carousel.lock.y], 0.5);
-	animeItem(scn.carousel, 'rotation', ['y'], [scn.carousel.activeRDelta], scn.carousel.activeRDuration, 0, function() {
-		animeItem(scn.carousel.active, 'scale', ['x', 'y'], [scn.carousel.childScale*2.6, scn.carousel.childScale*2.6], 0.5);
-		animeItem(scn.infoC.infoT, 'position', ['x'], [0], 0.5);
-		animeItem(scn.infoC.infoT, 'scale', ['x'], [scn.infoC.infoT.w], 0.5, 0, function(){
-			plotElements( scn.menuObjs[ scn.carousel.active.name ] );
-		});
-	});
+	animeItem(getMesh('menu'), 'rotation', ['y'], [getMesh('menu').activeRDelta], getMesh('menu').activeRDuration);
+	animeItem(getMesh('menu'), 'position', ['y', 'z'], [-getMesh('brand').bb.y/2, -getMesh('menu').r/2], 0.5);
 }
 function plotElements( content ){
-	scn.infoC.infoBlock.w = Math.ceil((scn.infoC.infoT.w * 0.95) *100)/100;
-	scn.infoC.infoBlock.padW = Math.round((scn.infoC.infoBlock.w * 0.04) *100)/100;
-	scn.infoC.infoBlock.padH = Math.round((scn.infoC.infoBlock.w * 0.05) *100)/100;
-	scn.infoC.infoBlock.padMedia = Math.round((scn.infoC.infoBlock.padW/2) *100)/100;
-	scn.infoC.h2.fontSize = Math.ceil((scn.infoC.infoBlock.w/18) * 100)/100;
-	scn.infoC.p.fontSize = Math.ceil((scn.infoC.infoBlock.w/24) * 100)/100;
-	scn.infoC.infoBlock.h = scn.infoC.infoBlock.padH;
-	for( let i = 0; i < content.topics.length; i++){
-		let topic = content.topics[i];
+	getMesh('infoBlock', ['infoC']).position.set(0,0,0);
+	getMesh('infoBtns').position.set(0,0,0);
+	getMesh('infoBlock', ['infoC']).h = 0;
+	getMesh('infoBlock', ['infoC']).w = Math.round(getMesh('infoT', ['infoC']).w * 0.9);
+	getMesh('infoBlock', ['infoC']).padW = Math.round(getMesh('infoBlock', ['infoC']).w * 0.02);
+	getMesh('infoBlock', ['infoC']).padH = Math.round(getMesh('infoBlock', ['infoC']).w * 0.03);
+	getMesh('infoBlock', ['infoC']).padMedia = Math.round(getMesh('infoBlock', ['infoC']).padW/4);
+	getMesh('infoC').h2.fontSize = Math.round((getMesh('infoBlock', ['infoC']).w/10)/getMesh('cam').aspect);
+	getMesh('infoC').p.fontSize = Math.round((getMesh('infoBlock', ['infoC']).w/14)/getMesh('cam').aspect);
+	getMesh('infoBlock', ['infoC']).h += getMesh('infoBlock', ['infoC']).padH;
+	for( let i = 0; i < content.length; i++){
+		let topic = content[i];
 		let topicBlock = new Group();
-
+		topicBlock.scale.normalize();
 		topicBlock.blockHigher = 0;
-		topicBlock.cols = -1;
-		if( topic.text ){ topicBlock.cols += topic.text.length }
-		if( topic.media ){ topicBlock.cols += topic.media.length }
-		topicBlock.colsW = scn.infoC.infoBlock.w - (scn.infoC.infoBlock.padW * topicBlock.cols);
-
-		//block text sorted first to reference blockHigher for block media
-		if( topic.text ){ setBlockTexts(topicBlock, topic.text); }
-		if( topic.media ){ setBlockMedias(topicBlock, topic.media); }
+		let colsQtd = -1;
 		
+		if( topic.text ){ colsQtd += topic.text.length };
+		if( topic.media ){ colsQtd += topic.media.length };
+		colsQtd = getMesh('infoBlock', ['infoC']).padW * colsQtd;
+		topicBlock.padQtdW = Math.round(getMesh('infoBlock', ['infoC']).w - colsQtd);
+		
+		//block text sorted first to reference blockHigher for block media
+		if( topic.text ){ 
+			setBlockTexts(topicBlock, topic.text); 
+		}
+		if( topic.media ){ 
+			setBlockMedias(topicBlock, topic.media); 
+		}
 		topicBlock.children.sort((a,b) => a.order - b.order);
+		let wPostAccu = 0;
 		for( let j = 0; j < topicBlock.children.length; j++){
-			if(j == 0){
+			if(j === 0 ){
 				continue;
 			}
-			topicBlock.children[j].position.x = topicBlock.children[j-1].colW;
+			wPostAccu += topicBlock.children[j-1].colW*2;
+			topicBlock.children[j].position.x = wPostAccu;
+			
 		}
-		topicBlock.position.x = -(scn.infoC.infoBlock.w/2);
-		topicBlock.position.y = -(scn.infoC.infoBlock.h);
-		topicBlock.blockHigher += scn.infoC.infoBlock.padH;
-		scn.infoC.infoBlock.h += topicBlock.blockHigher;
-		scn.infoC.infoBlock.add( topicBlock );
+		topicBlock.position.y = -(getMesh('infoBlock', ['infoC']).h);
+		//get positioned raycastUrlAreaMesh and attach to getMesh('infoBtns')
+		topicBlock.traverse( function(child){
+			if(child.url){
+				getMesh('infoBtns').attach(child);
+			}
+		});
+		getMesh('infoBlock', ['infoC']).h += Math.round(topicBlock.blockHigher + getMesh('infoBlock', ['infoC']).padH);
+		getMesh('infoBlock', ['infoC']).attach( topicBlock );
 	}
-	scn.infoC.infoBlock.position.y = (scn.camViewSize.y/2 - scn.brand.lock.y/3);
-	scn.cam.bottomLimit = -Math.trunc( scn.infoC.infoBlock.h - scn.camViewSize.y/2 );
+	getMesh('infoBlock', ['infoC']).position.x = -(getMesh('infoBlock', ['infoC']).w/2);
+	getMesh('infoBlock', ['infoC']).position.y = getMesh('infoT', ['infoC']).position.y - (getMesh('infoBlock', ['infoC']).padH*2);
+	
+	
+	getMesh('infoBtns').position.x = -(getMesh('infoBlock', ['infoC']).w/2);
+	getMesh('infoBtns').position.y = getMesh('infoT', ['infoC']).position.y - getMesh('infoBlock', ['infoC']).padH;
+	getMesh('cam').bottomLimit = -Math.floor( getMesh('infoBlock', ['infoC']).h - getMesh('brand').bb.y/2 );
 	displayInfo();
 }
 function setBlockTexts(topicBlock, topicTextsBlocks){
@@ -629,303 +789,338 @@ function setBlockTexts(topicBlock, topicTextsBlocks){
 	for( let j = 0; j < topicTextsBlocks.length; j++){
 		block = topicTextsBlocks[j];
 		item = new Group();
-		item.colW = Math.round(((topicBlock.colsW * block.width)/100) * 100 )/100;
+		item.colW = (block.width * topicBlock.padQtdW)/100;
 		item.order = parseInt(block.order);
 		item.blockHeight = 0;
 		for( let k = 0; k < block.data.length; k++){
 			let elmnt = block.data[k];
 			let wordsArr = elmnt.info;
-			let fontSize = scn.infoC[elmnt.tag].fontSize;
-			let fontFamily = scn.infoC[elmnt.tag].fontFamily;
+			let fontSize = getMesh('infoC')[elmnt.tag].fontSize;
+			let fontFamily = getMesh('infoC')[elmnt.tag].fontFamily;
 			let textBlock = alignTextBlock(wordsArr, item.colW, fontSize);
 			let textMesh = generateText(textBlock, fontFamily, fontSize);
-			textMesh.position.y = -(item.blockHeight - (textMesh.bb.h/fontSize) ) ;
-			item.blockHeight += textMesh.bb.h;
-			item.add(textMesh);
+			textMesh.position.y = -item.blockHeight;
+			item.blockHeight += textMesh.bb.h/1.6;
+			item.attach(textMesh);
 		}
 		if( topicBlock.blockHigher < item.blockHeight){
 			topicBlock.blockHigher = item.blockHeight;
 		}
-		topicBlock.add( item );
+		topicBlock.attach( item );
 	}
 }
 function setBlockMedias(topicBlock, topicMedias){
-	let block, item, mesh, scalar, posVector, scaleVector, direction, posT;
+	let block, item, scalar, posVector, scaleVector, direction, posT;
 	for( let j = 0; j < topicMedias.length; j++){
 		block = topicMedias[j];
 		item = new Group();
-		item.colW = Math.round(((topicBlock.colsW * block.width)/100) * 100 )/100;
+		item.colW = ((block.width * topicBlock.padQtdW)/100);
 		item.order = parseInt(block.order);
 		posVector = 'x';
 		scaleVector = 'w';
 		direction = 1;
 		posT = 0;
-		item.mediasAspect = block.mediasW/block.mediasH;
-		if(topicBlock.blockHigher == 0){
-			topicBlock.blockHigher = (item.colW/block.data.length)/item.mediasAspect;
+		let mediaPad = getMesh('infoBlock', ['infoC']).padMedia;
+
+		if(topicBlock.blockHigher === 0){
+			let maxW = 0;
+			let maxH = 0;
+			for( let k = 0; k < block.data.length; k++){
+				maxW += block.data[k].width;
+				maxH += block.data[k].height;
+			}
+			topicBlock.blockHigher = ((item.colW*maxH)/maxW)/block.data.length;
+			
 		}
 		item.colAspect = item.colW/topicBlock.blockHigher;
 		if( item.colAspect >= 1){
-			scalar = (item.colW - (scn.infoC.infoBlock.padMedia * (block.data.length-1)))/(block.mediasW/block.data.length);
+			scalar = ((topicBlock.blockHigher)/block.data[0].height);
+
 		}
 		if( item.colAspect < 1){
-			scalar = topicBlock.blockHigher/(block.mediasH/block.data.length);
+			scalar = (item.colW)/block.data[0].width;
 			posVector = 'y';
 			scaleVector = 'h';
 			direction = -1;
 		}
+
 		for( let k = 0; k < block.data.length; k++){
 			let elmnt = block.data[k];
-			mesh = scn.loaderClasses[elmnt.tag][1](elmnt.src);
-			mesh.scale.setScalar(scalar/block.data.length);
+			let mesh = scn.loaderClasses[elmnt.tag][1](elmnt.src);
+			mesh.scale.normalize();
+			mesh.scale.setScalar(scalar );
 			mesh.position[posVector] = posT;
-			posT += (((mesh.bb[scaleVector]/block.data.length)*scalar) + scn.infoC.infoBlock.padMedia) * direction;
-			item.add(mesh);
+			posT += (((mesh.bb[scaleVector])*scalar)+mediaPad*2)* direction;
+			
 			if(elmnt.href != null){
 				let rayMesh = genRaycastMesh(mesh.bb.w, mesh.bb.h);
-				rayMesh.name = 'rayLink';
-				rayMesh.url = elmnt.href;
-				rayMesh.position.set(mesh.bb.w/2, -mesh.bb.h/2, 0);
-				mesh.add(rayMesh);
-				scn.topicRays.push(rayMesh);
+				rayMesh.scale.normalize();
+				rayMesh.geometry.translate(mesh.bb.w/2, -mesh.bb.h/2, 0);
+				rayMesh.name = elmnt.href;
+				rayMesh.url = elmnt.href;				
+				rayMesh.scale.setScalar(scalar );
+				rayMesh.position.copy( mesh.position );
+				mesh.attach(rayMesh);
 			}
+			item.attach(mesh);
+			topicBlock.position.y = -(getMesh('infoBlock', ['infoC']).padH)*2;
+			
 		}
-		topicBlock.add( item );
+		
+		topicBlock.attach( item );
 	}
 }
 function displayInfo(){
-	scn.close.visible = true;
-	scn.close.scale.setScalar( scn.close[scn.stat].s );
-	scn.close.position.y = scn.close.lock.y;
-	scn.topicRays.push(scn.close);
-	animeItem(scn.infoC.infoT, 'position', ['y'], [ (-(scn.infoC.infoBlock.h/2 - (scn.camViewSize.y/2 - scn.brand.lock.y/3 )) )], 0.5);
-	animeItem(scn.infoC.infoT, 'scale', ['y'], [scn.infoC.infoBlock.h], 0.5, 0, function(){
-		for(let i = 0; i < scn.infoC.infoBlock.children.length; i++){
-			for(let j = 0; j < scn.infoC.infoBlock.children[i].children.length; j++){
-				for(let k = 0; k < scn.infoC.infoBlock.children[i].children[j].children.length; k++){
-					scn.infoC.infoBlock.children[i].children[j].children[k].traverse(function(child){
-						animeItem(child, 'material', ['opacity'], [1], 0.3);
-					});
-				}
+	animeItem(getMesh('infoT', ['infoC']), 'position', ['y'], [ Math.round(-(getMesh('infoBlock', ['infoC']).h/2)) - (getMesh('brand').bb.y)], 0.5);
+	animeItem(getMesh('infoT', ['infoC']), 'scale', ['y'], [Math.ceil(getMesh('infoBlock', ['infoC']).h)], 0.5, 0, function(){
+		getMesh('infoBlock', ['infoC']).traverse(function(child){
+			if(child.isMesh){
+				animeItem(child, 'material', ['opacity'], [1], 0.3);
 			}
-		}
-		animeItem(scn.close, 'position', ['x'], [scn.close.lock.x], 0.3, 0);
-		window.addEventListener( "keydown", keyDown, false );
+		});
+		getMesh('close', ['infoBtns']).position.x = getMesh('cam').view.x;
+		getMesh('close', ['infoBtns']).position.y = getMesh('brand').bb.y/2;
+		getMesh('close', ['infoBtns']).visible = true;
+		animeItem(getMesh('close', ['infoBtns']), 'position', ['x'], [(getMesh('cam').view.x) - (getMesh('brand').bb.x*2) ], 0.3, 0);
+		scn.stat = 'scroll';
 	});
 }
 function closeInfo(){
-	updateObjs();
-	scn.currIntersect = null;
-	window.removeEventListener( "keydown", keyDown);
-	scn.renderer.domElement.removeEventListener( "touchStart", touchStart);
-	scn.renderer.domElement.removeEventListener( "touchMove", touchMove);
-	for(let i = 0; i < scn.infoC.infoBlock.children.length; i++){
-		for(let j = 0; j < scn.infoC.infoBlock.children[i].children.length; j++){
-			for(let k = 0; k < scn.infoC.infoBlock.children[i].children[j].children.length; k++){
-				scn.infoC.infoBlock.children[i].children[j].children[k].traverse(function(child){
-					animeItem(child, 'material', ['opacity'], [0], 0.5);
-				});
-			}
+	scn.stat = 'locked';
+	getMesh('cam').view = calcViewSize( Math.ceil(getMesh('brand').bb.y*4), getMesh('cam').view);
+	getMesh('cam').topLimit = Math.floor(-getMesh('cam').view.y/2);
+	getMesh('infoBlock', ['infoC']).traverse(function(child){
+		if(child.isMesh){
+			animeItem(child, 'material', ['opacity'], [0], 0.5);
 		}
-	}
-	animeItem(scn.close, 'position', ['x'], [scn.close.mov.x], 0.5, 0, function(){
-		animeItem(scn.infoC.infoT, 'position', ['y'], [(scn.camViewSize.y/2 - scn.brand.lock.y/3)], 0.5);
-		animeItem(scn.infoC.infoT, 'scale', ['y'], [0.2], 0.5, 0, function(){
-			animeItem(scn.infoC.infoT, 'position', ['x'], [-scn.infoC.infoT.w/2], 0.5);
-			animeItem(scn.infoC.infoT, 'scale', ['x'],  [0], 0.5, 0, function(){
-				scn.close.visible = false;
-				scn.infoC.infoBlock.clear();
+	});
+	animeItem(getMesh('close', ['infoBtns']), 'position', ['y'], [( (getMesh('cam').position.y) - (getMesh('cam').topLimit) ) + Math.ceil(getMesh('brand').bb.y/2)], 0.5);
+	animeItem(getMesh('lightTarget'), 'position', ['y'], [( -4 )], 0.5);
+	animeItem(getMesh('cam'), 'position', ['x', 'y', 'z'], [0,  getMesh('cam').topLimit, Math.ceil(getMesh('brand').bb.y*4)], 0.5);
+	animeItem(getMesh('cam'), 'target', ['y'], [ getMesh('cam').topLimit ], 0.5, 0, function(){
+		animeItem(getMesh('close', ['infoBtns']), 'position', ['x'], [(getMesh('cam').view.x)], 0.5);
+		
+		animeItem(getMesh('infoT', ['infoC']), 'position', ['y'], [Math.round(-getMesh('brand').bb.y)], 0.4);
+		animeItem(getMesh('infoT', ['infoC']), 'scale', ['y'], [0.1], 0.4, 0, function(){
+			animeItem(getMesh('infoT', ['infoC']), 'position', ['x'], [-getMesh('infoT', ['infoC']).w/2], 0.4);
+			animeItem(getMesh('infoT', ['infoC']), 'scale', ['x'], [0], 0.4, 0, function(){
+				getMesh('close', ['infoBtns']).visible = false;
+				dispose(getMesh('infoBlock', ['infoC']));
+				getMesh('infoBlock', ['infoC']).clear();
+				scn.attach(getMesh('close', ['infoBtns']));
+				dispose(getMesh('infoBtns'));
+				getMesh('infoBtns').clear();
+				getMesh('infoBtns').attach(getMesh('close'));
 				hideInfo(scn);
 			});
 		});
+
 	});
 }
 function hideInfo(){
-	scn.stat = 'mov';
-	updateObjs();
-	for(let i = 0; i < scn.carousel.children.length; i++){
-		if(scn.carousel.children[i].name != scn.carousel.active.name){
-			scn.carousel.children[i].traverse(function(child){
+
+	for(let i = 0; i < getMesh('menu').children.length; i++){
+		if(getMesh('menu').children[i].name != scn.currIntrsc){
+			getMesh('menu').children[i].traverse(function(child){
 				animeItem(child, 'material', ['opacity'], [1], 0.3);
-			});
+			})
 		}
 	}
-	changeColor(scn.carousel.active.children[0], "normal");
-	animeItem(scn.carousel.active, 'scale', ['x', 'y'], [scn.carousel.childScale, scn.carousel.childScale], 0.5);
-	animeItem(scn.brand, 'position', ['x', 'y'], [scn.brand.mov.x, scn.brand.mov.y], 0.5);
-	animeItem(scn.carousel, 'position', ['y', 'z'], [scn.carousel.mov.y, 0], 0.5);
-	animeItem(scn.cam, 'target', ['y'], [scn.cam.mov.target], 0.5);	
-	animeItem(scn.cam, 'position', ['x', 'y', 'z'], [scn.cam.mov.x, scn.cam.mov.y, scn.cam.mov.z], 0.5, 0, function(){
-		scn.carousel.active = null;
+	animeItem(getMesh('cam'), 'position', ['x', 'y', 'z'], [0,  Math.ceil(-getMesh('brand').bb.y*0.2), Math.ceil(getMesh('brand').bb.y*4)], 0.3);
+	animeItem(getMesh('cam'), 'target', ['y'], [ Math.ceil(-getMesh('brand').bb.y*1.2)], 0.3);
+	animeItem(getMesh(scn.currIntrsc, ['menu']), 'scale', ['x', 'y', 'z'], [1, 1, 1], 0.3);
+	
+	animeItem(getMesh('brand'), 'position', ['x', 'y'], [0, Math.ceil(-getMesh('brand').bb.y)], 0.3);
+	animeItem(getMesh('menu'), 'position', ['y', 'z'], [ Math.ceil(-getMesh('brand').bb.y)*1.4, 0], 0.3, 0, function(){
+		scn.currIntrsc = null;
+		scn.stat = 'mov';
 	});
 }
-function resize(){
-	scn.canvas.width = window.innerWidth;
-	scn.canvas.height = window.innerHeight;
-	scn.renderer.setSize( scn.canvas.width, scn.canvas.height );
-	scn.cam.aspect = scn.canvas.clientWidth / scn.canvas.clientHeight;
-	scn.cam.updateProjectionMatrix();
-	updateObjs();
-	scn.brand.scale.setScalar( scn.brand[scn.stat].s );
-	scn.brand.position.x = scn.brand[scn.stat].x;
-	scn.brand.position.y = scn.brand[scn.stat].y;
-	
-	scn.close.scale.setScalar( scn.close[scn.stat].s );
-	scn.close.position.x = scn.close[scn.stat].x;
-	scn.close.position.y = scn.close[scn.stat].y;
-	
-	scn.carousel.position.y = scn.carousel[scn.stat].y;
-	if(scn.stat == 'mov'){
-		scn.carousel.radius = clamp( scn.camViewSize.x/3, 3, 16 );
-		scn.carousel.childScale = clamp( scn.camViewSize.x/22, 0.2, 2 );
-		for(let i = 0; i < scn.carousel.children.length; i++){
-			scn.carousel.children[i].position.x = scn.carousel.radius * scn.carousel.children[i].data.pX;
-			scn.carousel.children[i].position.z = scn.carousel.radius * scn.carousel.children[i].data.pY;
-			scn.carousel.children[i].scale.setScalar( scn.carousel.childScale );
-		}
+function pointerClient(e){
+	e.preventDefault();
+	if ( e.changedTouches ) {
+		if ( e.changedTouches.length > 1 ) { return }
+			e = e.changedTouches[0];
 	}
-	if(scn.stat == 'lock'){
-		scn.carousel.active.children[0].scale.setScalar( scn.close.lock.s );
-	}
+	scn.pointer.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+	scn.pointer.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+	scn.raycaster.setFromCamera( scn.pointer, getMesh('cam') );
 }
-function updateObjs(){
-	scn.camViewSize = calcViewSize(scn.cam, scn.cam[scn.stat].z, 0, 0);
-	
-	scn.brand.mov = { x: 0, y: clamp( scn.camViewSize.x/12, 2, scn.camViewSize.x/10 ), s: clamp( scn.camViewSize.x/72, 0.2, 0.6 ) };
-	
-	scn.brand.lock = { x: (-scn.camViewSize.x/2 + (scn.brand.bb.x/2) ), y: (scn.camViewSize.y/2 - (scn.brand.bb.x/2) ), s: clamp( scn.camViewSize.x/124, 0.2, 0.6 )}; 
-	
-	scn.close.mov = { x: (scn.camViewSize.x + (scn.close.bb.x/2)), y: (scn.brand.lock.y), s: clamp( scn.camViewSize.x/72, 0.2, 0.6 )  };
-	
-	scn.close.lock = { x: -scn.brand.lock.x, y: scn.brand.lock.y, s: clamp( scn.camViewSize.x/72, 0.4, 0.8 ) };
-
-	scn.carousel.mov = { y: -scn.brand.mov.y };
-	scn.carousel.lock = { y: scn.camViewSize.y/2  - (scn.brand.bb.y/2)};
-}
-function pointerDown( event ){
-	event.preventDefault();
-	scn.pointerDown = true;
-	window.removeEventListener( 'pointerdown', pointerDown );
-	window.addEventListener( 'pointerup', pointerUp );
-	scn.v2.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	scn.v2.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-	scn.initPos = {x: scn.v2.x, y: scn.v2.y} ;
-	scn.raycaster.setFromCamera( scn.v2, scn.cam );
-	scn.intersects = scn.raycaster.intersectObjects( scn.intersectedObjs, false );
-	if ( scn.intersects.length > 0 ) {
-		scn.currIntersect = scn.intersects[0].object;
-		if(scn.stat == 'mov'){
-			scn.carousel.active = scn.currIntersect;
-			scn.intersectedObjs = scn.topicRays;
-			if(scn.menuObjs[scn.currIntersect.name].loaded == false){
-				loadFiles( [ scn.menuObjs[scn.currIntersect.name] ], openInfo );
+function pointerdown( e ){
+	e.preventDefault();
+	pointerClient(e);
+	if(scn.stat === 'mov'){
+		scn.intersects = scn.raycaster.intersectObjects( getMesh('menu').children, false );
+		if ( scn.intersects.length > 0 ) {
+			scn.stat = 'locked';
+			scn.currIntrsc = scn.intersects[0].object.name;
+			//check texture loaded by menuItem existent
+			if(!scn.menuInfo[scn.currIntrsc]){
+				scn.menuInfo[scn.currIntrsc] = scn.filePaths[scn.currIntrsc];
+				delete scn.filePaths[scn.currIntrsc];
+				loadFiles( scn.menuInfo[scn.currIntrsc], openInfo );
 				return;
 			}
 			openInfo();
 			return;
 		}
-		if(scn.stat == 'lock'){
-			if(scn.currIntersect.name == "close"){
-				scn.intersectedObjs = scn.carouselRays;
+		if ( scn.intersects.length === 0 ) {
+			scn.pointerDown = true;
+			scn.initPos = {x: scn.pointer.x, y: scn.pointer.y};
+		}
+	}
+	if(scn.stat === 'scroll'){
+		scn.intersects = scn.raycaster.intersectObjects( getMesh('infoBtns').children, false );
+		if ( scn.intersects.length > 0 ) {
+			if(scn.intersects[0].object.name === "close"){
+				scn.stat = 'locked';
 				closeInfo();
 				return; 
 			}
-			if(scn.currIntersect.name == "rayLink"){
-				linkPage(scn.currIntersect.url);
+			if(scn.intersects[0].object.name !== "close"){
+				linkPage(scn.intersects[0].object.name);
 			}
+		}
+		if ( scn.intersects.length === 0 ) {
+			scn.pointerDown = true;
+			scn.initPos = {x: scn.pointer.x, y: scn.pointer.y} ;
 		}
 	}
 }
-function pointerUp( event ){
-	event.preventDefault();
-	scn.pointerDown = false;
-	window.addEventListener( 'pointerdown', pointerDown );
-	window.removeEventListener( 'pointerup', pointerUp );
-}
-function pointerMove( event ) {
-	event.preventDefault();
-	if(scn.stat == 'mov'){
-		scn.v2.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-		scn.v2.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-		scn.raycaster.setFromCamera( scn.v2, scn.cam );
-		scn.intersects = scn.raycaster.intersectObjects( scn.intersectedObjs, false );
+function pointermove( e ) {
+	e.preventDefault();
+	pointerClient(e);
+	if(scn.stat === 'mov'){
+		scn.intersects = scn.raycaster.intersectObjects( getMesh('menu').children, false );
 		if ( scn.intersects.length > 0 ) {
-			let animeArray = [];
-			scn.intersected = scn.intersects[0].object;
-			if(scn.currIntersect == null){
+			if(scn.currIntrsc == null){
 				//'new'			
-				scn.currIntersect = scn.intersected;
-				changeColor(scn.currIntersect.children[0], "hover" );
-				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.childScale*1.6,scn.carousel.childScale*1.6], 0.2);
+				scn.currIntrsc = scn.intersects[0].object.name;
+				changeColor(scn.currIntrsc, "hover" );
+				animeItem(getMesh(scn.currIntrsc, ['menu']), 'scale', ['x','y','z'], [1.4, 1.4, 1.4], 0.3);
 			}
-			if(scn.intersected.name !== scn.currIntersect.name){
+			if(scn.currIntrsc !== scn.intersects[0].object.name){
 				//'changed'
-				changeColor(scn.currIntersect.children[0], "normal");
-				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.childScale,scn.carousel.childScale], 0.2);
-				changeColor(scn.intersected.children[0], "hover");
-				animeItem(scn.intersected, 'scale', ['x','y'], [scn.carousel.childScale*1.6,scn.carousel.childScale*1.6], 0.2);
-				scn.currIntersect = scn.intersected;			
+				changeColor(scn.currIntrsc, "normal");
+				animeItem(getMesh(scn.currIntrsc, ['menu']), 'scale', ['x','y','z'], [1, 1, 1], 0.3);
+				scn.currIntrsc = scn.intersects[0].object.name;
+				changeColor(scn.currIntrsc, "hover");
+				animeItem(getMesh(scn.currIntrsc, ['menu']), 'scale', ['x','y','z'], [1.4, 1.4, 1.4], 0.3);
 			}
 		}
-		if ( scn.intersects.length == 0 ) {
-			if(scn.currIntersect != null){
-				let animeArray = [];
-				changeColor(scn.currIntersect.children[0], "normal");
-				animeItem(scn.currIntersect, 'scale', ['x','y'], [scn.carousel.childScale,scn.carousel.childScale], 0.2);
-				scn.currIntersect = null;
+		if ( scn.intersects.length === 0 ) {
+			if ( scn.currIntrsc !== null ) {
+				changeColor(scn.currIntrsc, "normal");
+				animeItem(getMesh(scn.currIntrsc, ['menu']), 'scale', ['x','y','z'], [1, 1, 1], 0.3);
+				scn.currIntrsc = null;
 			}
 			if( scn.pointerDown ){
-				scn.cam.position.x -= scn.v2.x - scn.initPos.x;
-				scn.cam.position.x = clamp(scn.cam.position.x, -20, 20);
-				scn.cam.position.y -= scn.v2.y - scn.initPos.y;
-				scn.cam.position.y = clamp(scn.cam.position.y, 0, 72);
+				getMesh('cam').moves.x += (scn.initPos.x - scn.pointer.x);
+				getMesh('cam').moves.y += (scn.initPos.y - scn.pointer.y);
 			}
 		}
 	}
-}
-function keyDown( event ){
-	if (event.key === "ArrowUp") {
-		scroll( -3.4, scn );
-	}
-	if (event.key === "ArrowDown") {
-		scroll( 3.4, scn );
-	}
-}
-function wheel( event ){
-	event.preventDefault();
-	if(scn.stat == 'mov'){
-		event.distance = Math.trunc((event.deltaY/16)*100)/100;
-		scn.cam.position.z += event.distance;
-		scn.cam.position.z = clamp(scn.cam.position.z, scn.cam.mov.z/1.4, scn.cam.mov.z*1.4);
-		return;
-	}
-	scroll( event.deltaY/20 );
-}
-function touchStart( event ){
-	scn.cam.eventPosY = event.touches[ 0 ].pageY;
-}
-function touchMove( event ){
-	let speed = 0.01;
-	let deltaY = -( event.touches[ 0 ].pageY - scn.cam.eventPosY );
-	scroll( deltaY * speed, scn );
-}
-function scroll( scrollV ){
-	if( scn.stat == 'lock' ){
-		scn.cam.position.y -= scrollV;
-		scn.cam.target.y -= scrollV;
-		if(scn.cam.position.y >= scn.cam.topLimit ){
-			scn.cam.position.y = scn.cam.topLimit;
-			scn.cam.target.y = scn.cam.topLimit;
-		}
-		if(scn.cam.position.y <= scn.cam.bottomLimit ){
-			scn.cam.position.y = scn.cam.bottomLimit;
-			scn.cam.target.y = scn.cam.bottomLimit;
+	if(scn.stat === 'scroll'){
+		if( scn.pointerDown ){
+			getMesh('cam').moves.y += (scn.initPos.y - scn.pointer.y)/2;
 		}
 	}
+}
+function pointerup( e ){
+	e.preventDefault();
+	scn.pointerDown = false;
+	animeItem(getMesh('cam'), 'moves', ['x'], [0], 0.5);
+	animeItem(getMesh('cam'), 'moves', ['y'], [0], 0.5);
+	animeItem(getMesh('cam'), 'moves', ['z'], [0], 0.5);
+}
+function wheel( e ){
+	e.preventDefault();
+	if(scn.stat === 'mov'){
+		let v = e.deltaY/( getMesh('cam').view.x/getMesh('cam').aspect )*2;
+		animeItem(getMesh('cam'), 'moves', ['z'], [v], 0.2, 0, function(){
+			animeItem(getMesh('cam'), 'moves', ['z'], [0], 0.2);
+		});
+	}
+	if(scn.stat === 'scroll'){
+		let v = e.deltaY/( getMesh('cam').view.y/getMesh('cam').aspect )*4;
+		animeItem(getMesh('cam'), 'moves', ['y'], [-v], 0.4, 0, function(){
+			animeItem(getMesh('cam'), 'moves', ['y'], [0], 0.4);
+		});
+	}
+}
+function touchstart( e ){
+	e.preventDefault();
+	pointerClient(e);
+	if(scn.stat === 'mov'){
+		scn.intersects = scn.raycaster.intersectObjects( getMesh('menu').children, false );
+		if ( scn.intersects.length > 0 ) {
+			scn.stat = 'locked';
+			scn.currIntrsc = scn.intersects[0].object.name;
+			//check texture loaded by menuItem existent
+			if(!scn.menuInfo[scn.currIntrsc]){
+				scn.menuInfo[scn.currIntrsc] = scn.filePaths[scn.currIntrsc];
+				delete scn.filePaths[scn.currIntrsc];
+				loadFiles( scn.menuInfo[scn.currIntrsc], openInfo );
+				return;
+			}
+			openInfo();
+			return;
+		}
+		if ( scn.intersects.length === 0 ) {
+			scn.pointerDown = true;
+			scn.initPos = {x: scn.pointer.x, y: scn.pointer.y};
+		}
+	}
+	if(scn.stat === 'scroll'){
+		scn.intersects = scn.raycaster.intersectObjects( getMesh('infoBtns').children, false );
+		if ( scn.intersects.length > 0 ) {
+			if(scn.intersects[0].object.name === "close"){
+				scn.stat = 'locked';
+				closeInfo();
+				return; 
+			}
+			if(scn.intersects[0].object.name !== "close"){
+				linkPage(scn.intersects[0].object.name);
+			}
+		}
+		if ( scn.intersects.length === 0 ) {
+			scn.pointerDown = true;
+			scn.initPos = {x: scn.pointer.x, y: scn.pointer.y} ;
+		}
+	}
+}
+function touchmove( e ){
+	e.preventDefault();
+	pointerClient(e);
+	if(scn.stat === 'mov'){
+		if( scn.pointerDown ){
+			getMesh('cam').moves.x += (scn.initPos.x - scn.pointer.x);
+			getMesh('cam').moves.y += (scn.initPos.y - scn.pointer.y);
+		}
+	}
+	if(scn.stat === 'scroll'){
+		if( scn.pointerDown ){
+			getMesh('cam').moves.y += (scn.initPos.y - scn.pointer.y)/2;
+		}
+	}
+}
+function touchend( e ){
+	e.preventDefault();
+	scn.pointerDown = false;
+	animeItem(getMesh('cam'), 'moves', ['x'], [0], 0.5);
+	animeItem(getMesh('cam'), 'moves', ['y'], [0], 0.5);
+	animeItem(getMesh('cam'), 'moves', ['z'], [0], 0.5);
+}
+function move(){
+	getMesh('cam').velocity += (getMesh('cam').speed - getMesh('cam').velocity);
+	getMesh('cam').velocity = clamp(getMesh('cam').velocity, 0, getMesh('cam').speed);
+	getMesh('cam').translateX(getMesh('cam').velocity * getMesh('cam').moves.x);
+	getMesh('cam').translateY(getMesh('cam').velocity * getMesh('cam').moves.y);
+	getMesh('cam').translateZ(getMesh('cam').velocity * getMesh('cam').moves.z);
 }
 function genRaycastMesh(rayW, rayH){
 	const rayGeo = new PlaneGeometry( rayW, rayH );
-	const rayMat = new MeshBasicMaterial( {color: "#000000", visible: false, side: FrontSide} );
+	const rayMat = new MeshBasicMaterial( {color: "#000000", visible: false, depthWrite: false} );
 	const rayMesh = new Mesh( rayGeo, rayMat );
 	rayGeo.dispose();
 	rayMat.dispose();
@@ -938,27 +1133,26 @@ function generateImg(texture){
 	let geometry = new PlaneGeometry( width, height );
 	geometry.computeBoundingBox();
 	geometry.translate(width/2, -height/2, 0);
-	let material = new MeshBasicMaterial( {map: texture, opacity: 0, transparent: true, fog: false} );
+	let material = new MeshBasicMaterial( {map: texture, opacity: 0, transparent: true, depthWrite: false, fog: false} );
 	let mesh = new Mesh( geometry, material );
+	mesh.scale.normalize();
+	mesh.bb = {w:width, h:height}
+	mesh.aspect = Math.trunc((width/height)*100)/100;
+	
 	geometry.dispose();
 	material.dispose();
 	texture.dispose();
-	mesh.bb = {w:width, h:height}
-	mesh.aspect = Math.trunc((width/height)*100)/100;
-	mesh.scale.normalize();
 	return mesh;
 }
 function generateVid(data){
 	const texture = new VideoTexture( data );
 	texture.colorSpace = SRGBColorSpace;
-	//let width = data.videoWidth;
-	//let height = data.videoHeight;
-	let width = data.width;
-	let height = data.height;
+	let width = data.videoWidth;
+	let height = data.videoHeight;
 	let geometry = new PlaneGeometry( width, height );
 	geometry.computeBoundingBox();
 	geometry.translate(width/2, -height/2, 0);
-	let material = new MeshLambertMaterial( {map: texture, opacity: 0, transparent: true, fog: false} );
+	let material = new MeshLambertMaterial( {map: texture, opacity: 0, transparent: true, depthWrite: false, fog: false} );
 	let mesh = new Mesh( geometry, material );
 	mesh.scale.normalize();
 	mesh.bb = {w:width, h:height}
@@ -968,7 +1162,6 @@ function generateVid(data){
 	mesh.vidElement.play();
 	geometry.dispose();
 	material.dispose();
-	texture.dispose();
 	return mesh;
 }
 function generateSvg(data){
@@ -979,10 +1172,13 @@ function generateSvg(data){
 	geo.translate(width/2, -height/2, 0);
 	const mat = new MeshBasicMaterial( {color: "#000000", visible: false, side: FrontSide, fog: false} );
 	const groupMesh = new Mesh(geo, mat);
-	geo.dispose();
-	mat.dispose();
+	groupMesh.scale.normalize();
 	groupMesh.bb = {w:width, h:height};
 	groupMesh.aspect = Math.trunc((width/height)*100)/100;
+	
+	geo.dispose();
+	mat.dispose();
+	
 	let renderOrder = 2;
 	for ( const path of data.paths ){
 		const fillColor = path.userData.style.fill;
@@ -991,6 +1187,7 @@ function generateSvg(data){
 				color: new Color().setStyle( fillColor ),
 				opacity: 0,
 				transparent: true,
+				depthWrite: false, 
 				fog: false,
 				side: FrontSide,
 				depthWrite: false,
@@ -1014,6 +1211,7 @@ function generateSvg(data){
 				color: new Color().setStyle( strokeColor ),
 				opacity: 1,
 				transparent: true,
+				depthWrite: false, 
 				fog: false,
 				side: FrontSide,
 				depthWrite: false,
@@ -1033,37 +1231,31 @@ function generateSvg(data){
 			}
 		}
 	}
-	groupMesh.scale.normalize();
+	
 	return groupMesh;
 }
 function alignTextBlock(wordsArr, colW, fontSize){
 	let wordCueX = 0;
 	let textLine = "";
-	fontSize = Math.ceil((fontSize/2.5)*100)/100; // case of fontSize less than 1
-	colW = Math.floor(colW*100)/100;
-	let lineChars = Math.floor(colW/fontSize);
+	let fontSizePercent = ((fontSize/2.4)*100)/colW;
+	let lineChars = Math.ceil(100/fontSizePercent);
 	for (let i = 0; i < wordsArr.length; i++){
-		if(i == wordsArr.length-1){
-			if( wordCueX + 1 + wordsArr[i].length >= lineChars ) {
+		if(i === wordsArr.length-1){
+			if( wordCueX + 1 + wordsArr[i].length > lineChars ) {
 				textLine += "\n";
 			}
 			textLine += wordsArr[i];
 			return textLine;
 		}
-		
-		if( wordCueX + 1 >= lineChars || wordCueX + 1 + wordsArr[i+1].length > lineChars ) {
+		textLine += wordsArr[i];
+		wordCueX += (wordsArr[i].length);
+		if( wordCueX + 1 >= lineChars || wordCueX + 1 + wordsArr[i+1].length >= lineChars ) {
 			textLine += "\n";
 			wordCueX = 0;
 			continue;
 		}
-		if( wordCueX < lineChars ) {
-			textLine += wordsArr[i];
-			wordCueX += (wordsArr[i].length);
-		}
-		if( wordCueX + 1 < lineChars ) {
-			textLine += " ";
-			wordCueX += 1;
-		}
+		textLine += " ";
+		wordCueX += 1;
 	}
 }
 function generateText(textContent, fontStyle, fontSize){
@@ -1077,176 +1269,117 @@ function generateText(textContent, fontStyle, fontSize){
 		bevelThickness: 0,
 		bevelSize: 0,
 	} );
-	geometry.clearGroups();
-	geometry.computeBoundingBox();
-	geometry.computeVertexNormals();
-	
-	let textMat = new MeshBasicMaterial( { color: "#04453A", transparent: true, fog: false } );
+	let textMat = new MeshBasicMaterial( { color: "#04453A", transparent: true, depthWrite: false, fog: false } );
 	let textMesh = new Mesh( geometry, textMat );
-	
-	textMesh.material.opacity = 0;
 	textMesh.scale.normalize();
+	textMesh.geometry.computeBoundingBox();
+	textMesh.geometry.computeBoundingSphere();
+	textMesh.material.opacity = 0;
+	
 	let width = Math.trunc( Math.abs(textMesh.geometry.boundingBox.min.x - textMesh.geometry.boundingBox.max.x) *100)/100 ;
 	let height = Math.trunc( Math.abs(textMesh.geometry.boundingBox.min.y - textMesh.geometry.boundingBox.max.y) *100)/100 ;
-	textMesh.geometry.translate(0, -height, 0);
+	textMesh.geometry.translate(0, 0, 0);
 	textMesh.bb = {w:width, h:height};
 	geometry.dispose();
 	textMat.dispose();
 	return textMesh;
 }
-function linkPage(url){
-	window.open(url); 
-}
-function calcViewSize(camera, depth, vX, vY){
-	return camera.getViewSize(depth, scn.v2.set(vX, vY) );
-}
-function rotateCarousel(obj, camera){
-	if(obj.rotation.y >= Math.PI*2){
-		obj.rotation.y = obj.rotation.y - Math.PI*2;
-	}
-	if(obj.rotation.y < 0){
-		obj.rotation.y = obj.rotation.y + Math.PI*2;
-	}
-	obj.rotation.y -= camera.position.x/200 + 0.002;
-}
-function setScene(){
-	scn.fps = 30;
-	scn.currFrame = 0;
-	scn.motionCount = 0;
-	scn.background = new Color( "#ffffff" );
-	scn.canvas = document.getElementById("canvas");
-	scn.canvas.bb = scn.canvas.getBoundingClientRect();
-	scn.canvas.width = Math.trunc(scn.canvas.bb.width*100)/100;
-	scn.canvas.height = Math.trunc(scn.canvas.bb.height*100)/100;
-	scn.pointerDown = false;
-	scn.currIntersect = null;
-	scn.pointer = new Vector2();
-	scn.raycaster = new Raycaster();
-	scn.intersectedObjs = [];
-	scn.carouselRays = [];
-	scn.topicRays = [];
-	scn.renderGroup = [];
-	scn.v2 = new Vector2();
-	scn.renderer = setRenderer();
-	scn.stat = 'mov';
-	scn.cam = setCamera();
-	scn.camViewSize = calcViewSize(scn.cam, scn.cam[scn.stat].z, 0, 0);
-	scn.cam.lights = setLights();
-	scn.colors = {
-		stroke: { 
-			"normal": {r: 0.004, g: 0.042, b: 0.036 },
-			"hover": {r: 0.006, g: 0.08, b: 0.06 },
-			"active": {r: 0.006, g: 0.08, b: 0.05 }
-		},
-		fill: {
-			"normal": {r: 0.024, g: 0.57, b: 0.41 }, 
-			"hover": {r: 0.1, g: 0.72, b: 0.4 },
-			"active": {r: 0.1, g: 0.72, b: 0.7 }
-		},
-		glow: {
-			"normal": {r: 0.033, g: 0.830, b: 0.597 }, 
-			"hover": {r: 0.5, g: 0.9, b: 0.8},
-			"active": {r: 0.9, g: 1.0, b: 0.9 }
-		}
-	}
-	scn.fonts =  {
-		rubick: {
-			loaded: false, topics: [
-				{ media: [{
-					data:[
-					{ src : 'static/fonts/rubik/Rubik-Regular.ttf', tag: 'ttf' },
-					{ src : 'static/fonts/rubik/Rubik-Bold.ttf', tag: 'ttf' } ]}
-				]}
-			]
-		}
-	};
-	scn.meshes = {
-		homepage: {
-			 loaded: false, topics: [
-				{ media: [{
-					data: [
-					{ src : 'static/js/webgl/models/homepage/homepage.fbx', tag: 'fbx' } ]}
-				]}
-			]
-		}
-	};
-	scn.loaderClasses = { fbx: [FBXLoader] , ttf: [TTFLoader], webp: [TextureLoader, generateImg], svg: [SVGLoader, generateSvg], mp4: [VideoTexture, generateVid] };
-	return scn;
-}
 function setRenderer(){
 	let renderer = new WebGLRenderer( { canvas:scn.canvas, antialias: true, alpha: false, precision: "highp" } );
-	renderer.setSize( scn.canvas.width, scn.canvas.height );
+	renderer.setSize( scn.canvas.offsetWidth, scn.canvas.offsetHeight );
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.shadowMap.enabled = false;
-	//renderer.domElement.style.position = 'absolute';
-	//renderer.domElement.style.top = 0;
 	renderer.toneMapping = ACESFilmicToneMapping;
 	renderer.toneMappingExposure = 1;
-	//renderer.autoClear = false;
 	return renderer;
 }
 function setCamera(){
-	let cam = new PerspectiveCamera( 50, scn.canvas.width / scn.canvas.height, 10, 200  );
-	cam.mov = { x:0, y:24, z:48, target: -2 };
-	cam.lock = { x:0, y:0, z:96, target: 0 };
-	cam.target = new Vector3(0, cam.mov.target, 0);
-	cam.position.set( cam.mov.x, cam.mov.y, cam.mov.z );
+	let cam = new PerspectiveCamera( 50, scn.canvas.offsetWidth/ scn.canvas.offsetHeight, 10, 200  );
+	cam.name = 'cam';
+	cam.target = new Vector3();
+	cam.velocity = 0.0;
+	cam.speed = 0.6;
+	cam.moves = {x: 0, y:0, z: 0};
+	cam.view = new Vector2();
 	cam.topLimit = 0;
-	scn.add( cam );
+	cam.attach(setLights());
 	return cam;
 }
 function setLights(){
 	let light = new DirectionalLight( 0xFEFEFE, 3 );
-	light.position.set( 0, 12, 28 );
-	scn.cam.add( light );
+	light.name = 'light';
+	light.scale.normalize();
+	light.position.set( -40, 20, 10 );
+	let lightTarget = new Object3D();
+	lightTarget.name = 'lightTarget';
+	lightTarget.scale.normalize();
+	scn.add(lightTarget);
+	light.target = lightTarget;
+	lightTarget.position.set( 0, -4, -10 );
 	return light;
 }
 function setCarousel(){
-	let carousel = new Group();
-	carousel.scale.normalize();
-	
-	scn.add(carousel);
-	return carousel;
+	let menu = new Group();
+	menu.scale.normalize();
+	menu.name = 'menu';
+	return menu;
 }
 function setinfoC(){
 	let infoC = new Group();
+	infoC.name = 'infoC';
 	infoC.position.set(0, 0, 0);
-	infoC.h2 = {fontSize: 12, fontFamily: scn.fonts.rubick.topics[0].media[0].data[1].src}
-	infoC.p = {fontSize: 6, fontFamily: scn.fonts.rubick.topics[0].media[0].data[0].src}
+	infoC.h2 = {fontSize: 12, fontFamily: scn.fonts['Rubik-Bold']}
+	infoC.p = {fontSize: 6, fontFamily: scn.fonts['Rubik-Regular']}
 	
 	let infoBlock = new Group();
-	infoC.add( infoBlock );
-	infoC.infoBlock = infoBlock;
+	infoBlock.name = 'infoBlock';
+	infoBlock.scale.normalize();
+
+	infoC.attach( infoBlock );
 	
 	let infoTGeo = new PlaneGeometry( 1, 1 );
 	let infoTMat = new MeshPhongMaterial( { color: 0x33EBCB, flatShading: true ,transparent: false, fog: false } );
 	let infoT = new Mesh( infoTGeo, infoTMat );
+	infoT.name = 'infoT';
+	infoT.scale.normalize();
+	infoT.geometry.computeBoundingBox();
+	infoT.renderOrder = 0;
+	infoT.scale.y = 0.16;
 	infoTGeo.dispose();
 	infoTMat.dispose();
-	let infoTEdge = new EdgesGeometry(infoTGeo.geometry);
-	let infoTEdgeMat = new MeshPhongMaterial( { color: 0x0E3F36, flatShading: true ,transparent: false, fog: false } );
-	let infoTEdgeLine = new LineSegments(infoTEdge, infoTEdgeMat ); 
-	infoTEdge.dispose();
-	infoTEdgeMat.dispose();
-	infoT.add( infoTEdgeLine );
-	infoC.add( infoT );
-	infoC.infoT = infoT;
-	infoT.geometry.computeBoundingBox();
-	infoT.scale.normalize();
-	infoT.renderOrder = 0;
-	infoT.scale.y = 0.2;
-	//infoT.position.set(0, 0, -0.01);								
+	
+	infoC.attach( infoT );
+							
 	infoT.visible = false;
-	scn.add( infoC );
 	return infoC;
 }
-function changeColor(obj, mode){
-	obj.traverse(function(child){
+function changeColor(ObjName, mode){
+	getMesh(ObjName, ['menu']).traverse(function(child){
+	 if (child.name !== ObjName){
 		animeItem(child.material, 'color', ['r', 'g', 'b'], [ scn.colors[child.name][mode].r, scn.colors[child.name][mode].g, scn.colors[child.name][mode].b], 0.5);
+		}
 	});
+}
+function getMesh( name, parents=[] ){
+	if(parents.length === 0){
+		return scn.children[ scn.children.findIndex(item => item.name === name) ];
+	}
+	let parent = scn;
+	for(let i = 0; i < parents.length; i++){
+		parent = parent.children[ parent.children.findIndex(item => item.name === parents[i]) ];
+	}
+	return parent.children[ parent.children.findIndex(item => item.name === name) ];
 }
 function clamp(val, min, max) {
     return Math.trunc( (val > max ? max : val < min ? min : val) * 100) / 100;
+}
+function loadFile(loaderClass, filePath) {
+	return new Promise((resolve) => {
+		const loader = new loaderClass;
+		loader.load(filePath, (data) => {
+			resolve(data);
+		});
+	});
 }
 function animeItem(item, property, paramArr, endVArr, duration, delay=0, endAction=null, ease=easeInOutQuad){
 	duration = Math.trunc(((duration + delay)* 1000)/scn.fps);
@@ -1259,18 +1392,19 @@ function animeItem(item, property, paramArr, endVArr, duration, delay=0, endActi
 	return;
 }
 function animate() {
-	if( scn.now - scn.then >= scn.fps){
-		scn.then = performance.now();
-		render();
-	}
 	scn.now = performance.now();
+	if( scn.now - scn.then > scn.fpsD){
+		scn.currFrame++;
+		render();
+		scn.then = performance.now();
+	}
 	requestAnimationFrame(animate);
 }
 function render(){
-	scn.cam.lookAt(scn.cam.target);
-	if(scn.stat == 'mov'){ rotateCarousel( scn.carousel, scn.cam ); }
-	for (let i = 0; i < scn.carousel.children.length; i++){
-		scn.carousel.children[i].lookAt( scn.cam.position );
+	if(!scn.stat.locked){ move() }
+	scn.states[scn.stat]();
+	for (let i = 0; i < getMesh('menu').children.length; i++){
+		getMesh('menu').children[i].lookAt( getMesh('cam').position );
 	}
 	for(let i = 0; i < scn.renderGroup.length; i++){
 		// [ startFrame, duration(seconds), item, property, param, ease, startV, deltaV, endV, endAction ]
@@ -1283,16 +1417,59 @@ function render(){
 			scn.renderGroup.splice(i, 1);
 			continue;
 		}
-		scn.renderGroup[i][2][scn.renderGroup[i][3] ][scn.renderGroup[i][4] ] = Math.trunc(scn.renderGroup[i][5](scn.motionCount, scn.renderGroup[i][6], scn.renderGroup[i][7], scn.renderGroup[i][1])*100 )/100;			
+		scn.renderGroup[i][2][scn.renderGroup[i][3] ][scn.renderGroup[i][4] ] = Math.trunc(scn.renderGroup[i][5](scn.motionCount, scn.renderGroup[i][6], scn.renderGroup[i][7], scn.renderGroup[i][1])*100 )/100;	
 	}
-	scn.currFrame++;
-	scn.cam.updateProjectionMatrix();
-	scn.renderer.render( scn, scn.cam );
+	getMesh('cam').lookAt(getMesh('cam').target);	
+	scn.renderer.render( scn, getMesh('cam') );
 }
 function easeInOutQuad(t, b, c, d) {
 	if ((t /= d / 2) < 1) return c / 2 * t * t + b;
 	return -c / 2 * ((--t) * (t - 2) - 1) + b;
 }
+function dispose(parentObj){
+	parentObj.traverse(function(object){
+		if (object.geometry) {
+			object.geometry.dispose();
+		}
+		if (object.material) {
+			if (Array.isArray(object.material)) {
+				for (const material of object.material) {
+					material.dispose();
+					// Dispose textures if they exist within the material
+					for (const key in material) {
+						if (material[key] instanceof Texture) {
+							material[key].dispose();
+						}
+					}
+				}
+			} else {
+				object.material.dispose();
+				// Dispose textures if they exist within the material
+				for (const key in object.material) {
+					if (object.material[key] instanceof Texture) {
+						object.material[key].dispose();
+					}
+				}
+			}
+		}
+	})
+}
+function linkPage(url){
+	window.open(url); 
+}
+function calcViewSize(depth, target){
+	return getMesh('cam').getViewSize(depth, target );
+}
+function rotateCarousel(obj, cam){
+	if(obj.rotation.y >= Math.PI*2){
+		obj.rotation.y = obj.rotation.y - Math.PI*2;
+	}
+	if(obj.rotation.y < 0){
+		obj.rotation.y = obj.rotation.y + Math.PI*2;
+	}
+	obj.rotation.y -= cam.position.x/200 + 0.002;
+}
+
 init();
 </script>
 </body>
