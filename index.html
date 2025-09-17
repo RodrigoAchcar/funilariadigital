@@ -64,11 +64,11 @@
 			</div>
 		</div>
 		<div class="topicBlock">
-			<div data-width="40" data-order="0" data-type="text">
+			<div data-width="48" data-order="0" data-type="text">
 				<h2>Graphic Layer Only</h2>
 				<p>Dynamic or static display done with regular HTML/XML inputs. Preview integrity preserved on improvement updates.</p>
 			</div>
-			<div data-width="60" data-order="1" data-type="text">
+			<div data-width="56" data-order="1" data-type="text">
 				<h2>Product Immersion by Refresh Rate</h2>
 				<p>3D available for market strategies and business tools. A medium to provide consumers be part of what they are interested.</p>
 			</div>
@@ -91,11 +91,11 @@
 			</div>
 		</div>
 		<div class="topicBlock">
-			<div data-width="60" data-order="1" data-type="text">
+			<div data-width="56" data-order="1" data-type="text">
 				<h2>Customized Templates on Demmand</h2>
 				<p>Convenient user access on what matters. Unique shapes and widgets made for every job. Original medias presented to the audience.</p>
 			</div>
-			<div data-width="40" data-order="0" data-type="media">
+			<div data-width="44" data-order="0" data-type="media">
 				<noscript>
 				<img src="./media/site/pictures/interactive-layout-preview-daylight-mobile.avif" alt="Business makeover viewer day" />
 				</noscript>
@@ -255,12 +255,12 @@
 			</div>
 		</div>
 		<div class="topicBlock">
-			<div data-width="42" data-order="1" data-type="text">
+			<div data-width="54" data-order="1" data-type="text">
 				<h2>Unified Social Media Manage</h2>
 				<p>Media brands have APIs allowed to interact. Social medias, websites, analytics, apps, converged to one assistance asset.</p>
 			</div>
 
-			<div data-width="30" data-order="0" data-type="media">
+			<div data-width="46" data-order="0" data-type="media">
 				<noscript>
 				<img src="./media/site/vectors/social-media-integrate.svg" alt="social media integrate" />
 				</noscript>
@@ -323,17 +323,16 @@
 <script type="importmap">
 	{
 		"imports": {
-			"three": "./static/js/webgl/build/three.module.js",
+			"three": "./static/js/webgl/build/three.module.min.js",
 			"three/addons/": "./static/js/webgl/jsm/"
 		}
 	}
 </script>
 <script type="module">
-import { Cache, WebGLRenderer, ACESFilmicToneMapping, Color, SRGBColorSpace, Vector2, Vector3, Object3D, Scene, PerspectiveCamera, DirectionalLight, Group, Raycaster, LoadingManager, TextureLoader, Texture, VideoTexture, Mesh, MeshStandardMaterial, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, PlaneGeometry, ShapeGeometry, EdgesGeometry, LineSegments, FrontSide, LineBasicMaterial } from 'three';
+import { Cache, WebGLRenderer, ACESFilmicToneMapping, Color, SRGBColorSpace, Vector2, Vector3, Object3D, Scene, PerspectiveCamera, DirectionalLight, Group, Raycaster, LoadingManager, TextureLoader, Texture, VideoTexture, Mesh, MeshBasicMaterial, PlaneGeometry, ShapeGeometry } from 'three';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';	
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-import { Font } from 'three/addons/loaders/FontLoader.js';
-import { TTFLoader } from 'three/addons/loaders/TTFLoader.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 Cache.enabled = true;
 const scn = new Scene();
@@ -343,7 +342,7 @@ function init(){
 	scn.fileObjs = fileObjsLoad();
 	scn.filePaths = filePathsLoad();
 	scn.menuInfo = {};
-	scn.loaderClasses = { fbx: [FBXLoader] , ttf: [TTFLoader], avif: [TextureLoader, generateImg], svg: [SVGLoader, generateSvg], mp4: [VideoTexture, generateVid] };
+	scn.loaderClasses = { fbx: [FBXLoader] , json: [FontLoader], avif: [TextureLoader, generateImg], svg: [SVGLoader, generateSvg], mp4: [VideoTexture, generateVid] };
 	updateMediaUrls(scn.filePaths)
 	loadFiles( scn.fileObjs, clearFirstLoad);
 }
@@ -351,7 +350,7 @@ function fileObjsLoad(){
 	return {
 		fonts: {
 			media: [
-				{ data: [ {src: '/static/fonts/rubik/Rubik-Regular.ttf', tag: 'ttf', name:'Rubik-Regular'}, {src:'/static/fonts/rubik/Rubik-Bold.ttf', tag: 'ttf', name:'Rubik-Bold' } ] }, 
+				{ data: [ {src: '/static/fonts/helvetiker/helvetiker_regular.json', tag: 'json', name:'helvetiker_regular'}, {src:'/static/fonts/helvetiker/helvetiker_bold.json', tag: 'json', name:'helvetiker_bold' } ] }, 
 			]
 		},
 		models: {
@@ -445,7 +444,6 @@ async function loadFiles( filesObj, endAction=null ){
 		}
 	}
 	for(let types of Object.entries(filesObj) ){
-
 		if(types[1].media){
 			for(let i = 0; i < types[1].media.length; i++){
 				for(let j = 0; j < types[1].media[i].data.length; j++){
@@ -506,10 +504,6 @@ function setScene(){
 	scn.now = performance.now();
 	scn.background = new Color( 0xffffff );
 	scn.canvas = document.getElementById("canvas");
-	scn.canvas.w = window.innerWidth;
-	scn.canvas.h = window.innerHeight;
-	scn.canvas.deltaW = 0;
-	scn.canvas.deltaH = 0;
 	scn.pointerDown = false;
 	scn.currIntrsc = null;
 	scn.pointer = new Vector2();
@@ -546,7 +540,7 @@ function buildScenario(){
 	let models = scn.models.homepage.children;
 	for(let i=0; i< models.length; i++ ){
 		let geo = models[i].geometry;
-		let strokeMat = new MeshStandardMaterial( { color: new Color('#0E3F36'), fog: false, toneMapped: false, transparent: true, depthWrite : false } );
+		let strokeMat = new MeshBasicMaterial( { color: new Color('#0E3F36'), fog: false, toneMapped: false, transparent: true, depthWrite : false } );
 		let mesh = new Mesh(geo, strokeMat);
 		mesh.scale.normalize();
 		mesh.geometry.computeBoundingBox();
@@ -557,7 +551,7 @@ function buildScenario(){
 		strokeMat.dispose();
 		if(models[i].children.length > 0){
 			let geoFill = models[i].children[0].geometry;
-			let fillMat =  new MeshStandardMaterial( { color: new Color('#2BC7AC'), roughness: 1, metalness: 0, fog: false, toneMapped: false, transparent: true, depthWrite : false } );
+			let fillMat =  new MeshBasicMaterial( { color: new Color('#2BC7AC'), fog: false, toneMapped: false, transparent: true, depthWrite : false } );
 			let meshFill = new Mesh(geoFill, fillMat);
 			meshFill.scale.normalize();
 			meshFill.geometry.computeBoundingBox();
@@ -567,7 +561,7 @@ function buildScenario(){
 			fillMat.dispose();
 			if(models[i].children[0].children.length > 0){
 				let geoGlow = models[i].children[0].children[0].geometry;
-				let glowMat = new MeshStandardMaterial( { color: new Color('#33EBCB'), roughness: 1, metalness: 0, fog: false, toneMapped: false, transparent: true, depthWrite : false } );
+				let glowMat = new MeshBasicMaterial( { color: new Color('#33EBCB'), fog: false, toneMapped: false, transparent: true, depthWrite : false } );
 				let meshGlow = new Mesh(geoGlow, glowMat);
 				meshGlow.scale.normalize();
 				meshGlow.geometry.computeBoundingBox();
@@ -620,9 +614,6 @@ function buildScenario(){
 	scn.canvas.addEventListener( 'pointermove', pointermove );
 	scn.canvas.addEventListener( 'pointerdown', pointerdown );
 	window.addEventListener( 'pointerup', pointerup );
-	scn.canvas.addEventListener( 'touchstart', touchstart );
-	scn.canvas.addEventListener( 'touchmove', touchmove );
-	scn.canvas.addEventListener( 'touchend', touchend );
 	scn.canvas.addEventListener( 'wheel', wheel );
 
 	scn.stat = 'mov';
@@ -635,17 +626,7 @@ function buildScenario(){
 	animate();
 }
 function setup(){
-	scn.v = {
-		mov: {
-			camP: [0, Math.ceil(-getMesh('brand').bb.y*0.2), Math.ceil(getMesh('brand').bb.y*4)],
-			tP: Math.ceil(-getMesh('brand').bb.y*1.2),
-			brandP: [0, Math.ceil(-getMesh('brand').bb.y), 0],
-		},
-		scroll:{
-			camP: Math.floor(getMesh('brand').bb.y*4),
-			brandP: [Math.ceil(getMesh('brand').bb.x/2), Math.floor(-getMesh('brand').bb.y), 0]
-		}
-	}
+	scn.camZ = camZ();
 	scn.states = {
 		mov: ( function(){
 			rotateCarousel( getMesh('menu'), getMesh('cam') );
@@ -656,46 +637,54 @@ function setup(){
 		scroll: (
 			function(){
 			getMesh('cam').position.y = clamp(getMesh('cam').position.y, getMesh('cam').bottomLimit, getMesh('cam').topLimit);
-			getMesh('close', ['infoBtns']).position.y = ( (getMesh('cam').position.y) - (getMesh('cam').topLimit) ) + Math.ceil(getMesh('brand').bb.y/2);
+			getMesh('close', ['infoBtns']).position.y = (getMesh('cam').position.y + (getMesh('cam').view.y/2)) - (getMesh('brand').bb.y/2);
 			getMesh('cam').target.y = getMesh('cam').position.y;
 			getMesh('lightTarget').position.y = getMesh('cam').position.y/2;
 		}),
 		locked: (function(){})
 	};	
 }
+function camZ(v=getMesh('brand').bb.y*4){
+	if(getMesh('cam').aspect > 1){
+		return clamp( (v*getMesh('cam').aspect), 40, 80);
+	}
+	if(getMesh('cam').aspect <= 1){
+		return Math.ceil(v)/getMesh('cam').aspect;
+	}
+}
 function resize(){
 	scn.renderer.setSize( scn.canvas.parentElement.clientWidth, scn.canvas.parentElement.clientHeight );
 	getMesh('cam').aspect = scn.canvas.offsetWidth/ scn.canvas.offsetHeight;
 	getMesh('cam').updateProjectionMatrix();
-	getMesh('cam').view = calcViewSize( Math.ceil(scn.v.scroll.camP), getMesh('cam').view);
-	getMesh('cam').topLimit = Math.ceil(-getMesh('cam').view.y/2);
-	let v;
 	if(scn.stat === 'mov'){
-		v = clamp(Math.floor(getMesh('cam').position.z/getMesh('cam').aspect), 40, 70);
-		animeItem(getMesh('cam'), 'position', ['z'], [v], 0.3);
+		scn.camZ = camZ();
+		getMesh('cam').view = calcViewSize( scn.camZ, getMesh('cam').view);
+		getMesh('cam').topLimit = Math.floor(-getMesh('cam').view.y/2);
+		scn.camZ = clamp(Math.floor(getMesh('cam').position.z/getMesh('cam').aspect), 40, 70);
+		animeItem(getMesh('cam'), 'position', ['z'], [scn.camZ], 0.3);
 	}
 	if(scn.stat === 'scroll'){
-		v = clamp( (Math.ceil(scn.v.scroll.camP)*getMesh('cam').aspect), 40, 80);
-		animeItem(getMesh('cam'), 'position', ['z'], [v], 0.3);
-		if(getMesh('cam').position.y < getMesh('cam').topLimit){
-			animeItem(getMesh('cam'), 'position', ['y'], [getMesh('cam').topLimit], 0.3);
-		}
+		const newZ = Math.ceil(getMesh('infoC').w/getMesh('cam').aspect);
+		getMesh('cam').view = calcViewSize( newZ, getMesh('cam').view);
+		getMesh('cam').topLimit = Math.floor(-getMesh('cam').view.y/2);
+		getMesh('cam').bottomLimit = -Math.ceil( (getMesh('infoBlock', ['infoC']).h) + (getMesh('cam').view.y/2) - (getMesh('brand').bb.y*2));
+		animeItem(getMesh('cam'), 'position', ['z'], [newZ], 0.3);
 	}	
 }
 function openInfo(){
 	scn.stat = 'locked';
-	getMesh('cam').view = calcViewSize( scn.v.scroll.camP, getMesh('cam').view);
+	scn.camZ = camZ();
+	getMesh('cam').view = calcViewSize( scn.camZ, getMesh('cam').view);
 	getMesh('cam').topLimit = Math.floor(-getMesh('cam').view.y/2);
-	let v;
-	v = clamp( (Math.ceil(scn.v.scroll.camP)*getMesh('cam').aspect), 40, 80);
-
+	
+	getMesh('infoC').w = Math.floor(getMesh('cam').view.x);
 	getMesh('infoT', ['infoC']).w = Math.floor(getMesh('cam').view.x * 0.9);
 	getMesh('infoT', ['infoC']).position.x = -getMesh('infoT', ['infoC']).w/2;
 	getMesh('infoT', ['infoC']).position.y = Math.round(-getMesh('brand').bb.y);
 	
-	animeItem(getMesh('cam'), 'position', ['x', 'y', 'z'], [0, getMesh('cam').topLimit, v], 0.5);
+	animeItem(getMesh('cam'), 'position', ['x', 'y', 'z'], [0, getMesh('cam').topLimit, scn.camZ], 0.5);
 	animeItem(getMesh('cam'), 'target', ['y'], [getMesh('cam').topLimit], 0.5);	
-	animeItem(getMesh('brand'), 'position', ['x', 'y'], [ (-getMesh('cam').view.x/2) + getMesh('brand').bb.x,  -getMesh('brand').bb.y/2 ], 0.5);
+	animeItem(getMesh('brand'), 'position', ['x', 'y'], [ -(getMesh('cam').view.x/2) + (getMesh('brand').bb.x),  -getMesh('brand').bb.y/2 ], 0.5);
 	animeItem(getMesh(scn.currIntrsc, ['menu']), 'scale', ['x', 'y', 'z'], [3, 3, 5	], 0.4, 0, function() {
 		getMesh('infoT', ['infoC']).visible = true;
 		animeItem(getMesh('infoT', ['infoC']), 'position', ['x'], [0], 0.4);
@@ -730,12 +719,13 @@ function plotElements( content ){
 	getMesh('infoBtns').position.set(0,0,0);
 	getMesh('infoBlock', ['infoC']).h = 0;
 	getMesh('infoBlock', ['infoC']).w = Math.round(getMesh('infoT', ['infoC']).w * 0.9);
-	getMesh('infoBlock', ['infoC']).padW = Math.round(getMesh('infoBlock', ['infoC']).w * 0.02);
-	getMesh('infoBlock', ['infoC']).padH = Math.round(getMesh('infoBlock', ['infoC']).w * 0.03);
-	getMesh('infoBlock', ['infoC']).padMedia = Math.round(getMesh('infoBlock', ['infoC']).padW/4);
-	getMesh('infoC').h2.fontSize = Math.round((getMesh('infoBlock', ['infoC']).w/10)/getMesh('cam').aspect);
-	getMesh('infoC').p.fontSize = Math.round((getMesh('infoBlock', ['infoC']).w/14)/getMesh('cam').aspect);
-	getMesh('infoBlock', ['infoC']).h += getMesh('infoBlock', ['infoC']).padH;
+	getMesh('infoBlock', ['infoC']).padW = Math.round(getMesh('infoBlock', ['infoC']).w * 0.012);
+	getMesh('infoBlock', ['infoC']).padH = Math.round(getMesh('infoBlock', ['infoC']).w * 0.024);
+	getMesh('infoBlock', ['infoC']).padMedia = Math.round(getMesh('infoBlock', ['infoC']).padW/2);
+	getMesh('infoC').fScale = (getMesh('infoC').w*getMesh('cam').aspect);
+	getMesh('infoC').h2.fontSize = clamp( (getMesh('infoC').fScale/10), 6, 10 );
+	getMesh('infoC').p.fontSize = clamp( (getMesh('infoC').fScale/12), 4, 8 );
+	getMesh('infoBlock', ['infoC']).h += getMesh('infoBlock', ['infoC']).padH*2;
 	for( let i = 0; i < content.length; i++){
 		let topic = content[i];
 		let topicBlock = new Group();
@@ -769,19 +759,17 @@ function plotElements( content ){
 		//get positioned raycastUrlAreaMesh and attach to getMesh('infoBtns')
 		topicBlock.traverse( function(child){
 			if(child.url){
-				getMesh('infoBtns').attach(child);
+				getMesh('infoBtns').attach(child)
+				child.position.x -= (getMesh('infoBlock', ['infoC']).w/2);
+				child.position.y += getMesh('infoT', ['infoC']).position.y - (getMesh('infoBlock', ['infoC']).padH*2);
 			}
 		});
-		getMesh('infoBlock', ['infoC']).h += Math.round(topicBlock.blockHigher + getMesh('infoBlock', ['infoC']).padH);
+		getMesh('infoBlock', ['infoC']).h += Math.round(topicBlock.blockHigher + getMesh('infoBlock', ['infoC']).padH*2);
 		getMesh('infoBlock', ['infoC']).attach( topicBlock );
 	}
 	getMesh('infoBlock', ['infoC']).position.x = -(getMesh('infoBlock', ['infoC']).w/2);
 	getMesh('infoBlock', ['infoC']).position.y = getMesh('infoT', ['infoC']).position.y - (getMesh('infoBlock', ['infoC']).padH*2);
-	
-	
-	getMesh('infoBtns').position.x = -(getMesh('infoBlock', ['infoC']).w/2);
-	getMesh('infoBtns').position.y = getMesh('infoT', ['infoC']).position.y - getMesh('infoBlock', ['infoC']).padH;
-	getMesh('cam').bottomLimit = -Math.floor( getMesh('infoBlock', ['infoC']).h - getMesh('brand').bb.y/2 );
+	getMesh('cam').bottomLimit = -Math.ceil( (getMesh('infoBlock', ['infoC']).h) + (getMesh('cam').view.y/2) - (getMesh('brand').bb.y*2));
 	displayInfo();
 }
 function setBlockTexts(topicBlock, topicTextsBlocks){
@@ -800,7 +788,7 @@ function setBlockTexts(topicBlock, topicTextsBlocks){
 			let textBlock = alignTextBlock(wordsArr, item.colW, fontSize);
 			let textMesh = generateText(textBlock, fontFamily, fontSize);
 			textMesh.position.y = -item.blockHeight;
-			item.blockHeight += textMesh.bb.h/1.6;
+			item.blockHeight += textMesh.bb.h/1.4;
 			item.attach(textMesh);
 		}
 		if( topicBlock.blockHigher < item.blockHeight){
@@ -821,7 +809,7 @@ function setBlockMedias(topicBlock, topicMedias){
 		direction = 1;
 		posT = 0;
 		let mediaPad = getMesh('infoBlock', ['infoC']).padMedia;
-
+		item.colW = item.colW - (mediaPad * (block.data.length-1));
 		if(topicBlock.blockHigher === 0){
 			let maxW = 0;
 			let maxH = 0;
@@ -830,47 +818,45 @@ function setBlockMedias(topicBlock, topicMedias){
 				maxH += block.data[k].height;
 			}
 			topicBlock.blockHigher = ((item.colW*maxH)/maxW)/block.data.length;
-			
 		}
 		item.colAspect = item.colW/topicBlock.blockHigher;
 		if( item.colAspect >= 1){
-			scalar = ((topicBlock.blockHigher)/block.data[0].height);
-
+			scalar = (topicBlock.blockHigher/block.data[0].height);
 		}
 		if( item.colAspect < 1){
-			scalar = (item.colW)/block.data[0].width;
+			scalar = (item.colW/block.data[0].width);
 			posVector = 'y';
 			scaleVector = 'h';
 			direction = -1;
 		}
-
 		for( let k = 0; k < block.data.length; k++){
 			let elmnt = block.data[k];
 			let mesh = scn.loaderClasses[elmnt.tag][1](elmnt.src);
 			mesh.scale.normalize();
 			mesh.scale.setScalar(scalar );
 			mesh.position[posVector] = posT;
-			posT += (((mesh.bb[scaleVector])*scalar)+mediaPad*2)* direction;
+			posT += (((mesh.bb[scaleVector])*scalar)+mediaPad)* direction;
 			
 			if(elmnt.href != null){
 				let rayMesh = genRaycastMesh(mesh.bb.w, mesh.bb.h);
 				rayMesh.scale.normalize();
 				rayMesh.geometry.translate(mesh.bb.w/2, -mesh.bb.h/2, 0);
 				rayMesh.name = elmnt.href;
-				rayMesh.url = elmnt.href;				
+				rayMesh.url = elmnt.href;	
 				rayMesh.scale.setScalar(scalar );
-				rayMesh.position.copy( mesh.position );
+				rayMesh.position.set( mesh.position.x, mesh.position.y, 0 );
 				mesh.attach(rayMesh);
 			}
 			item.attach(mesh);
 			topicBlock.position.y = -(getMesh('infoBlock', ['infoC']).padH)*2;
-			
 		}
-		
 		topicBlock.attach( item );
 	}
 }
 function displayInfo(){
+	getMesh('close', ['infoBtns']).position.x = (getMesh('cam').view.x/2)+(getMesh('brand').bb.x/2);
+	getMesh('close', ['infoBtns']).position.y = -getMesh('brand').bb.y/2;
+	getMesh('close', ['infoBtns']).visible = true;
 	animeItem(getMesh('infoT', ['infoC']), 'position', ['y'], [ Math.round(-(getMesh('infoBlock', ['infoC']).h/2)) - (getMesh('brand').bb.y)], 0.5);
 	animeItem(getMesh('infoT', ['infoC']), 'scale', ['y'], [Math.ceil(getMesh('infoBlock', ['infoC']).h)], 0.5, 0, function(){
 		getMesh('infoBlock', ['infoC']).traverse(function(child){
@@ -878,27 +864,22 @@ function displayInfo(){
 				animeItem(child, 'material', ['opacity'], [1], 0.3);
 			}
 		});
-		getMesh('close', ['infoBtns']).position.x = getMesh('cam').view.x;
-		getMesh('close', ['infoBtns']).position.y = getMesh('brand').bb.y/2;
-		getMesh('close', ['infoBtns']).visible = true;
-		animeItem(getMesh('close', ['infoBtns']), 'position', ['x'], [(getMesh('cam').view.x) - (getMesh('brand').bb.x*2) ], 0.3, 0);
+		animeItem(getMesh('close', ['infoBtns']), 'position', ['x'], [-(getMesh('brand').position.x)], 0.3, 0);
 		scn.stat = 'scroll';
 	});
 }
 function closeInfo(){
 	scn.stat = 'locked';
-	getMesh('cam').view = calcViewSize( Math.ceil(getMesh('brand').bb.y*4), getMesh('cam').view);
-	getMesh('cam').topLimit = Math.floor(-getMesh('cam').view.y/2);
 	getMesh('infoBlock', ['infoC']).traverse(function(child){
 		if(child.isMesh){
 			animeItem(child, 'material', ['opacity'], [0], 0.5);
 		}
 	});
-	animeItem(getMesh('close', ['infoBtns']), 'position', ['y'], [( (getMesh('cam').position.y) - (getMesh('cam').topLimit) ) + Math.ceil(getMesh('brand').bb.y/2)], 0.5);
+	animeItem(getMesh('close', ['infoBtns']), 'position', ['y'], [-getMesh('brand').bb.y/2], 0.5);
 	animeItem(getMesh('lightTarget'), 'position', ['y'], [( -4 )], 0.5);
-	animeItem(getMesh('cam'), 'position', ['x', 'y', 'z'], [0,  getMesh('cam').topLimit, Math.ceil(getMesh('brand').bb.y*4)], 0.5);
+	animeItem(getMesh('cam'), 'position', ['y'], [ getMesh('cam').topLimit ], 0.5);
 	animeItem(getMesh('cam'), 'target', ['y'], [ getMesh('cam').topLimit ], 0.5, 0, function(){
-		animeItem(getMesh('close', ['infoBtns']), 'position', ['x'], [(getMesh('cam').view.x)], 0.5);
+		animeItem(getMesh('close', ['infoBtns']), 'position', ['x'], [(getMesh('cam').view.x/2)+(getMesh('brand').bb.x/2)], 0.5);
 		
 		animeItem(getMesh('infoT', ['infoC']), 'position', ['y'], [Math.round(-getMesh('brand').bb.y)], 0.4);
 		animeItem(getMesh('infoT', ['infoC']), 'scale', ['y'], [0.1], 0.4, 0, function(){
@@ -918,7 +899,10 @@ function closeInfo(){
 	});
 }
 function hideInfo(){
-
+	scn.camZ = camZ();
+	getMesh('cam').view = calcViewSize( scn.camZ, getMesh('cam').view);
+	getMesh('cam').topLimit = Math.floor(-getMesh('cam').view.y/2);
+	scn.camZ = clamp(Math.floor( (getMesh('brand').bb.y*2)/getMesh('cam').aspect), 40, 70);
 	for(let i = 0; i < getMesh('menu').children.length; i++){
 		if(getMesh('menu').children[i].name != scn.currIntrsc){
 			getMesh('menu').children[i].traverse(function(child){
@@ -926,7 +910,7 @@ function hideInfo(){
 			})
 		}
 	}
-	animeItem(getMesh('cam'), 'position', ['x', 'y', 'z'], [0,  Math.ceil(-getMesh('brand').bb.y*0.2), Math.ceil(getMesh('brand').bb.y*4)], 0.3);
+	animeItem(getMesh('cam'), 'position', ['y', 'z'], [Math.ceil(-getMesh('brand').bb.y*0.2), scn.camZ], 0.3);
 	animeItem(getMesh('cam'), 'target', ['y'], [ Math.ceil(-getMesh('brand').bb.y*1.2)], 0.3);
 	animeItem(getMesh(scn.currIntrsc, ['menu']), 'scale', ['x', 'y', 'z'], [1, 1, 1], 0.3);
 	
@@ -1015,8 +999,8 @@ function pointermove( e ) {
 				scn.currIntrsc = null;
 			}
 			if( scn.pointerDown ){
-				getMesh('cam').moves.x += (scn.initPos.x - scn.pointer.x);
-				getMesh('cam').moves.y += (scn.initPos.y - scn.pointer.y);
+				getMesh('cam').moves.x += (scn.initPos.x - scn.pointer.x)/2;
+				getMesh('cam').moves.y += (scn.initPos.y - scn.pointer.y)/2;
 			}
 		}
 	}
@@ -1036,80 +1020,17 @@ function pointerup( e ){
 function wheel( e ){
 	e.preventDefault();
 	if(scn.stat === 'mov'){
-		let v = e.deltaY/( getMesh('cam').view.x/getMesh('cam').aspect )*2;
-		animeItem(getMesh('cam'), 'moves', ['z'], [v], 0.2, 0, function(){
-			animeItem(getMesh('cam'), 'moves', ['z'], [0], 0.2);
+		let v = (e.deltaY/40)*getMesh('cam').aspect;
+		animeItem(getMesh('cam'), 'moves', ['z'], [v], 0.3, 0, function(){
+			animeItem(getMesh('cam'), 'moves', ['z'], [0], 0.3);
 		});
 	}
 	if(scn.stat === 'scroll'){
-		let v = e.deltaY/( getMesh('cam').view.y/getMesh('cam').aspect )*4;
-		animeItem(getMesh('cam'), 'moves', ['y'], [-v], 0.4, 0, function(){
-			animeItem(getMesh('cam'), 'moves', ['y'], [0], 0.4);
+		let v = (e.deltaY/12)*getMesh('cam').aspect;
+		animeItem(getMesh('cam'), 'moves', ['y'], [-v], 0.3, 0, function(){
+			animeItem(getMesh('cam'), 'moves', ['y'], [0], 0.3);
 		});
 	}
-}
-function touchstart( e ){
-	e.preventDefault();
-	pointerClient(e);
-	if(scn.stat === 'mov'){
-		scn.intersects = scn.raycaster.intersectObjects( getMesh('menu').children, false );
-		if ( scn.intersects.length > 0 ) {
-			scn.stat = 'locked';
-			scn.currIntrsc = scn.intersects[0].object.name;
-			//check texture loaded by menuItem existent
-			if(!scn.menuInfo[scn.currIntrsc]){
-				scn.menuInfo[scn.currIntrsc] = scn.filePaths[scn.currIntrsc];
-				delete scn.filePaths[scn.currIntrsc];
-				loadFiles( scn.menuInfo[scn.currIntrsc], openInfo );
-				return;
-			}
-			openInfo();
-			return;
-		}
-		if ( scn.intersects.length === 0 ) {
-			scn.pointerDown = true;
-			scn.initPos = {x: scn.pointer.x, y: scn.pointer.y};
-		}
-	}
-	if(scn.stat === 'scroll'){
-		scn.intersects = scn.raycaster.intersectObjects( getMesh('infoBtns').children, false );
-		if ( scn.intersects.length > 0 ) {
-			if(scn.intersects[0].object.name === "close"){
-				scn.stat = 'locked';
-				closeInfo();
-				return; 
-			}
-			if(scn.intersects[0].object.name !== "close"){
-				linkPage(scn.intersects[0].object.name);
-			}
-		}
-		if ( scn.intersects.length === 0 ) {
-			scn.pointerDown = true;
-			scn.initPos = {x: scn.pointer.x, y: scn.pointer.y} ;
-		}
-	}
-}
-function touchmove( e ){
-	e.preventDefault();
-	pointerClient(e);
-	if(scn.stat === 'mov'){
-		if( scn.pointerDown ){
-			getMesh('cam').moves.x += (scn.initPos.x - scn.pointer.x);
-			getMesh('cam').moves.y += (scn.initPos.y - scn.pointer.y);
-		}
-	}
-	if(scn.stat === 'scroll'){
-		if( scn.pointerDown ){
-			getMesh('cam').moves.y += (scn.initPos.y - scn.pointer.y)/2;
-		}
-	}
-}
-function touchend( e ){
-	e.preventDefault();
-	scn.pointerDown = false;
-	animeItem(getMesh('cam'), 'moves', ['x'], [0], 0.5);
-	animeItem(getMesh('cam'), 'moves', ['y'], [0], 0.5);
-	animeItem(getMesh('cam'), 'moves', ['z'], [0], 0.5);
 }
 function move(){
 	getMesh('cam').velocity += (getMesh('cam').speed - getMesh('cam').velocity);
@@ -1122,12 +1043,12 @@ function genRaycastMesh(rayW, rayH){
 	const rayGeo = new PlaneGeometry( rayW, rayH );
 	const rayMat = new MeshBasicMaterial( {color: "#000000", visible: false, depthWrite: false} );
 	const rayMesh = new Mesh( rayGeo, rayMat );
+	rayMesh.geometry.computeBoundingBox();
 	rayGeo.dispose();
 	rayMat.dispose();
 	return rayMesh;
 }
 function generateImg(texture){
-	texture.colorSpace = SRGBColorSpace;
 	let width = texture.source.data.width;
 	let height = texture.source.data.height;
 	let geometry = new PlaneGeometry( width, height );
@@ -1152,7 +1073,7 @@ function generateVid(data){
 	let geometry = new PlaneGeometry( width, height );
 	geometry.computeBoundingBox();
 	geometry.translate(width/2, -height/2, 0);
-	let material = new MeshLambertMaterial( {map: texture, opacity: 0, transparent: true, depthWrite: false, fog: false} );
+	let material = new MeshBasicMaterial( {map: texture, opacity: 0, transparent: true, depthWrite: false, fog: false} );
 	let mesh = new Mesh( geometry, material );
 	mesh.scale.normalize();
 	mesh.bb = {w:width, h:height}
@@ -1170,7 +1091,7 @@ function generateSvg(data){
 	const geo = new PlaneGeometry( width, height );
 	geo.computeBoundingBox();
 	geo.translate(width/2, -height/2, 0);
-	const mat = new MeshBasicMaterial( {color: "#000000", visible: false, side: FrontSide, fog: false} );
+	const mat = new MeshBasicMaterial( {color: "#000000", visible: false, fog: false} );
 	const groupMesh = new Mesh(geo, mat);
 	groupMesh.scale.normalize();
 	groupMesh.bb = {w:width, h:height};
@@ -1183,13 +1104,12 @@ function generateSvg(data){
 	for ( const path of data.paths ){
 		const fillColor = path.userData.style.fill;
 		if ( fillColor !== undefined && fillColor !== 'none' ) {
-			const material = new MeshPhongMaterial( {
+			const material = new MeshBasicMaterial( {
 				color: new Color().setStyle( fillColor ),
 				opacity: 0,
 				transparent: true,
 				depthWrite: false, 
 				fog: false,
-				side: FrontSide,
 				depthWrite: false,
 				wireframe: false
 			} );
@@ -1207,13 +1127,12 @@ function generateSvg(data){
 		}
 		const strokeColor = path.userData.style.stroke;
 		if (strokeColor !== undefined && strokeColor !== 'none' ) {
-			const material = new MeshPhongMaterial( {
+			const material = new MeshBasicMaterial( {
 				color: new Color().setStyle( strokeColor ),
 				opacity: 1,
 				transparent: true,
 				depthWrite: false, 
 				fog: false,
-				side: FrontSide,
 				depthWrite: false,
 				wireframe: false
 			} );
@@ -1264,7 +1183,7 @@ function generateText(textContent, fontStyle, fontSize){
 		size: fontSize,
 		height: 0.0,
 		depth: 0.0,
-		curveSegments: 1,
+		curveSegments: 2,
 		bevelEnabled: false,
 		bevelThickness: 0,
 		bevelSize: 0,
@@ -1328,8 +1247,8 @@ function setinfoC(){
 	let infoC = new Group();
 	infoC.name = 'infoC';
 	infoC.position.set(0, 0, 0);
-	infoC.h2 = {fontSize: 12, fontFamily: scn.fonts['Rubik-Bold']}
-	infoC.p = {fontSize: 6, fontFamily: scn.fonts['Rubik-Regular']}
+	infoC.h2 = {fontSize: 12, fontFamily: scn.fonts['helvetiker_bold']}
+	infoC.p = {fontSize: 6, fontFamily: scn.fonts['helvetiker_regular']}
 	
 	let infoBlock = new Group();
 	infoBlock.name = 'infoBlock';
@@ -1338,7 +1257,7 @@ function setinfoC(){
 	infoC.attach( infoBlock );
 	
 	let infoTGeo = new PlaneGeometry( 1, 1 );
-	let infoTMat = new MeshPhongMaterial( { color: 0x33EBCB, flatShading: true ,transparent: false, fog: false } );
+	let infoTMat = new MeshBasicMaterial( { color: 0x33EBCB, transparent: false, fog: false } );
 	let infoT = new Mesh( infoTGeo, infoTMat );
 	infoT.name = 'infoT';
 	infoT.scale.normalize();
