@@ -14,7 +14,7 @@
         * {padding: 0; margin: 0;}
         .invisible{ opacity: 1; display: none; }
         h1, h2, p{ color: #ffffff; }
-        canvas{ width: 100%; height: 100%; 	object-fit: contain; }	
+        canvas{ width: 100%; height: 100%; 	object-fit: contain; overflow: hidden; touch-action: none; }	
 	</style>
 </head>
 <body>
@@ -536,6 +536,7 @@ function buildScenario(){
 	scn.attach(setinfoC());
 	let infoBtns = new Group();
 	infoBtns.name = 'infoBtns';
+	infoBtns.renderOrder = 3;
 	scn.attach(infoBtns);
 	let models = scn.models.homepage.children;
 	for(let i=0; i< models.length; i++ ){
@@ -618,7 +619,7 @@ function buildScenario(){
 
 	scn.stat = 'mov';
 	
-	getMesh('cam').position.set(0, Math.ceil(-getMesh('brand').bb.y*0.2), Math.ceil(getMesh('brand').bb.y*2) );
+	getMesh('cam').position.set(2, Math.ceil(-getMesh('brand').bb.y*0.2), Math.ceil(getMesh('brand').bb.y*2) );
 	getMesh('cam').target.y = Math.ceil(-getMesh('brand').bb.y*1.2);
 	getMesh('brand').position.set(0, Math.ceil(-getMesh('brand').bb.y), 0);
 	getMesh('menu').position.y = Math.ceil(-getMesh('brand').bb.y)*1.4;
@@ -682,28 +683,31 @@ function openInfo(){
 	getMesh('infoT', ['infoC']).position.x = -getMesh('infoT', ['infoC']).w/2;
 	getMesh('infoT', ['infoC']).position.y = Math.round(-getMesh('brand').bb.y);
 	
-	animeItem(getMesh('cam'), 'position', ['x', 'y', 'z'], [0, getMesh('cam').topLimit, scn.camZ], 0.5);
-	animeItem(getMesh('cam'), 'target', ['y'], [getMesh('cam').topLimit], 0.5);	
-	animeItem(getMesh('brand'), 'position', ['x', 'y'], [ -(getMesh('cam').view.x/2) + (getMesh('brand').bb.x),  -getMesh('brand').bb.y/2 ], 0.5);
-	animeItem(getMesh(scn.currIntrsc, ['menu']), 'scale', ['x', 'y', 'z'], [3, 3, 5	], 0.4, 0, function() {
+	getMesh('menu').activeR = (Math.PI/180 * 360) - getMesh(scn.currIntrsc, ['menu']).data.angle;
+	if(Math.abs(getMesh('menu').rotation.y - getMesh('menu').activeR) >= Math.PI){
+		if(getMesh('menu').rotation.y > getMesh('menu').activeR){
+			getMesh('menu').activeR += Math.PI*2;
+		}else{
+			getMesh('menu').rotation.y += Math.PI*2;
+		}
+	}
+	getMesh('menu').activeRDuration = Math.abs(getMesh('menu').rotation.y - getMesh('menu').activeR)/(Math.PI/180 * 360) * 2;
+	
+	animeItem(getMesh('cam'), 'position', ['x', 'y', 'z'], [0, getMesh('cam').topLimit, scn.camZ], 0.6);
+	animeItem(getMesh('cam'), 'target', ['y'], [getMesh('cam').topLimit], 0.6);	
+	animeItem(getMesh('brand'), 'position', ['x', 'y'], [ -(getMesh('cam').view.x/2) + (getMesh('brand').bb.x),  -getMesh('brand').bb.y/2 ], 0.6);
+	animeItem(getMesh(scn.currIntrsc, ['menu']), 'scale', ['x', 'y', 'z'], [3, 3, 5	], 0.6, 0, function() {
 		getMesh('infoT', ['infoC']).visible = true;
-		animeItem(getMesh('infoT', ['infoC']), 'position', ['x'], [0], 0.4);
-		animeItem(getMesh('infoT', ['infoC']), 'scale', ['x'], [getMesh('infoT', ['infoC']).w], 0.4, 0, function(){
+		animeItem(getMesh('infoT', ['infoC']), 'position', ['x'], [0], 0.6);
+		animeItem(getMesh('infoT', ['infoC']), 'scale', ['x'], [getMesh('infoT', ['infoC']).w], 0.6, 0, function(){
 			plotElements( scn.menuInfo[scn.currIntrsc] );
 		});
 	});
 	
 	changeColor(scn.currIntrsc, 'active');
-	getMesh('menu').activeR = (Math.PI/180 * 360) - getMesh(scn.currIntrsc, ['menu']).data.angle;
-	getMesh('menu').activeRDelta = getMesh('menu').activeR;
-	if(Math.abs(getMesh('menu').rotation.y - getMesh('menu').activeR) >= Math.PI){
-		if(getMesh('menu').rotation.y > getMesh('menu').activeR){
-			getMesh('menu').activeRDelta += Math.PI*2;
-		}else{
-			getMesh('menu').rotation.y += Math.PI*2;
-		}
-	}
-	getMesh('menu').activeRDuration = Math.abs(getMesh('menu').rotation.y - getMesh('menu').activeRDelta)/(Math.PI/180 * 360);
+	
+	animeItem(getMesh('menu'), 'position', ['y', 'z'], [-getMesh('brand').bb.y/2, -getMesh('menu').r/2], 0.6);
+	animeItem(getMesh('menu'), 'rotation', ['y'], [getMesh('menu').activeR], getMesh('menu').activeRDuration);
 	for(let i = 0; i < getMesh('menu').children.length; i++){
 		if(getMesh('menu').children[i].name !== scn.currIntrsc){
 			getMesh('menu').children[i].traverse(function(child){
@@ -711,8 +715,8 @@ function openInfo(){
 			});
 		}
 	}
-	animeItem(getMesh('menu'), 'rotation', ['y'], [getMesh('menu').activeRDelta], getMesh('menu').activeRDuration);
-	animeItem(getMesh('menu'), 'position', ['y', 'z'], [-getMesh('brand').bb.y/2, -getMesh('menu').r/2], 0.5);
+	
+	
 }
 function plotElements( content ){
 	getMesh('infoBlock', ['infoC']).position.set(0,0,0);
@@ -723,8 +727,8 @@ function plotElements( content ){
 	getMesh('infoBlock', ['infoC']).padH = Math.round(getMesh('infoBlock', ['infoC']).w * 0.024);
 	getMesh('infoBlock', ['infoC']).padMedia = Math.round(getMesh('infoBlock', ['infoC']).padW/2);
 	getMesh('infoC').fScale = (getMesh('infoC').w*getMesh('cam').aspect);
-	getMesh('infoC').h2.fontSize = clamp( (getMesh('infoC').fScale/10), 6, 10 );
-	getMesh('infoC').p.fontSize = clamp( (getMesh('infoC').fScale/12), 4, 8 );
+	getMesh('infoC').h2.fontSize = clamp( (getMesh('infoC').fScale/11), 5, 10 );
+	getMesh('infoC').p.fontSize = clamp( (getMesh('infoC').fScale/13), 3, 8 );
 	getMesh('infoBlock', ['infoC']).h += getMesh('infoBlock', ['infoC']).padH*2;
 	for( let i = 0; i < content.length; i++){
 		let topic = content[i];
@@ -857,8 +861,8 @@ function displayInfo(){
 	getMesh('close', ['infoBtns']).position.x = (getMesh('cam').view.x/2)+(getMesh('brand').bb.x/2);
 	getMesh('close', ['infoBtns']).position.y = -getMesh('brand').bb.y/2;
 	getMesh('close', ['infoBtns']).visible = true;
-	animeItem(getMesh('infoT', ['infoC']), 'position', ['y'], [ Math.round(-(getMesh('infoBlock', ['infoC']).h/2)) - (getMesh('brand').bb.y)], 0.5);
-	animeItem(getMesh('infoT', ['infoC']), 'scale', ['y'], [Math.ceil(getMesh('infoBlock', ['infoC']).h)], 0.5, 0, function(){
+	animeItem(getMesh('infoT', ['infoC']), 'position', ['y'], [ Math.round(-(getMesh('infoBlock', ['infoC']).h/2)) - (getMesh('brand').bb.y)], 0.6);
+	animeItem(getMesh('infoT', ['infoC']), 'scale', ['y'], [Math.ceil(getMesh('infoBlock', ['infoC']).h)], 0.6, 0, function(){
 		getMesh('infoBlock', ['infoC']).traverse(function(child){
 			if(child.isMesh){
 				animeItem(child, 'material', ['opacity'], [1], 0.3);
@@ -872,19 +876,19 @@ function closeInfo(){
 	scn.stat = 'locked';
 	getMesh('infoBlock', ['infoC']).traverse(function(child){
 		if(child.isMesh){
-			animeItem(child, 'material', ['opacity'], [0], 0.5);
+			animeItem(child, 'material', ['opacity'], [0], 0.6);
 		}
 	});
-	animeItem(getMesh('close', ['infoBtns']), 'position', ['y'], [-getMesh('brand').bb.y/2], 0.5);
-	animeItem(getMesh('lightTarget'), 'position', ['y'], [( -4 )], 0.5);
-	animeItem(getMesh('cam'), 'position', ['y'], [ getMesh('cam').topLimit ], 0.5);
-	animeItem(getMesh('cam'), 'target', ['y'], [ getMesh('cam').topLimit ], 0.5, 0, function(){
-		animeItem(getMesh('close', ['infoBtns']), 'position', ['x'], [(getMesh('cam').view.x/2)+(getMesh('brand').bb.x/2)], 0.5);
+	animeItem(getMesh('close', ['infoBtns']), 'position', ['y'], [-getMesh('brand').bb.y/2], 0.6);
+	animeItem(getMesh('lightTarget'), 'position', ['y'], [( -4 )], 0.6);
+	animeItem(getMesh('cam'), 'position', ['y'], [ getMesh('cam').topLimit ], 0.6);
+	animeItem(getMesh('cam'), 'target', ['y'], [ getMesh('cam').topLimit ], 0.6, 0, function(){
+		animeItem(getMesh('close', ['infoBtns']), 'position', ['x'], [(getMesh('cam').view.x/2)+(getMesh('brand').bb.x/2)], 0.6);
 		
-		animeItem(getMesh('infoT', ['infoC']), 'position', ['y'], [Math.round(-getMesh('brand').bb.y)], 0.4);
-		animeItem(getMesh('infoT', ['infoC']), 'scale', ['y'], [0.1], 0.4, 0, function(){
-			animeItem(getMesh('infoT', ['infoC']), 'position', ['x'], [-getMesh('infoT', ['infoC']).w/2], 0.4);
-			animeItem(getMesh('infoT', ['infoC']), 'scale', ['x'], [0], 0.4, 0, function(){
+		animeItem(getMesh('infoT', ['infoC']), 'position', ['y'], [Math.round(-getMesh('brand').bb.y)], 0.6);
+		animeItem(getMesh('infoT', ['infoC']), 'scale', ['y'], [0.1], 0.6, 0, function(){
+			animeItem(getMesh('infoT', ['infoC']), 'position', ['x'], [-getMesh('infoT', ['infoC']).w/2], 0.6);
+			animeItem(getMesh('infoT', ['infoC']), 'scale', ['x'], [0], 0.6, 0, function(){
 				getMesh('close', ['infoBtns']).visible = false;
 				dispose(getMesh('infoBlock', ['infoC']));
 				getMesh('infoBlock', ['infoC']).clear();
@@ -906,16 +910,16 @@ function hideInfo(){
 	for(let i = 0; i < getMesh('menu').children.length; i++){
 		if(getMesh('menu').children[i].name != scn.currIntrsc){
 			getMesh('menu').children[i].traverse(function(child){
-				animeItem(child, 'material', ['opacity'], [1], 0.3);
+				animeItem(child, 'material', ['opacity'], [1], 0.4);
 			})
 		}
 	}
-	animeItem(getMesh('cam'), 'position', ['y', 'z'], [Math.ceil(-getMesh('brand').bb.y*0.2), scn.camZ], 0.3);
-	animeItem(getMesh('cam'), 'target', ['y'], [ Math.ceil(-getMesh('brand').bb.y*1.2)], 0.3);
-	animeItem(getMesh(scn.currIntrsc, ['menu']), 'scale', ['x', 'y', 'z'], [1, 1, 1], 0.3);
+	animeItem(getMesh('cam'), 'position', ['y', 'z'], [Math.ceil(-getMesh('brand').bb.y*0.2), scn.camZ], 0.4);
+	animeItem(getMesh('cam'), 'target', ['y'], [ Math.ceil(-getMesh('brand').bb.y*1.2)], 0.4);
+	animeItem(getMesh(scn.currIntrsc, ['menu']), 'scale', ['x', 'y', 'z'], [1, 1, 1], 0.4);
 	
-	animeItem(getMesh('brand'), 'position', ['x', 'y'], [0, Math.ceil(-getMesh('brand').bb.y)], 0.3);
-	animeItem(getMesh('menu'), 'position', ['y', 'z'], [ Math.ceil(-getMesh('brand').bb.y)*1.4, 0], 0.3, 0, function(){
+	animeItem(getMesh('brand'), 'position', ['x', 'y'], [0, Math.ceil(-getMesh('brand').bb.y)], 0.4);
+	animeItem(getMesh('menu'), 'position', ['y', 'z'], [ Math.ceil(-getMesh('brand').bb.y)*1.4, 0], 0.4, 0, function(){
 		scn.currIntrsc = null;
 		scn.stat = 'mov';
 	});
@@ -999,14 +1003,14 @@ function pointermove( e ) {
 				scn.currIntrsc = null;
 			}
 			if( scn.pointerDown ){
-				getMesh('cam').moves.x += (scn.initPos.x - scn.pointer.x)/2;
-				getMesh('cam').moves.y += (scn.initPos.y - scn.pointer.y)/2;
+				getMesh('cam').moves.x = ((scn.initPos.x - scn.pointer.x)*2);
+				getMesh('cam').moves.y = ((scn.initPos.y - scn.pointer.y)*2);
 			}
 		}
 	}
 	if(scn.stat === 'scroll'){
 		if( scn.pointerDown ){
-			getMesh('cam').moves.y += (scn.initPos.y - scn.pointer.y)/2;
+			getMesh('cam').moves.y -= (scn.pointer.y - scn.initPos.y)/getMesh('cam').aspect;
 		}
 	}
 }
@@ -1386,7 +1390,7 @@ function rotateCarousel(obj, cam){
 	if(obj.rotation.y < 0){
 		obj.rotation.y = obj.rotation.y + Math.PI*2;
 	}
-	obj.rotation.y -= cam.position.x/200 + 0.002;
+	obj.rotation.y -= cam.position.x/20 * 0.06;
 }
 
 init();
